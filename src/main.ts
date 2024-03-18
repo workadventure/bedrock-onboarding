@@ -13,7 +13,7 @@ WA.onInit().then(async () => {
 
     WA.room.area.onEnter('to-tour-rooftop').subscribe(() => {
         WA.nav.goToRoom("#roof")
-        WA.camera.set(roofArea.x, roofArea.y, 1000, 1000, false, true);
+        WA.camera.set(roofArea.x, roofArea.y, 1000, 1000, true, true);
     })
         
     // The line below bootstraps the Scripting API Extra library that adds a number of advanced properties/features to WorkAdventure
