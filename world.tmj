@@ -2137,7 +2137,7 @@
          "name":"GUIDE",
          "opacity":0.3,
          "type":"tilelayer",
-         "visible":true,
+         "visible":false,
          "width":110,
          "x":0,
          "y":0
