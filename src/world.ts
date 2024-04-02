@@ -4,6 +4,8 @@ import { bootstrapExtra } from "@workadventure/scripting-api-extra";
 
 console.log('Script started successfully');
 
+let isRoofVisible = false
+
 // Waiting for the API to be ready
 WA.onInit().then(async () => {
     console.log('Scripting API ready');
@@ -41,31 +43,7 @@ WA.onInit().then(async () => {
 
     generateTourFloorsTransition(floors);
 
-    function generateTourFloorsTransition(arr: string[]) {
-        // Forward iteration
-        for (let i = 0; i < arr.length - 1; i++) {
-            const fromFloor = arr[i]
-            const toFloor = arr[i + 1]
-
-            listenFloorTransition(fromFloor, toFloor)
-        }
-    
-        // Backward iteration
-        for (let i = arr.length - 1; i > 0; i--) {
-            const fromFloor = arr[i]
-            const toFloor = arr[i - 1]
-
-            listenFloorTransition(fromFloor, toFloor)
-        }
-    }
-
-    function listenFloorTransition(from: string, to: string) {
-        WA.room.area.onEnter(`${from}-${to}`).subscribe(() => {
-            WA.nav.goToRoom(`#from-${from}-${to}`)
-            WA.room.hideLayer(`tour/${from}`)
-            WA.room.showLayer(`tour/${to}`)
-        })
-    }
+    listenDoor('cave')
         
     // The line below bootstraps the Scripting API Extra library that adds a number of advanced properties/features to WorkAdventure
     bootstrapExtra().then(() => {
@@ -73,5 +51,45 @@ WA.onInit().then(async () => {
     }).catch(e => console.error(e));
 
 }).catch(e => console.error(e));
+
+function generateTourFloorsTransition(arr: string[]) {
+    // Forward iteration
+    for (let i = 0; i < arr.length - 1; i++) {
+        const fromFloor = arr[i]
+        const toFloor = arr[i + 1]
+
+        listenFloorTransition(fromFloor, toFloor)
+    }
+
+    // Backward iteration
+    for (let i = arr.length - 1; i > 0; i--) {
+        const fromFloor = arr[i]
+        const toFloor = arr[i - 1]
+
+        listenFloorTransition(fromFloor, toFloor)
+    }
+}
+
+function listenFloorTransition(from: string, to: string) {
+    WA.room.area.onEnter(`${from}-${to}`).subscribe(() => {
+        WA.nav.goToRoom(`#from-${from}-${to}`)
+        WA.room.hideLayer(`tour/${from}`)
+        WA.room.showLayer(`tour/${to}`)
+    })
+}
+
+function listenDoor(room: string) {
+    WA.room.area.onEnter(`${room}Door`).subscribe(() => {
+        if (isRoofVisible === true) {
+            isRoofVisible = false
+            WA.room.hideLayer(`roofs/${room}1`)
+            WA.room.hideLayer(`roofs/${room}2`)
+        } else {
+            isRoofVisible = true
+            WA.room.showLayer(`roofs/${room}1`)
+            WA.room.showLayer(`roofs/${room}2`)
+        }
+    })
+}
 
 export {};
