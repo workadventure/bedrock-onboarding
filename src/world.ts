@@ -35,6 +35,69 @@ WA.onInit().then(async () => {
             WA.nav.goToRoom("#roof")
         }, 10000)
     })
+
+    WA.room.area.onEnter(`roof-4`).subscribe(() => {
+        WA.nav.goToRoom("#from-roof-4")
+        WA.room.hideLayer(`tour/roof`)
+        WA.room.showLayer(`tour/4`)
+    })
+    WA.room.area.onEnter(`4-roof`).subscribe(() => {
+        WA.nav.goToRoom("#from-4-roof")
+        WA.room.hideLayer(`tour/4`)
+        WA.room.showLayer(`tour/roof`)
+    })
+
+    WA.room.area.onEnter(`4-3`).subscribe(() => {
+        WA.nav.goToRoom("#from-4-3")
+        WA.room.hideLayer(`tour/4`)
+        WA.room.showLayer(`tour/3`)
+    })
+    WA.room.area.onEnter(`3-4`).subscribe(() => {
+        WA.nav.goToRoom("#from-3-4")
+        WA.room.hideLayer(`tour/3`)
+        WA.room.showLayer(`tour/4`)
+    })
+    WA.room.area.onEnter(`3-2`).subscribe(() => {
+        WA.nav.goToRoom("#from-3-2")
+        WA.room.hideLayer(`tour/3`)
+        WA.room.showLayer(`tour/2`)
+    })
+    WA.room.area.onEnter(`2-3`).subscribe(() => {
+        WA.nav.goToRoom("#from-2-3")
+        WA.room.hideLayer(`tour/2`)
+        WA.room.showLayer(`tour/3`)
+    })
+    WA.room.area.onEnter(`2-1`).subscribe(() => {
+        WA.nav.goToRoom("#from-2-1")
+        WA.room.hideLayer(`tour/2`)
+        WA.room.showLayer(`tour/1`)
+    })
+    WA.room.area.onEnter(`1-2`).subscribe(() => {
+        WA.nav.goToRoom("#from-1-2")
+        WA.room.hideLayer(`tour/1`)
+        WA.room.showLayer(`tour/2`)
+    })
+    WA.room.area.onEnter(`1-0`).subscribe(() => {
+        WA.nav.goToRoom("#from-1-0")
+        WA.room.hideLayer(`tour/1`)
+        WA.room.showLayer(`tour/0`)
+    })
+    WA.room.area.onEnter(`0-1`).subscribe(() => {
+        WA.nav.goToRoom("#from-0-1")
+        WA.room.hideLayer(`tour/0`)
+        WA.room.showLayer(`tour/1`)
+    })
+
+    WA.room.area.onEnter(`0-ext`).subscribe(() => {
+        WA.nav.goToRoom("#from-0-ext")
+        WA.room.hideLayer(`tour/0`)
+        WA.room.showLayer(`tour/ext`)
+    })
+    WA.room.area.onEnter(`ext-0`).subscribe(() => {
+        WA.nav.goToRoom("#from-ext-0")
+        WA.room.hideLayer(`tour/ext`)
+        WA.room.showLayer(`tour/0`)
+    })
         
     // The line below bootstraps the Scripting API Extra library that adds a number of advanced properties/features to WorkAdventure
     bootstrapExtra().then(() => {
