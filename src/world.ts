@@ -15,7 +15,7 @@ WA.onInit().then(async () => {
 
     WA.room.area.onEnter('to-tour-rooftop').subscribe(() => {
         // Move camera
-        //WA.camera.set(roofArea.x, roofArea.y, 1000, 1000, true, true, 10000);
+        //WA.camera.set(roofArea.x, roofArea.y, 1000, 1000, true, true, 20000);
         window.parent.postMessage(
             {
                 type: "cameraSet",
@@ -26,7 +26,7 @@ WA.onInit().then(async () => {
                     height: 1000,
                     lock: true,
                     smooth: true,
-                    duration: 20000 
+                    duration: 20000
                 },
             },
             "*"
