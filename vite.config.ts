@@ -27,6 +27,8 @@ export default defineConfig({
         rollupOptions: {
             input: {
                 index: "./index.html",
+                dialogueBox: "./dialogue-box/index.html",
+                checklist: "./checklist/index.html",
                 ...getMapsScripts(maps),
             },
         },
