@@ -1,9 +1,8 @@
 import { AvatarComponent } from './AvatarComponent';
 import { MessageComponent } from './MessageComponent';
-import { CheckpointDescriptor } from '../../../src/onboarding/checkpoints';
+import { CheckpointDescriptor, passCheckpoint } from '../../../src/onboarding/checkpoints';
 import { teleportJonas } from "../../../src/onboarding/tiles";
 import { openWebsite } from "../../../src/onboarding/ui";
-import { passCheckpoint } from "../../../src/onboarding/index"
 
 interface DialogueBoxProps {
     checkpoint: CheckpointDescriptor;

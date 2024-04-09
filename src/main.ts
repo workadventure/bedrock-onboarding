@@ -8,8 +8,7 @@ import { initWorld } from "./world";
 import { initOnboarding } from "./onboarding/index";
 import { displayChecklistButton } from "./onboarding/ui";
 import { initDoors } from "./doors";
-import type { Tag } from "./onboarding/checkpoints";
-import { addElement } from './db/actions';
+import { getCheckpointIds, type Tag } from "./onboarding/checkpoints";
 
 WA.onInit().then(() => {
     console.log('Scripting API ready');
@@ -23,10 +22,10 @@ WA.onInit().then(() => {
         displayChecklistButton()
     }
 
-    bootstrapExtra().then(() => {
+    bootstrapExtra().then(async () => {
         console.log('Scripting API Extra ready');
 
-        const map = WA.state.loadVariable('map') as string
+        const map = await WA.state.map as string
         // Load specific map scripts
         if (map === "town") {
             initTown()
@@ -34,19 +33,9 @@ WA.onInit().then(() => {
             initWorld()
         }
         
-        const playerCheckpointIds = WA.player.state.checkpoints as string[]
+        const playerCheckpointIds = await getCheckpointIds()
         initDoors(map, playerTags, playerCheckpointIds)
-        initOnboarding(map, playerTags, playerCheckpointIds)
-        
-        const addTodo = (title: string) => {
-            const newTodo = { title, done: false };
-            addElement('todos', newTodo).then(() => {
-                console.log('New to-do added:', title);
-                // Optionally, refresh the to-do list on the UI
-            }).catch(console.error);
-        };
-        
-        addTodo("coucou")
+        initOnboarding(map, playerTags)
     }).catch(e => console.error(e));
 
 }).catch(e => console.error(e));

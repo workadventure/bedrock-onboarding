@@ -1,9 +1,9 @@
 /// <reference types="@workadventure/iframe-api-typings" />
-console.log('World script started successfully');
 
 let isRoofVisible = false
 
 export async function initWorld() {
+    console.log('World script started successfully');
     const roofArea = await WA.room.area.get("roof");
 
     WA.room.area.onEnter('to-tour-rooftop').subscribe(() => {

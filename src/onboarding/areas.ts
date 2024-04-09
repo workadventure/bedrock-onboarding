@@ -1,27 +1,35 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-import { CheckpointDescriptor, checkpoints } from './checkpoints';
+import { CheckpointDescriptor, checkpoints, Checklist, saveChecklist, passCheckpoint } from './checkpoints';
 import type { NPCs } from "./checkpoints";
 import { placeTile, removeContentTile, removeDirectionTile } from "./tiles";
 import { openDialogueBox, openWebsite, closeDialogueBox, closeWebsite } from "./ui";
-import { passCheckpoint, map, playerTags, playerCheckpointIds } from "./index"
+import { map, playerTags } from "./index"
 let nextJonasIsPlaced = false
 
-export function processAreas() {
-    let playerCheckpointsObject: CheckpointDescriptor[] = []
+export function processAreas(playerCheckpointIds: string[]) {
+    let checklist: Checklist[] = [];
+
     console.log("Processing areas...")
     checkpoints.forEach(checkpoint => {
-        if (filterPlayerCheckpoints(checkpoint)) {
-            playerCheckpointsObject.push(checkpoint)
+        // checkpoints of the player across maps
+        if (filterCheckpointsByTag(checkpoint)) {
+            const isPassed = playerCheckpointIds.includes(checkpoint.id);
+            checklist.push({
+                id: checkpoint.id,
+                title: checkpoint.title,
+                done: isPassed,
+            });
 
-            if (filterContentToPlace(checkpoint)) {
+            // checkpoints to place on the current map + additional filtering
+            if (filterCheckpointsByMap(checkpoint) && filterCheckpointsNPCs(checkpoint, playerCheckpointIds)) {
                 placeArea(checkpoint)
                 placeTile(checkpoint)
-            }
-        }
+            }  
+        }  
     });
 
-    //updatePlayerCheckpoints(playerCheckpointsObject)
+    saveChecklist(checklist)
 }
 
 function placeArea(checkpoint: CheckpointDescriptor) {
@@ -73,13 +81,20 @@ function placeArea(checkpoint: CheckpointDescriptor) {
     });
 }
 
-function filterPlayerCheckpoints(checkpoint: CheckpointDescriptor): boolean {
+function filterCheckpointsByMap(checkpoint: CheckpointDescriptor): boolean {
     const checkopintId = checkpoint.id
 
     if (map !== checkpoint.map) {
         console.log(`Can't access checkpoint ${checkopintId} because it's not the right map`)
         return false
     }
+
+    // Player can access view and access this checkpoint
+    return true
+}
+
+function filterCheckpointsByTag(checkpoint: CheckpointDescriptor): boolean {
+    const checkopintId = checkpoint.id
 
     if (checkpoint.tags && checkpoint.tags.every(tag => !playerTags.includes(tag))) {
         // At least one tag of the checkpoint matches any of the player's tags
@@ -91,7 +106,7 @@ function filterPlayerCheckpoints(checkpoint: CheckpointDescriptor): boolean {
     return true
 }
 
-function filterContentToPlace(checkpoint: CheckpointDescriptor): boolean {
+function filterCheckpointsNPCs(checkpoint: CheckpointDescriptor, playerCheckpointIds: string[]): boolean {
     const checkopintId = checkpoint.id
 
     if (playerCheckpointIds.includes(checkpoint.id)) {

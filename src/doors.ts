@@ -20,7 +20,7 @@ let buildings: BuildingAccess = {
     backstage: { access: false, blockingTiles: [[29, 49], [30, 49], [29, 51], [30, 51]] },
 };
 
-export function initDoors(map: string, playerTags: Tag[], playerCheckpoints: string[]) {
+export function initDoors(map: string, playerTags: Tag[], playerCheckpointIds: string[]) {
     // Apply access restrictions based on player tags and checkpoint.
     if (playerTags.includes("guest")) {
         // Guests can only access hr and arcade.
@@ -29,7 +29,7 @@ export function initDoors(map: string, playerTags: Tag[], playerCheckpoints: str
         });
     } else if (playerTags.some(tag => ["fr", "pt", "ext", "alt"].includes(tag))) {
         // Access for newbies before and after checkpoint "32" is passed (onboarding is done).
-        const hasAccessToAll = isOnboardingDone(playerCheckpoints)
+        const hasAccessToAll = isOnboardingDone(playerCheckpointIds)
         buildings.stadium.access = true;
         buildings.cave.access = true;
         buildings.hr.access = true;

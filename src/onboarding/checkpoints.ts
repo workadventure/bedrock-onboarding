@@ -1,3 +1,5 @@
+import { openCheckpointBanner, closeBanner } from "./ui";
+
 export type Tag = "admin" | "br" | "hr" | "ext" | "fr" | "pt" | "alt" | "guest";
 export type NPCs = "Aria" | "Baptiste" | "Charlie" | "Christine" | "Diana" | "Emilie" | "Emma" | "Eva" | "Gabor" | "Hans" | "Ingrid" | "Jonas" | "Julia" | "Julie" | "Luc" | "Murielle" | "Nicolas" | "Pierre" | "Shiby" | "Vianey";
 
@@ -15,7 +17,13 @@ export interface CheckpointDescriptor {
     url?: string;
     tags?: Tag[];
     npcName?: NPCs;
-    npcSprite?: "front" | "left"| "right"| "back";
+    npcSprite?: "front" | "left" | "right" | "back";
+}
+
+export interface Checklist {
+    id: string;
+    title: string;
+    done: boolean;
 }
 
 const everyoneButGuests: Tag[] = ["admin", "br", "hr", "ext", "fr", "pt", "alt"];
@@ -24,7 +32,7 @@ const employees: Tag[] = ["admin", "br", "hr"];
 const employeesAndFrenchNewbies: Tag[] = [...employees, "fr"]
 
 /**
- * All checkpoints possible for all use cases
+ * All possible checkpoints for all use cases
  * @constant
  */
 export const checkpoints: CheckpointDescriptor[] = [
@@ -605,8 +613,8 @@ export const checkpoints: CheckpointDescriptor[] = [
     {
         id: '40',
         map: "town",
-        title: "Title",
-        description: "Description.",
+        title: "Your Contacts",
+        description: "Access essential information about your contacts within the company.",
         coordinates: {
             x: 79,
             y: 101
@@ -618,8 +626,8 @@ export const checkpoints: CheckpointDescriptor[] = [
     {
         id: '41',
         map: "town",
-        title: "Title",
-        description: "Description.",
+        title: "Your Daily Tools",
+        description: "Access a curated collection of productivity tools to streamline your workflow.",
         coordinates: {
             x: 88,
             y: 100
@@ -631,8 +639,8 @@ export const checkpoints: CheckpointDescriptor[] = [
     {
         id: '42',
         map: "town",
-        title: "Title",
-        description: "Description.",
+        title: "HR System",
+        description: "Access detailed information about HR processes, policies, and procedures.",
         coordinates: {
             x: 71,
             y: 100
@@ -644,8 +652,8 @@ export const checkpoints: CheckpointDescriptor[] = [
     {
         id: '40',
         map: "town",
-        title: "Title",
-        description: "Description.",
+        title: "Your Contacts",
+        description: "Access essential information about your contacts within the company.",
         coordinates: {
             x: 79,
             y: 101
@@ -657,8 +665,8 @@ export const checkpoints: CheckpointDescriptor[] = [
     {
         id: '41',
         map: "town",
-        title: "Title",
-        description: "Description.",
+        title: "Your Daily Tools",
+        description: "Access a curated collection of productivity tools to streamline your workflow.",
         coordinates: {
             x: 88,
             y: 100
@@ -670,8 +678,8 @@ export const checkpoints: CheckpointDescriptor[] = [
     {
         id: '42',
         map: "town",
-        title: "Title",
-        description: "Description.",
+        title: "HR System",
+        description: "Access detailed information about HR processes, policies, and procedures.",
         coordinates: {
             x: 71,
             y: 100
@@ -683,8 +691,8 @@ export const checkpoints: CheckpointDescriptor[] = [
     {
         id: '40',
         map: "town",
-        title: "Title",
-        description: "Description.",
+        title: "Your Contacts",
+        description: "Access essential information about your contacts within the company.",
         coordinates: {
             x: 79,
             y: 101
@@ -696,8 +704,8 @@ export const checkpoints: CheckpointDescriptor[] = [
     {
         id: '41',
         map: "town",
-        title: "Title",
-        description: "Description.",
+        title: "Your Daily Tools",
+        description: "Access a curated collection of productivity tools to streamline your workflow.",
         coordinates: {
             x: 88,
             y: 100
@@ -709,8 +717,8 @@ export const checkpoints: CheckpointDescriptor[] = [
     {
         id: '42',
         map: "town",
-        title: "Title",
-        description: "Description.",
+        title: "HR System",
+        description: "Access detailed information about HR processes, policies, and procedures.",
         coordinates: {
             x: 71,
             y: 100
@@ -722,8 +730,8 @@ export const checkpoints: CheckpointDescriptor[] = [
     {
         id: '40',
         map: "town",
-        title: "Title",
-        description: "Description.",
+        title: "Your Contacts",
+        description: "Access essential information about your contacts within the company.",
         coordinates: {
             x: 79,
             y: 101
@@ -735,8 +743,8 @@ export const checkpoints: CheckpointDescriptor[] = [
     {
         id: '41',
         map: "town",
-        title: "Title",
-        description: "Description.",
+        title: "Your Daily Tools",
+        description: "Access a curated collection of productivity tools to streamline your workflow.",
         coordinates: {
             x: 88,
             y: 100
@@ -782,17 +790,33 @@ export const checkpoints: CheckpointDescriptor[] = [
     },
 ]
 
-export function getNextCheckpoint(playerCheckpoints: string[]): string {
+export async function initCheckpoints(): Promise<string[]> {
+    const playerCheckpointIds = await getCheckpointIds()
+    console.log("initCheckpoints() playerCheckpointIds",playerCheckpointIds)
+    if (playerCheckpointIds.length > 1) {
+        // Existing player
+        console.log("Existing player. Checkpoint IDs: ", playerCheckpointIds)
+        openCheckpointBanner(getNextCheckpoint(playerCheckpointIds))
+    } else {
+        // New player
+        console.log("New player.")
+        saveCheckpointIds(["0"])
+        return ["0"]
+    }
+
+    return playerCheckpointIds
+}
+export function getNextCheckpoint(playerCheckpointIds: string[]): string {
     // if player just started the game
-    if (playerCheckpoints.length === 1 && playerCheckpoints[0] === "0") {
+    if (playerCheckpointIds.length === 1 && playerCheckpointIds[0] === "0") {
         return "1"
     }
     // Convert string elements to numbers
-    const numericCheckpoints: number[] = playerCheckpoints.map(Number);
+    const numericCheckpointIds: number[] = playerCheckpointIds.map(Number);
     // Sort the array in order to analyze the sequence
-    numericCheckpoints.sort((a, b) => a - b);
-    
-    let startIdx = numericCheckpoints.indexOf(1); // Find the index of the first occurrence of 1
+    numericCheckpointIds.sort((a, b) => a - b);
+
+    let startIdx = numericCheckpointIds.indexOf(1); // Find the index of the first occurrence of 1
     if (startIdx === -1) {
         // No sequence beginning with 1 found
         return "-1";
@@ -800,19 +824,89 @@ export function getNextCheckpoint(playerCheckpoints: string[]): string {
 
     // Iterate from the start index to find the end of the sequence
     let endIdx = startIdx;
-    while (endIdx + 1 < numericCheckpoints.length && numericCheckpoints[endIdx + 1] === numericCheckpoints[endIdx] + 1) {
+    while (endIdx + 1 < numericCheckpointIds.length && numericCheckpointIds[endIdx + 1] === numericCheckpointIds[endIdx] + 1) {
         endIdx++;
     }
 
     // Return the last number (maximum) of the consecutive sequence starting from 1 to the latest uninterrupted number and add 1 to get the next
-    return (numericCheckpoints[endIdx]+1).toString()
+    return (numericCheckpointIds[endIdx] + 1).toString()
 }
 
-export function isOnboardingDone(playerCheckpoints: string[]): boolean {
-    // Checkpoint 34 corresponds of entering the backstage
-    return playerCheckpoints.includes("34");
+export function isOnboardingDone(playerCheckpointIds: string[]): boolean {
+    // Checkpoint 35 corresponds to the player leaving the private backstage
+    return playerCheckpointIds.includes("35");
 }
 
-export function isCheckpointPassed(playerCheckpoints: string[], checkpointId: string): boolean {
-    return playerCheckpoints.includes(checkpointId);
+export function isCheckpointPassed(playerCheckpointIds: string[], checkpointId: string): boolean {
+    return playerCheckpointIds.includes(checkpointId);
+}
+
+export async function getChecklist(): Promise<Checklist[]> {
+    let checklist: Checklist[] = [];
+
+    const playerVariable = await WA.player.state.checklist as Checklist[]
+
+    if (playerVariable) {
+        checklist = playerVariable;
+    } else {
+        // If data is not present on the server, initialize it
+        saveChecklist(checklist)
+    }
+
+    return checklist;
+}
+
+export function saveChecklist(checklist: Checklist[]): void {
+    WA.player.state.checklist = checklist
+}
+
+export async function getCheckpointIds(): Promise<string[]> {
+    let checkpointIds: string[] = [];
+
+    // Fetch the data from the server
+    const playerVariable = await WA.player.state.checkpointIds as string[]
+
+    if (playerVariable) {
+        checkpointIds = playerVariable;
+    } else {
+        // If data is not present on the server, initialize it
+        saveCheckpointIds(checkpointIds)
+    }
+
+    return checkpointIds;
+}
+
+export function saveCheckpointIds(checkpointIds: string[]): void {
+    WA.player.state.checkpointIds = checkpointIds
+}
+
+export async function passCheckpoint(checkpointId: string) {
+    closeBanner()
+
+    let playerCheckpointIds = await getCheckpointIds()
+
+    // Affect checkpoint only if it has not been passed already
+    if (isCheckpointPassed(playerCheckpointIds, checkpointId)) {
+        console.log("(State: unchanged) Old checkpoint passed", checkpointId)
+    } else {
+        console.log("(State: update) New checkpoint passed", checkpointId);
+
+        playerCheckpointIds.push(checkpointId)
+        saveCheckpointIds(playerCheckpointIds)
+
+        await markCheckpointAsDone(checkpointId)
+
+        openCheckpointBanner(getNextCheckpoint(playerCheckpointIds))
+        // TODO: actions based on checkpoint, like unlocking doors or place the next NPC
+    }
+}
+
+async function markCheckpointAsDone(checkpointId: string) {
+    let checklist = await getChecklist()
+
+    // mark the checkpoint as done
+    const checkpointIdx = checklist.findIndex(checkpoint => checkpoint.id === checkpointId)
+    checklist[checkpointIdx].done = checkpointIdx !== -1;
+
+    saveChecklist(checklist)
 }
