@@ -26,6 +26,7 @@ export interface Checklist {
     done: boolean;
 }
 
+export const everyone: Tag[] = ["admin", "br", "hr", "ext", "fr", "pt", "alt", "guest"];
 const everyoneButGuests: Tag[] = ["admin", "br", "hr", "ext", "fr", "pt", "alt"];
 const employees: Tag[] = ["admin", "br", "hr"];
 //const newbies: Tag[] = ["ext", "fr", "pt", "alt"];

@@ -24,8 +24,8 @@ export function initDoors(map: string, playerTags: Tag[], playerCheckpointIds: s
     // Apply access restrictions based on player tags and checkpoint.
     if (playerTags.includes("guest")) {
         // Guests can only access hr and arcade.
-        Object.keys(buildings).forEach(key => {
-            buildings[key as BuildingName].access = key === "hr" || key === "arcade";
+        Object.keys(buildings).forEach(building => {
+            buildings[building as BuildingName].access = building === "hr" || building === "arcade";
         });
     } else if (playerTags.some(tag => ["fr", "pt", "ext", "alt"].includes(tag))) {
         // Access for newbies before and after checkpoint "32" is passed (onboarding is done).
@@ -39,8 +39,8 @@ export function initDoors(map: string, playerTags: Tag[], playerCheckpointIds: s
         buildings.backstage.access = hasAccessToAll;
     } else if (playerTags.some(tag => ["admin", "br", "hr"].includes(tag))) {
         // br and hr tags have access to all buildings by default
-        Object.keys(buildings).forEach(key => {
-            buildings[key as BuildingName].access = true;
+        Object.keys(buildings).forEach(building => {
+            buildings[building as BuildingName].access = true;
         });
     }
 
@@ -55,6 +55,13 @@ export function initDoors(map: string, playerTags: Tag[], playerCheckpointIds: s
     } else if (map === "world") {
         listenDoor('cave')
     }
+}
+
+export function closeAllDoors() {
+    Object.keys(buildings).forEach(building => {
+        buildings[building as BuildingName].access = false;
+        lockDoor(building as BuildingName)
+    });
 }
 
 function listenDoor(building: BuildingName) {
