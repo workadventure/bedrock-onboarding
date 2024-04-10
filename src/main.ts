@@ -25,8 +25,8 @@ WA.onInit().then(() => {
         const map = WA.state.map as MapName
 
         if (hasMatchingTag) {
-            // @ts-ignore
-            WA.controls.disableInviteButton();
+            // TODO: uncomment when this method is in prod
+            // WA.controls.disableInviteButton();
             displayChecklistButton()
     
             // Load specific map scripts
