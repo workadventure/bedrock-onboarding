@@ -1519,7 +1519,7 @@
                         {
                          "name":"exitUrl",
                          "type":"string",
-                         "value":"/@/bedrock-1710774685/onboardingbr/e-learning#from-town"
+                         "value":"\/@\/bedrock-1710774685\/onboardingbr\/e-learning#from-town"
                         }],
                  "rotation":0,
                  "type":"area",
@@ -1649,6 +1649,11 @@
                          "name":"default",
                          "type":"string",
                          "value":"town"
+                        }, 
+                        {
+                         "name":"persist",
+                         "type":"bool",
+                         "value":true
                         }],
                  "rotation":0,
                  "type":"variable",
@@ -1665,7 +1670,7 @@
                         {
                          "name":"exitUrl",
                          "type":"string",
-                         "value":"/@/bedrock-1710774685/onboardingbr/e-learning#from-town"
+                         "value":"\/@\/bedrock-1710774685\/onboardingbr\/e-learning#from-town"
                         }],
                  "rotation":0,
                  "type":"area",
@@ -1682,7 +1687,7 @@
                         {
                          "name":"exitUrl",
                          "type":"string",
-                         "value":"/@/bedrock-1710774685/onboardingbr/e-learning#from-town"
+                         "value":"\/@\/bedrock-1710774685\/onboardingbr\/e-learning#from-town"
                         }],
                  "rotation":0,
                  "type":"area",
@@ -1699,7 +1704,7 @@
                         {
                          "name":"exitUrl",
                          "type":"string",
-                         "value":"/@/bedrock-1710774685/onboardingbr/e-learning#from-town"
+                         "value":"\/@\/bedrock-1710774685\/onboardingbr\/e-learning#from-town"
                         }],
                  "rotation":0,
                  "type":"area",

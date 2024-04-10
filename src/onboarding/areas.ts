@@ -27,7 +27,7 @@ export function processAreas(playerCheckpointIds: string[]) {
 
             // checkpoints to place on the current map + additional filtering
             if (filterCheckpointsByMap(checkpoint, mapName) &&
-            filterCheckpointsByMilestone(checkpoint, playerCheckpointIds) &&
+            filterCheckpointsByMilestone(checkpoint, playerCheckpointIds, playerTags) &&
             filterCheckpointsNPCs(checkpoint, playerCheckpointIds))
             {
                 placeArea(checkpoint)
@@ -115,7 +115,7 @@ function filterCheckpointsByTag(checkpoint: CheckpointDescriptor, playerTags: Ta
     return true
 }
 
-function filterCheckpointsByMilestone(checkpoint: CheckpointDescriptor, playerCheckpointIds: string[]): boolean {
+function filterCheckpointsByMilestone(checkpoint: CheckpointDescriptor, playerCheckpointIds: string[], playerTags: Tag[]): boolean {
     const checkpointId = checkpoint.id
 
     if (isCheckpointAfterFirstJonas(checkpointId)) {
@@ -126,7 +126,8 @@ function filterCheckpointsByMilestone(checkpoint: CheckpointDescriptor, playerCh
     }
 
     if (isCheckpointAfterOnboarding(checkpointId)) {
-        if (!isOnboardingDone(playerCheckpointIds)) {
+        // Guests can not complete the onboarding so we allow them to see the last checkpoints not restricted by tags
+        if (!isOnboardingDone(playerCheckpointIds) && !playerTags.includes("guest")) {
             console.log(`Ignoring checkpoint ${checkpointId} (not the right milestone)`)
             return false
         }

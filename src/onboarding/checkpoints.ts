@@ -889,7 +889,12 @@ export async function getChecklist(): Promise<Checklist[]> {
 }
 
 export function saveChecklist(checklist: Checklist[]): void {
-    WA.player.state.checklist = checklist
+    WA.player.state.saveVariable("checklist", checklist, {
+        public: false,
+        persist: true,
+        ttl: 48 * 3600,
+        scope: "world",
+      });
 }
 
 export async function getCheckpointIds(): Promise<string[]> {
@@ -909,7 +914,12 @@ export async function getCheckpointIds(): Promise<string[]> {
 }
 
 export function saveCheckpointIds(checkpointIds: string[]): void {
-    WA.player.state.checkpointIds = checkpointIds
+    WA.player.state.saveVariable("checkpointIds", checkpointIds, {
+        public: false,
+        persist: true,
+        ttl: 48 * 3600,
+        scope: "world",
+      });
 }
 
 export async function passCheckpoint(checkpointId: string) {
