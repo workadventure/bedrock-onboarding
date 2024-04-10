@@ -7,8 +7,10 @@ import { initTown } from "./town";
 import { initWorld } from "./world";
 import { initOnboarding } from "./onboarding/index";
 import { displayChecklistButton } from "./onboarding/ui";
-import { initDoors, closeAllDoors } from "./doors";
+import { initDoors, closeTownDoors } from "./doors";
 import { getCheckpointIds, type Tag, everyone } from "./onboarding/checkpoints";
+
+export type MapName = "town" | "world";
 
 WA.onInit().then(() => {
     console.log('Scripting API ready');
@@ -18,15 +20,15 @@ WA.onInit().then(() => {
 
     const hasMatchingTag = playerTags.some(tag => everyone.includes(tag));
 
-    if (hasMatchingTag) {
-        // @ts-ignore
-        WA.controls.disableInviteButton();
-        displayChecklistButton()
+    bootstrapExtra().then(async () => {
+        console.log('Scripting API Extra ready');
+        const map = WA.state.map as MapName
 
-        bootstrapExtra().then(async () => {
-            console.log('Scripting API Extra ready');
+        if (hasMatchingTag) {
+            // @ts-ignore
+            WA.controls.disableInviteButton();
+            displayChecklistButton()
     
-            const map = await WA.state.map as string
             // Load specific map scripts
             if (map === "town") {
                 initTown()
@@ -36,12 +38,16 @@ WA.onInit().then(() => {
             
             const playerCheckpointIds = await getCheckpointIds()
             initDoors(map, playerTags, playerCheckpointIds)
-            initOnboarding(map, playerTags)
-        }).catch(e => console.error(e));
-    } else {
-        closeAllDoors()
-    }
-
+            initOnboarding()
+       
+        } else {
+            // redirect unknown user to Town if he arrives in World
+            if (map === "world") {
+                WA.nav.goToRoom("town.tmj")
+            }
+            closeTownDoors()
+        }
+    }).catch(e => console.error(e));
 }).catch(e => console.error(e));
 
 export {};

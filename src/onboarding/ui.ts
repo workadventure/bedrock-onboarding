@@ -6,6 +6,7 @@ import { checkpoints } from "./checkpoints";
 let dialogueBox: UIWebsite|null
 let coWebsite: CoWebsite|null
 let root: string
+export const DOOR_LOCKED = "The door is locked. You are not qualified to enter here."
 
 WA.onInit().then(() => {
     const mapUrl = WA.room.mapURL
@@ -75,7 +76,7 @@ export function openCheckpointBanner(nextCheckpointId: string) {
       }
 }
 
-export function openBanner(message: string) {
+export function openErrorBanner(message: string) {
     WA.ui.banner.openBanner({
         id: "onboarding-banner",
         text: message,

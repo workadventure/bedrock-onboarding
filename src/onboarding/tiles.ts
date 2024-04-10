@@ -15,7 +15,7 @@ export function placeTile(checkpoint: CheckpointDescriptor) {
 }
 
 function placeNPCTile(checkpoint: CheckpointDescriptor) {
-    console.log("placing NPC tile of checkpoint",checkpoint.id)
+    console.log(`Placing checkpoint ${checkpoint.id} (NPC tile)`)
     if (checkpoint.npcName && checkpoint.npcSprite) {
         const lowercaseName = checkpoint.npcName.toLowerCase()
 
@@ -42,7 +42,7 @@ export function removeNPCTile(xCoord: number, yCoord: number) {
 }
 
 function placeContentTile(checkpoint: CheckpointDescriptor) {
-    console.log("placing content tile of checkpoint",checkpoint.id)
+    console.log(`Placing checkpoint ${checkpoint.id} (content tile)`)
     WA.room.setTiles([
         {
             x: checkpoint.coordinates.x,
@@ -65,7 +65,7 @@ export function removeContentTile(xCoord: number, yCoord: number) {
 }
 
 function placeDirectionTile(checkpoint: CheckpointDescriptor) {
-    console.log("placing direction tile of checkpoint",checkpoint.id)
+    console.log(`Placing checkpoint ${checkpoint.id} (direction tile)`)
     WA.room.setTiles([
         {
             x: checkpoint.coordinates.x,

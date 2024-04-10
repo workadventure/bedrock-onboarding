@@ -1,11 +1,16 @@
-import { openCheckpointBanner, closeBanner } from "./ui";
+import { type MapName } from "../main"
+import { getPlayerTags } from "./index"
+import { openCheckpointBanner, openErrorBanner, closeBanner, DOOR_LOCKED } from "./ui";
+import { unlockTownCaveDoor, getCaveDoorToOpen } from "../doors"
+import { processAreas } from "./areas"
 
 export type Tag = "admin" | "br" | "hr" | "ext" | "fr" | "pt" | "alt" | "guest";
+export type NewbieTag = "ext" | "fr" | "pt" | "alt";
 export type NPCs = "Aria" | "Baptiste" | "Charlie" | "Christine" | "Diana" | "Emilie" | "Emma" | "Eva" | "Gabor" | "Hans" | "Ingrid" | "Jonas" | "Julia" | "Julie" | "Luc" | "Murielle" | "Nicolas" | "Pierre" | "Shiby" | "Vianey";
 
 export interface CheckpointDescriptor {
     id: string;
-    map: "town" | "world";
+    map: MapName;
     title: string;
     description: string;
     coordinates: {
@@ -27,10 +32,10 @@ export interface Checklist {
 }
 
 export const everyone: Tag[] = ["admin", "br", "hr", "ext", "fr", "pt", "alt", "guest"];
-const everyoneButGuests: Tag[] = ["admin", "br", "hr", "ext", "fr", "pt", "alt"];
-const employees: Tag[] = ["admin", "br", "hr"];
-//const newbies: Tag[] = ["ext", "fr", "pt", "alt"];
-const employeesAndFrenchNewbies: Tag[] = [...employees, "fr"]
+export const everyoneButGuests: Tag[] = ["admin", "br", "hr", "ext", "fr", "pt", "alt"];
+export const employees: Tag[] = ["admin", "br", "hr"];
+//const newbies: NewbieTag[] = ["ext", "fr", "pt", "alt"];
+export const employeesAndFrenchNewbies: Tag[] = [...employees, "fr"]
 
 /**
  * All possible checkpoints for all use cases
@@ -38,7 +43,7 @@ const employeesAndFrenchNewbies: Tag[] = [...employees, "fr"]
  */
 export const checkpoints: CheckpointDescriptor[] = [
     {
-        id: '1',
+        id: "1",
         map: "town",
         title: "Arrival in Town",
         description: "Welcome to Bedrock town! You've arrived in our bustling town, ready to embark on your journey.",
@@ -50,7 +55,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: everyoneButGuests,
     },
     {
-        id: '2',
+        id: "2",
         map: "town",
         title: "Talk with Jonas",
         description: "Meet Jonas, our CEO, near the central plaza. He'll greet you and explain the goals of our onboarding experience.",
@@ -69,7 +74,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: everyoneButGuests,
     },
     {
-        id: '3',
+        id: "3",
         map: "town",
         title: "Enter the Cave",
         description: "Explore the mysterious cave at the edge of town.",
@@ -81,7 +86,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: everyoneButGuests,
     },
     {
-        id: '4',
+        id: "4",
         map: "town",
         title: "Unlock the Cave Door",
         description: "Find a way to unlock the door within the cave to access the World map.",
@@ -94,10 +99,10 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: everyoneButGuests,
     },
     {
-        id: '5',
+        id: "5",
         map: "world",
-        title: "Arrive in the World",
-        description: "You've entered the expansive World map, still within the depths of the cave.",
+        title: "Hello World!",
+        description: "Entered the expansive World map, still within the depths of the cave.",
         type: "direction",
         coordinates: {
             x: 42,
@@ -106,7 +111,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: everyoneButGuests,
     },
     {
-        id: '6',
+        id: "6",
         map: "world",
         title: "Talk with Jonas Again",
         description: "Speak with Jonas to receive further guidance as you prepare to leave the cave.",
@@ -122,7 +127,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: everyoneButGuests,
     },
     {
-        id: '7',
+        id: "7",
         map: "world",
         title: "Retrieve Jonas's Phone",
         description: "Pick up Jonas's phone and watch a video showcasing the innovative products and services offered by Bedrock.",
@@ -135,7 +140,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: everyoneButGuests,
     },
     {
-        id: '8',
+        id: "8",
         map: "world",
         title: "Exit the Cave",
         description: "Leave the cave behind and begin your exploration of the vast World map.",
@@ -147,7 +152,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: everyoneButGuests,
     },
     {
-        id: '9',
+        id: "9",
         map: "world",
         title: "Learn about Bedrock's History",
         description: "Interact with Aria to learn about the rich history of Bedrock, detailing its journey from inception to present.",
@@ -163,7 +168,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: everyoneButGuests,
     },
     {
-        id: '10',
+        id: "10",
         map: "world",
         title: "Explore Bedrock's Achievements",
         description: "Engage with Murielle to discover the impressive achievements of Bedrock, highlighting its successes and milestones.",
@@ -179,7 +184,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: everyoneButGuests,
     },
     {
-        id: '11',
+        id: "11",
         map: "world",
         title: "Discover Bedrock's Values",
         description: "Chat with NPC Charlie to uncover the core values that drive Bedrock's operations and culture, shaping its identity and direction.",
@@ -195,7 +200,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: everyoneButGuests,
     },
     {
-        id: '12',
+        id: "12",
         map: "world",
         title: "Understand Bedrock's Legal Structure",
         description: "Speak with Diana to access detailed information about Bedrock's legal structure and organizational setup, ensuring transparency and compliance.",
@@ -211,7 +216,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: everyoneButGuests,
     },
     {
-        id: '13',
+        id: "13",
         map: "world",
         title: "Talk with Jonas about Customer Success",
         description: "Jonas shares insights into Bedrock's commitment to customer success as you continue your journey.",
@@ -229,7 +234,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: everyoneButGuests,
     },
     {
-        id: '14',
+        id: "14",
         map: "world",
         title: "Explore France Customer: 6play (Part 1)",
         description: "In the city of Paris, interact with Pierre to learn about Bedrock's partnership with France's 6play streaming service.",
@@ -245,7 +250,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: everyoneButGuests,
     },
     {
-        id: '15',
+        id: "15",
         map: "world",
         title: "Discover France Customer: 6play (Part 2)",
         description: "Continue your exploration of Bedrock's partnership with France's 6play streaming service by engaging with Emilie.",
@@ -261,7 +266,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: everyoneButGuests,
     },
     {
-        id: '16',
+        id: "16",
         map: "world",
         title: "Explore Hungary Customer: RTL+ (Part 1)",
         description: "Chat with Eva to uncover Bedrock's collaboration with Hungary's RTL+ streaming service.",
@@ -277,7 +282,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: everyoneButGuests,
     },
     {
-        id: '17',
+        id: "17",
         map: "world",
         title: "Uncover Hungary Customer: RTL+ (Part 2)",
         description: "Speak with Gabor to delve deeper into Bedrock's partnership with Hungary's RTL+ streaming service.",
@@ -293,7 +298,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: everyoneButGuests,
     },
     {
-        id: '18',
+        id: "18",
         map: "world",
         title: "Learn about Belgium Customer: RTL Play (Part 1)",
         description: "In the city of Brussels, interact with Luc to explore Bedrock's collaboration with Belgium's RTL Play streaming service.",
@@ -309,7 +314,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: everyoneButGuests,
     },
     {
-        id: '19',
+        id: "19",
         map: "world",
         title: "Discover Belgium Customer: RTL Play (Part 2)",
         description: "Continue your exploration of Bedrock's partnership with Belgium's RTL Play streaming service by engaging with Emma.",
@@ -325,7 +330,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: everyoneButGuests,
     },
     {
-        id: '20',
+        id: "20",
         map: "world",
         title: "Explore Netherlands Customer: Videoland (Part 1)",
         description: "Chat with Hans to uncover Bedrock's collaboration with Netherlands' Videoland streaming service.",
@@ -341,7 +346,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: everyoneButGuests,
     },
     {
-        id: '21',
+        id: "21",
         map: "world",
         title: "Uncover Netherlands Customer: Videoland (Part 2)",
         description: "Speak with Ingrid to delve deeper into Bedrock's partnership with Netherlands' Videoland streaming service.",
@@ -357,7 +362,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: everyoneButGuests,
     },
     {
-        id: '22',
+        id: "22",
         map: "world",
         title: "Complete Airport Check-in",
         description: "Prepare for departure by completing the airport check-in process. Access to the gates requires viewing all content checkpoints.",
@@ -372,7 +377,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: everyoneButGuests
     },
     {
-        id: '23',
+        id: "23",
         map: "world",
         title: "Board the Helicopter with Jonas",
         description: "Jonas awaits you near the helicopter for a scenic journey from the airport to the rooftop of the BR Tour.",
@@ -390,7 +395,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: everyoneButGuests,
     },
     {
-        id: '24',
+        id: "24",
         map: "world",
         title: "The Bedrock Tour",
         description: "You've landed on the rooftop of the Bedrock Tour, the heart of the company. Jonas wants to speak to you before you enter the building.",
@@ -407,7 +412,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: everyoneButGuests,
     },
     {
-        id: '25',
+        id: "25",
         map: "world",
         title: "Explore CHRO Office",
         description: "Delve into the role of Christine, the Chief Human Resources Officer (CHRO) and its contributions to Bedrock's success.",
@@ -422,7 +427,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: everyoneButGuests,
     },
     {
-        id: '26',
+        id: "26",
         map: "world",
         title: "Discover Departments Presentation",
         description: "Engage with the presentation on this floor to learn about the various departments within Bedrock and their functions.",
@@ -435,7 +440,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: everyoneButGuests,
     },
     {
-        id: '27',
+        id: "27",
         map: "world",
         title: "Explore HR KPIs",
         description: "Analyze the key performance indicators (KPIs) related to human resources management, showcasing Bedrock's strategic HR approach.",
@@ -448,7 +453,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: everyoneButGuests,
     },
     {
-        id: '28',
+        id: "28",
         map: "world",
         title: "View Organizational Chart",
         description: "Study the organizational chart of Bedrock with Nicolas, illustrating the hierarchical structure and reporting relationships within the company.",
@@ -464,7 +469,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: everyoneButGuests,
     },
     {
-        id: '29',
+        id: "29",
         map: "world",
         title: "Explore Office Presentation",
         description: "Take a virtual tour of Bedrock's office spaces with Julie, showcasing the work environment and facilities available to employees.",
@@ -480,7 +485,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: everyoneButGuests,
     },
     {
-        id: '30',
+        id: "30",
         map: "world",
         title: "Exit the BR Tour",
         description: "Step outside the BR Tour and prepare for your next adventure with Bedrock.",
@@ -492,10 +497,10 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: everyoneButGuests,
     },
     {
-        id: '31',
+        id: "31",
         map: "world",
-        title: "Talk with Jonas at the Pickup",
-        description: "Jonas awaits you near the pickup, ready to provide additional guidance and support.",
+        title: "Talk with Jonas at its Pickup",
+        description: "Jonas awaits you near its pickup, ready to provide additional guidance and support.",
         coordinates: {
             x: 23,
             y: 165
@@ -507,7 +512,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: everyoneButGuests,
     },
     {
-        id: '32',
+        id: "32",
         map: "world",
         title: "Return to Town with Jonas",
         description: "Head back to the town with Jonas, continuing your onboarding journey.",
@@ -522,9 +527,9 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: everyoneButGuests,
     },
     {
-        id: '33',
+        id: "33",
         map: "town",
-        title: "Talk with Jonas in the Stadium",
+        title: "Talk with Jonas in the Stadium's backstage",
         description: "Jonas provides further insights into Bedrock's offerings as he prepares for a conference in the stadium.",
         coordinates: {
             x: 16,
@@ -537,7 +542,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: everyoneButGuests,
     },
     {
-        id: '34',
+        id: "34",
         map: "town",
         title: "Explore Backstage Content",
         description: "Take a look at the backstage content now that it's accessible.",
@@ -550,7 +555,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: everyoneButGuests,
     },
     {
-        id: '35',
+        id: "35",
         map: "town",
         title: "Leave Backstage Area",
         description: "Exit the backstage area and begin your exploration of Bedrock's facilities.",
@@ -562,7 +567,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: everyoneButGuests,
     },
     {
-        id: '36',
+        id: "36",
         map: "town",
         title: "Farewell to Jonas",
         description: "It's time to bid farewell to Jonas, the guiding presence throughout your Bedrock journey.",
@@ -577,7 +582,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: everyoneButGuests,
     },
     {
-        id: '37',
+        id: "37",
         map: "town",
         title: "Visit the Stadium",
         description: "Explore the stadium and its features, including a visioconference tool on the stage and front-row seats.",
@@ -589,7 +594,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: everyoneButGuests,
     },
     {
-        id: '38',
+        id: "38",
         map: "town",
         title: "Enjoy Arcade Games",
         description: "Visit the Arcade building and enjoy classic games like Pong and Super Mario!",
@@ -600,7 +605,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         type: "direction",
     },
     {
-        id: '39',
+        id: "39",
         map: "town",
         title: "Explore the Wikitek",
         description: "Discover valuable resources in the Wikitek, a modern glass library filled with information.",
@@ -612,7 +617,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: everyoneButGuests,
     },
     {
-        id: '40',
+        id: "40",
         map: "town",
         title: "Your Contacts",
         description: "Access essential information about your contacts within the company.",
@@ -625,7 +630,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: employeesAndFrenchNewbies,
     },
     {
-        id: '41',
+        id: "41",
         map: "town",
         title: "Your Daily Tools",
         description: "Access a curated collection of productivity tools to streamline your workflow.",
@@ -638,7 +643,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: employeesAndFrenchNewbies,
     },
     {
-        id: '42',
+        id: "42",
         map: "town",
         title: "HR System",
         description: "Access detailed information about HR processes, policies, and procedures.",
@@ -651,7 +656,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: employeesAndFrenchNewbies,
     },
     {
-        id: '40',
+        id: "40",
         map: "town",
         title: "Your Contacts",
         description: "Access essential information about your contacts within the company.",
@@ -664,7 +669,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: ["pt"]
     },
     {
-        id: '41',
+        id: "41",
         map: "town",
         title: "Your Daily Tools",
         description: "Access a curated collection of productivity tools to streamline your workflow.",
@@ -677,7 +682,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: ["pt"]
     },
     {
-        id: '42',
+        id: "42",
         map: "town",
         title: "HR System",
         description: "Access detailed information about HR processes, policies, and procedures.",
@@ -690,7 +695,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: ["pt"]
     },
     {
-        id: '40',
+        id: "40",
         map: "town",
         title: "Your Contacts",
         description: "Access essential information about your contacts within the company.",
@@ -703,7 +708,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: ["alt"]
     },
     {
-        id: '41',
+        id: "41",
         map: "town",
         title: "Your Daily Tools",
         description: "Access a curated collection of productivity tools to streamline your workflow.",
@@ -716,7 +721,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: ["alt"]
     },
     {
-        id: '42',
+        id: "42",
         map: "town",
         title: "HR System",
         description: "Access detailed information about HR processes, policies, and procedures.",
@@ -729,7 +734,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: ["alt"]
     },
     {
-        id: '40',
+        id: "40",
         map: "town",
         title: "Your Contacts",
         description: "Access essential information about your contacts within the company.",
@@ -742,7 +747,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: ["ext"]
     },
     {
-        id: '41',
+        id: "41",
         map: "town",
         title: "Your Daily Tools",
         description: "Access a curated collection of productivity tools to streamline your workflow.",
@@ -755,7 +760,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: ["ext"]
     },
     {
-        id: '43',
+        id: "43",
         map: "town",
         title: "Check out the Streaming Wall",
         description: "Visit the Streaming Wall building and watch videos showcasing Bedrock's customers and their experiences.",
@@ -767,7 +772,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: everyoneButGuests,
     },
     {
-        id: '44',
+        id: "44",
         map: "town",
         title: "Visit HR",
         description: "Visiting the HR building!",
@@ -778,7 +783,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         type: "direction",
     },
     {
-        id: '45',
+        id: "45",
         map: "town",
         title: "Bedrock News Billboard",
         description: "Complete your journey by discoving the latest news and updates about Bedrock!",
@@ -793,7 +798,6 @@ export const checkpoints: CheckpointDescriptor[] = [
 
 export async function initCheckpoints(): Promise<string[]> {
     const playerCheckpointIds = await getCheckpointIds()
-    console.log("initCheckpoints() playerCheckpointIds",playerCheckpointIds)
     if (playerCheckpointIds.length > 1) {
         // Existing player
         console.log("Existing player. Checkpoint IDs: ", playerCheckpointIds)
@@ -833,13 +837,40 @@ export function getNextCheckpoint(playerCheckpointIds: string[]): string {
     return (numericCheckpointIds[endIdx] + 1).toString()
 }
 
-export function isOnboardingDone(playerCheckpointIds: string[]): boolean {
-    // Checkpoint 35 corresponds to the player leaving the private backstage
-    return playerCheckpointIds.includes("35");
-}
-
 export function isCheckpointPassed(playerCheckpointIds: string[], checkpointId: string): boolean {
     return playerCheckpointIds.includes(checkpointId);
+}
+
+export function hasPlayerMetJonas(playerCheckpointIds: string[]): boolean {
+    return playerCheckpointIds.includes("2");
+}
+
+export function canEnterCaveWorld(playerCheckpointIds: string[]): boolean {
+    return playerCheckpointIds.includes("4");
+}
+
+export function canLeaveCaveWorld(playerCheckpointIds: string[]): boolean {
+    return playerCheckpointIds.includes("7");
+}
+
+export function canEnterAirport(playerCheckpointIds: string[]): boolean {
+    return playerCheckpointIds.includes("21");
+}
+
+export function isOnboardingDone(playerCheckpointIds: string[]): boolean {
+    return playerCheckpointIds.includes("34");
+}
+
+export function isCheckpointAfterFirstJonas(checkpointId: string): boolean {
+    // Don't display rest of checkpoints if player did not meet Jonas
+    const checkpointIdNumber = parseInt(checkpointId, 10);
+    return checkpointIdNumber > 2;
+}
+
+export function isCheckpointAfterOnboarding(checkpointId: string): boolean {
+    // Don't display checkpoints after on boarding if it's not done yet
+    const checkpointIdNumber = parseInt(checkpointId, 10);
+    return checkpointIdNumber > 34;
 }
 
 export async function getChecklist(): Promise<Checklist[]> {
@@ -896,9 +927,8 @@ export async function passCheckpoint(checkpointId: string) {
         saveCheckpointIds(playerCheckpointIds)
 
         await markCheckpointAsDone(checkpointId)
-
+        await triggerCheckpointAction(checkpointId);
         openCheckpointBanner(getNextCheckpoint(playerCheckpointIds))
-        // TODO: actions based on checkpoint, like unlocking doors or place the next NPC
     }
 }
 
@@ -910,4 +940,159 @@ async function markCheckpointAsDone(checkpointId: string) {
     checklist[checkpointIdx].done = checkpointIdx !== -1;
 
     saveChecklist(checklist)
+}
+
+async function triggerCheckpointAction(checkpointId: string) {
+    switch (checkpointId) {
+        // Requirement: Meet Jonas for the first time
+        case "2":
+            // Action: Place rest of checkpoints
+            const playerCheckpointIds = await getCheckpointIds()
+            processAreas(playerCheckpointIds)
+            break;
+        // Requirement: Read the cave PC dialogue
+        case "4":
+            // Action: Unlock Town cave door
+            const playerTags = getPlayerTags()
+            const door = getCaveDoorToOpen(playerTags)
+            if (door) {
+                unlockTownCaveDoor(door)
+            } else {
+                openErrorBanner(DOOR_LOCKED)
+            }
+            break;
+
+        // Requirement: Talk with Jonas in the cave
+        case "6":
+            // Action: Place Jonas's phone (make sur it is not placed before)
+            break;
+
+        // Requirement: Watch Jonas's phone video
+        case "7":
+            // Action: Unlock World cave door + place next Jonas
+            break;
+
+        // Requirement: Check History content
+        case "9":
+            // Action: Unlock access to Achievements content
+            break;
+
+        // Requirement: Check Achievements content
+        case "10":
+            // Action: Unlock access to Values content
+            break;
+
+        // Requirement: Check Values content
+        case "11":
+            // Action: Unlock access to Legal content
+            break;
+
+        // Requirement: Check Legal content
+        case "12":
+            // Action: Unlock Access to bridge
+            break;
+
+        // Requirement: Talk with Jonas about Customer Success
+        case "13":
+            // Action: Unlock access to France + place next Jonas
+            break;
+
+        // Requirement: Watch 6play video 1
+        case "14":
+            // Action: Unlock access to Hungary if 15 is done
+            break;
+
+        // Requirement: Watch 6play video 2
+        case "15":
+            // Action: Unlock access to Hungary if 14 is done
+            break;
+
+        // Requirement: Watch RTL+ video 1
+        case "16":
+            // Action: Unlock access to Belgium if 17 is done
+            break;
+
+        // Requirement: Watch RTL+ video 2
+        case "17":
+            // Action: Unlock access to Belgium if 16 is done
+            break;
+
+        // Requirement: Watch RTL Play video 1
+        case "18":
+            // Action: Unlock access to Netherlands if 19 is done
+            break;
+
+        // Requirement: Watch RTL Play video 2
+        case "19":
+            // Action: Unlock access to Netherlands if 18 is done
+            break;
+
+        // Requirement: Watch Videoland video 1
+        case "20":
+            // Action: Unlock access to airport if 21 is done
+            break;
+
+        // Requirement: Watch Videoland video 2
+        case "21":
+            // Action: Unlock access to airport if 20 is done
+            break;
+
+        // Requirement: Watch all customers videos
+        case "22":
+            // Action: Unlock airport boarding gate
+            break;
+
+        // Requirement: Talk with Jonas near the Helicopter
+        case "23":
+            // Action: Don't teleport Jonas + Fly to the BR Tour rooftop
+            break;
+
+        // Requirement: Talk with Jonas on the BR Tour rooftop
+        case "24":
+            // Action: Unlock access to BR Tour floor 4 + place next Jonas
+            break;
+
+        // Requirement: Check floor 4
+        case "25":
+            // Action: Unlock floor 3 
+            break;
+
+        // Requirement: Check floor 3
+        case "26":
+            // Action: Unlock floor 2
+            break;
+
+        // Requirement: Check floor 2
+        case "27":
+            // Action: Unlock floor 1
+            break;
+
+        // Requirement: Check floor 1
+        case "28":
+            // Action: Unlock floor 0
+            break;
+
+        // Requirement: Check floor 0
+        case "29":
+            // Action: Unlock BR Tour exit door
+            break;
+
+        // Requirement: Talk with Jonas at its Pickup
+        case "31":
+            // Action: Place next Jonas
+            break;
+
+        // Requirement: Enter Jonas's Pickup
+        case "32":
+            // Action: Go to room Town before backstage
+            break;
+
+        // Requirement: Check backstage content
+        case "34":
+            // Action: Unlock backstage door to stage + place next Jonas
+            break;
+            
+        default:
+            break;
+    }
 }
