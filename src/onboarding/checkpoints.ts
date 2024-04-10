@@ -1,7 +1,7 @@
 import { type MapName } from "../main"
 import { getPlayerTags } from "./index"
 import { openCheckpointBanner, openErrorBanner, closeBanner, DOOR_LOCKED } from "./ui";
-import { unlockTownCaveDoor, getCaveDoorToOpen, unlockWorldBuildingDoor } from "../doors"
+import { unlockTownCaveDoor, getCaveDoorToOpen, unlockWorldBuildingDoor, unlockWorldBarrier } from "../doors"
 import { placeCheckpoint, processAreas } from "./areas"
 
 export type Tag = "admin" | "br" | "hr" | "ext" | "fr" | "pt" | "alt" | "guest";
@@ -855,8 +855,40 @@ export function canLeaveCaveWorld(playerCheckpointIds: string[]): boolean {
     return playerCheckpointIds.includes("7");
 }
 
+export function canAccessAchievements(playerCheckpointIds: string[]): boolean {
+    return playerCheckpointIds.includes("9");
+}
+
+export function canAccessValues(playerCheckpointIds: string[]): boolean {
+    return playerCheckpointIds.includes("10");
+}
+
+export function canAccessLegal(playerCheckpointIds: string[]): boolean {
+    return playerCheckpointIds.includes("11");
+}
+
+export function canAccessBridge(playerCheckpointIds: string[]): boolean {
+    return playerCheckpointIds.includes("12");
+}
+
+export function canAccessFrance(playerCheckpointIds: string[]): boolean {
+    return playerCheckpointIds.includes("13");
+}
+
+export function canAccessHungary(playerCheckpointIds: string[]): boolean {
+    return playerCheckpointIds.every(id => ["14", "15"].includes(id));
+}
+
+export function canAccessBelgium(playerCheckpointIds: string[]): boolean {
+    return playerCheckpointIds.every(id => ["16", "17"].includes(id));
+}
+
+export function canAccessNetherlands(playerCheckpointIds: string[]): boolean {
+    return playerCheckpointIds.every(id => ["18", "19"].includes(id));
+}
+
 export function canEnterAirport(playerCheckpointIds: string[]): boolean {
-    return playerCheckpointIds.includes("21");
+    return playerCheckpointIds.every(id => ["20", "21"].includes(id));
 }
 
 export function isOnboardingDone(playerCheckpointIds: string[]): boolean {
@@ -982,9 +1014,9 @@ async function triggerCheckpointAction(checkpointId: string) {
         // Requirement: Talk with Jonas in the cave
         case "6":
             // Action: Place Jonas's phone
-            const checkpoint7 = checkpoints.find(c => c.id === "7")
-            if (checkpoint7) {
-                placeCheckpoint(checkpoint7)
+            const checkpoint6 = checkpoints.find(c => c.id === "7")
+            if (checkpoint6) {
+                placeCheckpoint(checkpoint6)
             }
             break;
 
@@ -993,75 +1025,73 @@ async function triggerCheckpointAction(checkpointId: string) {
             // Action: Unlock World cave door + place next Jonas
             unlockWorldBuildingDoor("cave")
             const playerCheckpointIds7 = await getCheckpointIds()
-            const checkpoint = checkpoints.find(c => c.id === getNextJonasCheckpointId(playerCheckpointIds7))
-            if (checkpoint) {
-                placeCheckpoint(checkpoint)
+            const checkpoint7 = checkpoints.find(c => c.id === getNextJonasCheckpointId(playerCheckpointIds7))
+            if (checkpoint7) {
+                placeCheckpoint(checkpoint7)
             }
             break;
 
         // Requirement: Check History content
         case "9":
             // Action: Unlock access to Achievements content
+            unlockWorldBarrier("achievements")
             break;
 
         // Requirement: Check Achievements content
         case "10":
             // Action: Unlock access to Values content
+            unlockWorldBarrier("values")
             break;
 
         // Requirement: Check Values content
         case "11":
             // Action: Unlock access to Legal content
+            unlockWorldBarrier("legal")
             break;
 
         // Requirement: Check Legal content
         case "12":
             // Action: Unlock Access to bridge
+            unlockWorldBarrier("bridge")
             break;
 
         // Requirement: Talk with Jonas about Customer Success
         case "13":
             // Action: Unlock access to France + place next Jonas
+            unlockWorldBarrier("france")
+            const playerCheckpointIds2021 = await getCheckpointIds()
+            const checkpoint2021 = checkpoints.find(c => c.id === getNextJonasCheckpointId(playerCheckpointIds2021))
+            if (checkpoint2021) {
+                placeCheckpoint(checkpoint2021)
+            }
             break;
 
-        // Requirement: Watch 6play video 1
+        // Requirement: Watch 6play video 1 or 2
         case "14":
-            // Action: Unlock access to Hungary if 15 is done
-            break;
-
-        // Requirement: Watch 6play video 2
         case "15":
-            // Action: Unlock access to Hungary if 14 is done
+            // Action: Unlock access to Hungary if either 14 or 15 is done
+            unlockWorldBarrier("hungary")
             break;
-
-        // Requirement: Watch RTL+ video 1
+    
+        // Requirement: Watch RTL+ video 1 or 2
         case "16":
-            // Action: Unlock access to Belgium if 17 is done
-            break;
-
-        // Requirement: Watch RTL+ video 2
         case "17":
-            // Action: Unlock access to Belgium if 16 is done
+            // Action: Unlock access to Belgium if either 16 or 17 is done
+            unlockWorldBarrier("belgium")
             break;
-
-        // Requirement: Watch RTL Play video 1
+    
+        // Requirement: Watch RTL Play video 1 or 2
         case "18":
-            // Action: Unlock access to Netherlands if 19 is done
-            break;
-
-        // Requirement: Watch RTL Play video 2
         case "19":
-            // Action: Unlock access to Netherlands if 18 is done
+            // Action: Unlock access to Netherlands if either 18 or 19 is done
+            unlockWorldBarrier("netherlands")
             break;
-
-        // Requirement: Watch Videoland video 1
+    
+        // Requirement: Watch Videoland video 1 or 2
         case "20":
-            // Action: Unlock access to airport if 21 is done
-            break;
-
-        // Requirement: Watch Videoland video 2
         case "21":
-            // Action: Unlock access to airport if 20 is done
+            // Action: Unlock access to airport if either 20 or 21 is done
+            unlockWorldBuildingDoor("airport")
             break;
 
         // Requirement: Watch all customers videos
