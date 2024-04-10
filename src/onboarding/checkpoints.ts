@@ -117,12 +117,12 @@ export const checkpoints: CheckpointDescriptor[] = [
         title: "Talk with Jonas Again",
         description: "Speak with Jonas to receive further guidance as you prepare to leave the cave.",
         coordinates: {
-            x: 27,
-            y: 180
+            x: 24,
+            y: 179
         },
         type: "NPC",
         npcName: "Jonas",
-        npcSprite: "left",
+        npcSprite: "front",
         message: `Ah, there you are! Ready to venture further into the world of Bedrock? Let me provide you with some additional guidance as you prepare to explore beyond the cave.`,
         url: "https://drive.google.com/file/d/14xQEkRCnBRTkwCh1b4JpDmo_ejJX9Lz5/view?usp=sharing",
         tags: everyoneButGuests,
@@ -133,8 +133,8 @@ export const checkpoints: CheckpointDescriptor[] = [
         title: "Look! A smartphone!",
         description: "Pick up Jonas's phone and watch a video showcasing the innovative products and services offered by Bedrock.",
         coordinates: {
-            x: 28,
-            y: 180
+            x: 24,
+            y: 178
         },
         type: "content",
         url: "https://drive.google.com/file/d/17kxTBaUItYcfJbKSAa1CAHDU3v6UlxUE/view?usp=sharing",
@@ -847,7 +847,7 @@ export function canEnterCaveWorld(playerCheckpointIds: string[]): boolean {
     return playerCheckpointIds.includes("4");
 }
 
-export function canGrabJonasPhone(playerCheckpointIds: string[]): boolean {
+export function mustGrabJonasPhone(playerCheckpointIds: string[]): boolean {
     return playerCheckpointIds.includes("6");
 }
 

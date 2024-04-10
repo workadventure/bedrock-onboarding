@@ -66,11 +66,12 @@ export function removeContentTile(checkpoint: CheckpointDescriptor) {
     ])
 
     if (isCheckpointJonasPhone(checkpoint.id)) {
+        WA.room.area.delete(checkpoint.id)
         WA.room.setTiles([
             {
                 x: checkpoint.coordinates.x,
                 y: checkpoint.coordinates.y,
-                tile: 'smartphone',
+                tile: null,
                 layer: "furniture/furniture2"
             },
         ])
