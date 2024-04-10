@@ -53,7 +53,7 @@ export const checkpoints: CheckpointDescriptor[] = [
             x: 50,
             y: 110
         },
-        tags: everyoneButGuests,
+        tags: everyone,
     },
     {
         id: "2",
