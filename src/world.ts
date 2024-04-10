@@ -1,9 +1,16 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
+import { canEnterCaveWorld } from "./onboarding/checkpoints";
+
 let isRoofVisible = false
 
-export async function initWorld() {
+export async function initWorld(playerCheckpointIds: string[]) {
     console.log('World script started successfully');
+
+    if (!canEnterCaveWorld(playerCheckpointIds)) {
+        console.log("Player can't access this room yet.")
+        WA.nav.goToRoom("/@/bedrock-1710774685/onboardingbr/town")
+    }
     const roofArea = await WA.room.area.get("roof");
 
     WA.room.area.onEnter('to-tour-rooftop').subscribe(() => {

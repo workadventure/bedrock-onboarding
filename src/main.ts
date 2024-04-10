@@ -28,21 +28,22 @@ WA.onInit().then(() => {
             // TODO: uncomment when this method is in prod
             // WA.controls.disableInviteButton();
             displayChecklistButton()
-    
-            // Load specific map scripts
-            if (map === "town") {
-                initTown()
-            } else if (map === "world") {
-                initWorld()
-            }
             
             const playerCheckpointIds = await getCheckpointIds()
             initDoors(map, playerTags, playerCheckpointIds)
             initOnboarding()
+
+            // Load specific map scripts
+            if (map === "town") {
+                initTown()
+            } else if (map === "world") {
+                initWorld(playerCheckpointIds)
+            }
        
         } else {
             // redirect unknown user to Town if he arrives in World
             if (map === "world") {
+                console.log("Player can't access this room.")
                 WA.nav.goToRoom("/@/bedrock-1710774685/onboardingbr/town")
             }
             closeTownDoors()
