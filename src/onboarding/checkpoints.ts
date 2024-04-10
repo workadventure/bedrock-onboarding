@@ -130,7 +130,7 @@ export const checkpoints: CheckpointDescriptor[] = [
     {
         id: "7",
         map: "world",
-        title: "Retrieve Jonas's Phone",
+        title: "Look! A smartphone!",
         description: "Pick up Jonas's phone and watch a video showcasing the innovative products and services offered by Bedrock.",
         coordinates: {
             x: 28,

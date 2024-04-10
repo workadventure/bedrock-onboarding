@@ -38,7 +38,9 @@ export function closeDialogueBox() {
 }
 
 export async function openWebsite(url: string) {
-    coWebsite = await WA.nav.openCoWebSite(url)
+    // TODO: use 'url' when all content is defined.
+    console.log("TMP: We should have open:",url)
+    coWebsite = await WA.nav.openCoWebSite("https://workadventu.re/")
 }
 
 export function closeWebsite() {
