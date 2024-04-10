@@ -1,7 +1,7 @@
 import { type MapName } from "../main"
 import { getPlayerTags } from "./index"
 import { openCheckpointBanner, openErrorBanner, closeBanner, DOOR_LOCKED } from "./ui";
-import { unlockTownCaveDoor, getCaveDoorToOpen, unlockWorldBuildingDoor, unlockWorldBarrier } from "../doors"
+import { unlockTownCaveDoor, getCaveDoorToOpen, unlockWorldBuildingDoor, unlockWorldBarrier, unlockAirportGate } from "../doors"
 import { placeCheckpoint, processAreas } from "./areas"
 
 export type Tag = "admin" | "br" | "hr" | "ext" | "fr" | "pt" | "alt" | "guest";
@@ -1097,6 +1097,7 @@ async function triggerCheckpointAction(checkpointId: string) {
         // Requirement: Watch all customers videos
         case "22":
             // Action: Unlock airport boarding gate
+            unlockAirportGate()
             break;
 
         // Requirement: Talk with Jonas near the Helicopter

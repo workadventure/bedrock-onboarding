@@ -224,6 +224,11 @@ let worldBarriers: WorldBarrierAccess = {
     netherlands: { access: true, blockingTiles: [[70, 30], [70, 34]] },
 };
 
+
+type AirportGateAccess = { access: boolean, turnstile: [number, number][], lightsY: [number, number][], lightsX: [number, number][] };
+let airportGate: AirportGateAccess = 
+    { access: false, turnstile: [[52, 11], [52, 12]], lightsY: [[52, 6], [52, 10]], lightsX: [[48, 5], [52, 5]] }
+
 function initWorldDoors(playerCheckpointIds: string[]) {
     isRoofVisible = false;
 
@@ -240,10 +245,13 @@ function initWorldDoors(playerCheckpointIds: string[]) {
     worldBarriers.belgium.access = canAccessBelgium(playerCheckpointIds);
     worldBarriers.netherlands.access = canAccessNetherlands(playerCheckpointIds);
 
+    airportGate.access = canEnterAirport(playerCheckpointIds);
+
     listenWorldDoor('cave')
     listenWorldDoor('airport')
 
     unlockWorldBarriers()
+    unlockAirportGate()
 }
 
 function listenWorldDoor(building: WorldBuildingName) {
@@ -332,6 +340,38 @@ export function unlockWorldBarrier(barrier: WorldBarrierName) {
     }));
 
     WA.room.setTiles(tiles);
+}
+
+export function unlockAirportGate() {
+    if (airportGate.access) {
+        const turnstileTilesCoordinates = getTilesByRectangleCorners(airportGate.turnstile[0], airportGate.turnstile[1])
+        const lightsYTilesCoordinates = getTilesByRectangleCorners(airportGate.lightsY[0], airportGate.lightsY[1])
+        const lightsXTilesCoordinates = getTilesByRectangleCorners(airportGate.lightsX[0], airportGate.lightsX[1])
+    
+    
+        const turnstileTiles = turnstileTilesCoordinates.map(([xCoord, yCoord], index) => ({
+            x: xCoord,
+            y: yCoord,
+            tile: `airport-turnstile-open-${index+1}`,
+            layer: "furniture/furniture3"
+        }));
+        const lightsYTiles = lightsYTilesCoordinates.map(([xCoord, yCoord], index) => ({
+            x: xCoord,
+            y: yCoord,
+            tile: `floor-light-y-${index + 1}`,
+            layer: "furniture/furniture1"
+        }));
+        const lightsXTiles = lightsXTilesCoordinates.map(([xCoord, yCoord], index) => ({
+            x: xCoord,
+            y: yCoord,
+            tile: `floor-light-x-${index + 1}`,
+            layer: "furniture/furniture1"
+        }));
+        
+        // Combine turnstile, vertical and horizontal lights into one array in order to open the gate
+        const combinedTiles = [...turnstileTiles, ...lightsYTiles, ...lightsXTiles];
+        WA.room.setTiles(combinedTiles);
+    }
 }
 
 /*
