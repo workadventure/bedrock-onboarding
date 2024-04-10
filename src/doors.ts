@@ -259,7 +259,7 @@ function lockWorldBuildingDoor(building: WorldBuildingName) {
     WA.room.setTiles(tiles);
 }
 
-function unlockWorldBuildingDoor(building: WorldBuildingName) {
+export function unlockWorldBuildingDoor(building: WorldBuildingName) {
     const buildingData = worldBuildings[building];
 
     const tiles = buildingData.blockingTiles.map(([xCoord, yCoord]) => ({

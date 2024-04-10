@@ -13,7 +13,7 @@ window.onload = async () => {
 };
 
 function renderTodoList(checklist: Checklist[], checkpointIds: string[]) {
-    const nextCheckpointId = getNextCheckpoint(checkpointIds);
+    const nextCheckpointId = getNextCheckpointId(checkpointIds);
     const filterRadios = document.querySelectorAll('input[name="filter"]') as NodeListOf<HTMLInputElement>
     filterRadios.forEach(radio => {
         radio.addEventListener('change', () => filterTodoList(checklist, nextCheckpointId, radio.value));
@@ -56,7 +56,7 @@ function filterTodoList(checklist: Checklist[], nextCheckpointId: string, filter
 }
 
 // We duplicate the 'checkopints.ts' function here because we can't call it from this iframe...
-function getNextCheckpoint(playerCheckpointIds: string[]): string {
+function getNextCheckpointId(playerCheckpointIds: string[]): string {
     // if player just started the game
     if (playerCheckpointIds.length === 1 && playerCheckpointIds[0] === "0") {
         return "1"

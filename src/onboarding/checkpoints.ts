@@ -1,7 +1,7 @@
 import { type MapName } from "../main"
 import { getPlayerTags } from "./index"
 import { openCheckpointBanner, openErrorBanner, closeBanner, DOOR_LOCKED } from "./ui";
-import { unlockTownCaveDoor, getCaveDoorToOpen } from "../doors"
+import { unlockTownCaveDoor, getCaveDoorToOpen, unlockWorldBuildingDoor } from "../doors"
 import { placeCheckpoint, processAreas } from "./areas"
 
 export type Tag = "admin" | "br" | "hr" | "ext" | "fr" | "pt" | "alt" | "guest";
@@ -37,6 +37,7 @@ export const employees: Tag[] = ["admin", "br", "hr"];
 //const newbies: NewbieTag[] = ["ext", "fr", "pt", "alt"];
 export const employeesAndFrenchNewbies: Tag[] = [...employees, "fr"]
 
+const jonasCheckpointIds = ["2", "6", "13", "23", "24", "31", "32", "33", "36"]
 /**
  * All possible checkpoints for all use cases
  * @constant
@@ -801,7 +802,7 @@ export async function initCheckpoints(): Promise<string[]> {
     if (playerCheckpointIds.length > 1) {
         // Existing player
         console.log("Existing player. Checkpoint IDs: ", playerCheckpointIds)
-        openCheckpointBanner(getNextCheckpoint(playerCheckpointIds))
+        openCheckpointBanner(getNextCheckpointId(playerCheckpointIds))
     } else {
         // New player
         console.log("New player.")
@@ -811,7 +812,8 @@ export async function initCheckpoints(): Promise<string[]> {
 
     return playerCheckpointIds
 }
-export function getNextCheckpoint(playerCheckpointIds: string[]): string {
+
+export function getNextCheckpointId(playerCheckpointIds: string[]): string {
     // if player just started the game
     if (playerCheckpointIds.length === 1 && playerCheckpointIds[0] === "0") {
         return "1"
@@ -835,6 +837,21 @@ export function getNextCheckpoint(playerCheckpointIds: string[]): string {
 
     // Return the last number (maximum) of the consecutive sequence starting from 1 to the latest uninterrupted number and add 1 to get the next
     return (numericCheckpointIds[endIdx] + 1).toString()
+}
+
+export function getNextJonasCheckpointId(playerCheckpointIds: string[]): string {
+     // Convert string elements to numbers for both playerCheckpointIds and jonasCheckpointIds
+     const numericPlayerCheckpointIds: number[] = playerCheckpointIds.map(Number);
+     const numericJonasCheckpoints: number[] = jonasCheckpointIds.map(Number);
+ 
+     // Find the highest checkpoint ID the player has reached
+     const maxPlayerCheckpointId = Math.max(...numericPlayerCheckpointIds);
+ 
+     // Find the next Jonas checkpoint ID
+     const nextJonasCheckpointId = numericJonasCheckpoints.find(id => id > maxPlayerCheckpointId);
+ 
+     // If there is a next Jonas checkpoint, return its ID as a string; otherwise, return "-1"
+     return nextJonasCheckpointId !== undefined ? nextJonasCheckpointId.toString() : "-1";
 }
 
 export function isCheckpointPassed(playerCheckpointIds: string[], checkpointId: string): boolean {
@@ -946,7 +963,7 @@ export async function passCheckpoint(checkpointId: string) {
 
         await markCheckpointAsDone(checkpointId)
         await triggerCheckpointAction(checkpointId);
-        openCheckpointBanner(getNextCheckpoint(playerCheckpointIds))
+        openCheckpointBanner(getNextCheckpointId(playerCheckpointIds))
     }
 }
 
@@ -965,8 +982,8 @@ async function triggerCheckpointAction(checkpointId: string) {
         // Requirement: Meet Jonas for the first time
         case "2":
             // Action: Place rest of checkpoints
-            const playerCheckpointIds = await getCheckpointIds()
-            processAreas(playerCheckpointIds)
+            const playerCheckpointIds2 = await getCheckpointIds()
+            processAreas(playerCheckpointIds2)
             break;
         // Requirement: Read the cave PC dialogue
         case "4":
@@ -983,15 +1000,21 @@ async function triggerCheckpointAction(checkpointId: string) {
         // Requirement: Talk with Jonas in the cave
         case "6":
             // Action: Place Jonas's phone
-            const checkpoint = checkpoints.find(c => c.id === "7")
-            if (checkpoint) {
-                placeCheckpoint(checkpoint)
+            const checkpoint7 = checkpoints.find(c => c.id === "7")
+            if (checkpoint7) {
+                placeCheckpoint(checkpoint7)
             }
             break;
 
         // Requirement: Watch Jonas's phone video
         case "7":
             // Action: Unlock World cave door + place next Jonas
+            unlockWorldBuildingDoor("cave")
+            const playerCheckpointIds7 = await getCheckpointIds()
+            const checkpoint = checkpoints.find(c => c.id === getNextJonasCheckpointId(playerCheckpointIds7))
+            if (checkpoint) {
+                placeCheckpoint(checkpoint)
+            }
             break;
 
         // Requirement: Check History content
