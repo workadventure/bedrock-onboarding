@@ -48,6 +48,20 @@ export function closeWebsite() {
 export function openCheckpointBanner(nextCheckpointId: string) {
     console.log("Display description of checkpoint", nextCheckpointId)
 
+    if (nextCheckpointId === "-1") {
+        // If there is no more checkpoints then all checkpoints have been passed!
+        WA.ui.banner.openBanner({
+            id: "onboarding-banner",
+            text: "CONGRATULATIONS! YOU HAVE SUCCESSFULLY FINISHED THE ONBOARDING AND COMPLETED ALL CHECKPOINTS!",
+            bgColor: "#3402F0",
+            textColor: "#FFFFFF",
+            closable: false,
+            timeToClose: 120000
+        });
+
+        return;
+    }
+    
     // Search for the message to display depending on the player's checkpoint
     const checkpoint = checkpoints.find(c => c.id === nextCheckpointId)
     const delayBeforeDisplayingNextCheckpoint = 30 * 1000
@@ -63,17 +77,7 @@ export function openCheckpointBanner(nextCheckpointId: string) {
                 timeToClose: 120000
             });
         }, delayBeforeDisplayingNextCheckpoint)
-    } else {
-        // If there is no more checkpoints then all checkpoints have been passed!
-        WA.ui.banner.openBanner({
-            id: "onboarding-banner",
-            text: "CONGRATULATIONS! YOU HAVE SUCCESSFULLY FINISHED THE ONBOARDING AND COMPLETED ALL CHECKPOINTS!",
-            bgColor: "#3402F0",
-            textColor: "#FFFFFF",
-            closable: false,
-            timeToClose: 120000
-        });
-      }
+    }
 }
 
 export function openErrorBanner(message: string) {

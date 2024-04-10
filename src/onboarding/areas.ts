@@ -1,9 +1,9 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-import { CheckpointDescriptor, checkpoints, Checklist, saveChecklist, passCheckpoint, isOnboardingDone, isCheckpointAfterOnboarding, isCheckpointAfterFirstJonas, hasPlayerMetJonas, isCheckpointJonasPhone, canGrabJonasPhone } from './checkpoints';
+import { CheckpointDescriptor, checkpoints, Checklist, saveChecklist, passCheckpoint, isOnboardingDone, isCheckpointAfterOnboarding, isCheckpointAfterFirstJonas, hasPlayerMetJonas, isCheckpointJonasPhone, canGrabJonasPhone, getNextCheckpointId } from './checkpoints';
 import type { NPCs, Tag } from "./checkpoints";
 import { placeTile, removeContentTile, removeDirectionTile } from "./tiles";
-import { openDialogueBox, openWebsite, closeDialogueBox, closeWebsite } from "./ui";
+import { openDialogueBox, openWebsite, closeDialogueBox, closeWebsite, openCheckpointBanner } from "./ui";
 import { type MapName } from "../main"
 import { getPlayerTags, getMapName } from "./index"
 
@@ -35,6 +35,7 @@ export function processAreas(playerCheckpointIds: string[]) {
     });
 
     saveChecklist(checklist)
+    openCheckpointBanner(getNextCheckpointId(checklist))
 }
 
 export function placeCheckpoint(checkpoint: CheckpointDescriptor) {

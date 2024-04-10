@@ -802,7 +802,6 @@ export async function initCheckpoints(): Promise<string[]> {
     if (playerCheckpointIds.length > 1) {
         // Existing player
         console.log("Existing player. Checkpoint IDs: ", playerCheckpointIds)
-        openCheckpointBanner(getNextCheckpointId(playerCheckpointIds))
     } else {
         // New player
         console.log("New player.")
@@ -813,30 +812,12 @@ export async function initCheckpoints(): Promise<string[]> {
     return playerCheckpointIds
 }
 
-export function getNextCheckpointId(playerCheckpointIds: string[]): string {
-    // if player just started the game
-    if (playerCheckpointIds.length === 1 && playerCheckpointIds[0] === "0") {
-        return "1"
-    }
-    // Convert string elements to numbers
-    const numericCheckpointIds: number[] = playerCheckpointIds.map(Number);
-    // Sort the array in order to analyze the sequence
-    numericCheckpointIds.sort((a, b) => a - b);
+export function getNextCheckpointId(checklist: Checklist[]): string {
+     // Find the first checklist item that is not done
+     const nextCheckpoint = checklist.find(checkpoint => !checkpoint.done);
 
-    let startIdx = numericCheckpointIds.indexOf(1); // Find the index of the first occurrence of 1
-    if (startIdx === -1) {
-        // No sequence beginning with 1 found
-        return "-1";
-    }
-
-    // Iterate from the start index to find the end of the sequence
-    let endIdx = startIdx;
-    while (endIdx + 1 < numericCheckpointIds.length && numericCheckpointIds[endIdx + 1] === numericCheckpointIds[endIdx] + 1) {
-        endIdx++;
-    }
-
-    // Return the last number (maximum) of the consecutive sequence starting from 1 to the latest uninterrupted number and add 1 to get the next
-    return (numericCheckpointIds[endIdx] + 1).toString()
+     // If a next checkpoint is found, return its ID; otherwise, return -1
+     return nextCheckpoint ? nextCheckpoint.id : "-1";
 }
 
 export function getNextJonasCheckpointId(playerCheckpointIds: string[]): string {
@@ -950,7 +931,8 @@ export function saveCheckpointIds(checkpointIds: string[]): void {
 export async function passCheckpoint(checkpointId: string) {
     closeBanner()
 
-    let playerCheckpointIds = await getCheckpointIds()
+    const playerCheckpointIds = await getCheckpointIds()
+    const checklist = await getChecklist()
 
     // Affect checkpoint only if it has not been passed already
     if (isCheckpointPassed(playerCheckpointIds, checkpointId)) {
@@ -963,7 +945,7 @@ export async function passCheckpoint(checkpointId: string) {
 
         await markCheckpointAsDone(checkpointId)
         await triggerCheckpointAction(checkpointId);
-        openCheckpointBanner(getNextCheckpointId(playerCheckpointIds))
+        openCheckpointBanner(getNextCheckpointId(checklist))
     }
 }
 
