@@ -1519,7 +1519,7 @@
                         {
                          "name":"exitUrl",
                          "type":"string",
-                         "value":"world.tmj#from-town"
+                         "value":"/@/bedrock-1710774685/onboardingbr/e-learning#from-town"
                         }],
                  "rotation":0,
                  "type":"area",
@@ -1665,7 +1665,7 @@
                         {
                          "name":"exitUrl",
                          "type":"string",
-                         "value":"world.tmj#from-town"
+                         "value":"/@/bedrock-1710774685/onboardingbr/e-learning#from-town"
                         }],
                  "rotation":0,
                  "type":"area",
@@ -1682,7 +1682,7 @@
                         {
                          "name":"exitUrl",
                          "type":"string",
-                         "value":"world.tmj#from-town"
+                         "value":"/@/bedrock-1710774685/onboardingbr/e-learning#from-town"
                         }],
                  "rotation":0,
                  "type":"area",
@@ -1699,7 +1699,7 @@
                         {
                          "name":"exitUrl",
                          "type":"string",
-                         "value":"world.tmj#from-town"
+                         "value":"/@/bedrock-1710774685/onboardingbr/e-learning#from-town"
                         }],
                  "rotation":0,
                  "type":"area",

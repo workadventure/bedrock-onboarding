@@ -43,7 +43,7 @@ WA.onInit().then(() => {
         } else {
             // redirect unknown user to Town if he arrives in World
             if (map === "world") {
-                WA.nav.goToRoom("town.tmj")
+                WA.nav.goToRoom("/@/bedrock-1710774685/onboardingbr/town")
             }
             closeTownDoors()
         }

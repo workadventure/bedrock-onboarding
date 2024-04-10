@@ -3153,7 +3153,7 @@
                         {
                          "name":"exitUrl",
                          "type":"string",
-                         "value":"town.tmj#from-world"
+                         "value":"/@/bedrock-1710774685/onboardingbr/town#from-world"
                         }],
                  "rotation":0,
                  "type":"area",
