@@ -129,7 +129,8 @@ function filterCheckpointsByMilestone(checkpoint: CheckpointDescriptor, playerCh
     }
 
     if (isCheckpointAfterFirstJonas(checkpointId)) {
-        if (!hasPlayerMetJonas(playerCheckpointIds)) {
+        // Guests can not meet Jonas so we allow them to see the last checkpoints not restricted by tags
+        if (!hasPlayerMetJonas(playerCheckpointIds) && !playerTags.includes("guest")) {
             console.log(`Ignoring checkpoint ${checkpointId} (milestone meet Jonas)`)
             return false
         }
