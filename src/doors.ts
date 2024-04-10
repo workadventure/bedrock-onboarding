@@ -42,13 +42,6 @@ export function initDoors(map: string, playerTags: Tag[], playerCheckpointIds: s
     }
 }
 
-export function closeTownDoors() {
-    Object.keys(townBuildings).forEach(building => {
-        townBuildings[building as TownBuildingName].access = false;
-        lockTownBuildingDoor(building as TownBuildingName)
-    });
-}
-
 function initTownDoors(playerTags: Tag[], playerCheckpointIds: string[]) {
     // Apply access restrictions based on player tags and checkpoint
     if (playerTags.includes("guest")) {

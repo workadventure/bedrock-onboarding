@@ -7,7 +7,7 @@ import { initTown } from "./town";
 import { initWorld } from "./world";
 import { initOnboarding } from "./onboarding/index";
 import { displayChecklistButton } from "./onboarding/ui";
-import { initDoors, closeTownDoors } from "./doors";
+import { initDoors } from "./doors";
 import { getCheckpointIds, type Tag, everyone } from "./onboarding/checkpoints";
 
 export type MapName = "town" | "world";
@@ -23,13 +23,13 @@ WA.onInit().then(() => {
     bootstrapExtra().then(async () => {
         console.log('Scripting API Extra ready');
         const map = WA.state.map as MapName
+        const playerCheckpointIds = await getCheckpointIds()
 
         if (hasMatchingTag) {
             // TODO: uncomment when this method is in prod
             // WA.controls.disableInviteButton();
             displayChecklistButton()
-            
-            const playerCheckpointIds = await getCheckpointIds()
+
             initDoors(map, playerTags, playerCheckpointIds)
             initOnboarding()
 
@@ -41,12 +41,14 @@ WA.onInit().then(() => {
             }
        
         } else {
+            console.log("No player tag recognized.")
             // redirect unknown user to Town if he arrives in World
             if (map === "world") {
                 console.log("Player can't access this room.")
                 WA.nav.goToRoom("/@/bedrock-1710774685/onboardingbr/town")
             }
-            closeTownDoors()
+
+            initDoors(map, playerTags, playerCheckpointIds)
         }
     }).catch(e => console.error(e));
 }).catch(e => console.error(e));
