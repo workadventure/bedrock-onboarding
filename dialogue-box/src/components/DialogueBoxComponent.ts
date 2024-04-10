@@ -1,7 +1,7 @@
 import { AvatarComponent } from './AvatarComponent';
 import { MessageComponent } from './MessageComponent';
 import { CheckpointDescriptor, passCheckpoint } from '../../../src/onboarding/checkpoints';
-import { teleportJonas } from "../../../src/onboarding/tiles";
+import { removeDirectionTile, teleportJonas } from "../../../src/onboarding/tiles";
 import { openWebsite } from "../../../src/onboarding/ui";
 
 interface DialogueBoxProps {
@@ -35,14 +35,19 @@ export class DialogueBoxComponent implements DialogueBoxProps {
 
             // If the NPC has a content to show after the dialogue box is closed, open the content
             if (this.checkpoint.url) {
-                console.log("this.checkpoint.url",this.checkpoint.url)
+                console.log("Open URL",this.checkpoint.url)
                 openWebsite(this.checkpoint.url)
             }
 
             // If it's Jonas, remove its area and teleport him
             if (this.checkpoint.npcName === "Jonas") {
+                console.log("Teleport Jonas")
                 WA.room.area.delete(this.checkpoint.id)
                 teleportJonas(this.checkpoint.coordinates.x, this.checkpoint.coordinates.y)
+            } else if (this.checkpoint.type === "direction") {
+                console.log("Remove direction area and tile")
+                WA.room.area.delete(this.checkpoint.id)
+                removeDirectionTile(this.checkpoint)
             }
 
             console.log("this.checkpoint.id",this.checkpoint.id)
