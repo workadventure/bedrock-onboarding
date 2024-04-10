@@ -1,6 +1,6 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-import { CheckpointDescriptor, checkpoints, Checklist, saveChecklist, passCheckpoint, isOnboardingDone, isCheckpointAfterOnboarding, isCheckpointAfterFirstJonas, hasPlayerMetJonas } from './checkpoints';
+import { CheckpointDescriptor, checkpoints, Checklist, saveChecklist, passCheckpoint, isOnboardingDone, isCheckpointAfterOnboarding, isCheckpointAfterFirstJonas, hasPlayerMetJonas, isCheckpointJonasPhone, canGrabJonasPhone } from './checkpoints';
 import type { NPCs, Tag } from "./checkpoints";
 import { placeTile, removeContentTile, removeDirectionTile } from "./tiles";
 import { openDialogueBox, openWebsite, closeDialogueBox, closeWebsite } from "./ui";
@@ -27,16 +27,19 @@ export function processAreas(playerCheckpointIds: string[]) {
 
             // checkpoints to place on the current map + additional filtering
             if (filterCheckpointsByMap(checkpoint, mapName) &&
-            filterCheckpointsByMilestone(checkpoint, playerCheckpointIds, playerTags) &&
-            filterCheckpointsNPCs(checkpoint, playerCheckpointIds))
-            {
-                placeArea(checkpoint)
-                placeTile(checkpoint)
-            }  
-        }  
+                filterCheckpointsByMilestone(checkpoint, playerCheckpointIds, playerTags) &&
+                filterCheckpointsNPCs(checkpoint, playerCheckpointIds)) {
+                placeCheckpoint(checkpoint)
+            }
+        }
     });
 
     saveChecklist(checklist)
+}
+
+export function placeCheckpoint(checkpoint: CheckpointDescriptor) {
+    placeArea(checkpoint)
+    placeTile(checkpoint)
 }
 
 function placeArea(checkpoint: CheckpointDescriptor) {
@@ -45,7 +48,7 @@ function placeArea(checkpoint: CheckpointDescriptor) {
     const areaSize = 128
     const tileOriginX = checkpoint.coordinates.x * tileSize
     const tileOriginY = checkpoint.coordinates.y * tileSize
-  
+
     // Draw the area rectangle around the tile
     const areaOriginX = tileOriginX - (areaSize - tileSize) / 2
     const areaOriginY = tileOriginY - (areaSize - tileSize) / 2
@@ -75,7 +78,7 @@ function placeArea(checkpoint: CheckpointDescriptor) {
             closeDialogueBox()
         } else if (checkpoint.type === "content") {
             closeWebsite()
-            removeContentTile(checkpoint.coordinates.x, checkpoint.coordinates.y)
+            removeContentTile(checkpoint)
             passCheckpoint(checkpoint.id)
         } else if (checkpoint.type === "direction") {
             // If the game talks with the player, only consider the checkpoint done if the player has read the dialogue
@@ -83,7 +86,7 @@ function placeArea(checkpoint: CheckpointDescriptor) {
                 closeDialogueBox()
             } else {
                 WA.room.area.delete(checkpoint.id)
-                removeDirectionTile(checkpoint.coordinates.x, checkpoint.coordinates.y)
+                removeDirectionTile(checkpoint)
                 passCheckpoint(checkpoint.id)
             }
         }
@@ -118,9 +121,16 @@ function filterCheckpointsByTag(checkpoint: CheckpointDescriptor, playerTags: Ta
 function filterCheckpointsByMilestone(checkpoint: CheckpointDescriptor, playerCheckpointIds: string[], playerTags: Tag[]): boolean {
     const checkpointId = checkpoint.id
 
+    if (isCheckpointJonasPhone(checkpointId)) {
+        if (!canGrabJonasPhone(playerCheckpointIds)) {
+            console.log(`Ignoring checkpoint ${checkpointId} (milestone Jonas phone)`)
+            return false
+        }
+    }
+
     if (isCheckpointAfterFirstJonas(checkpointId)) {
         if (!hasPlayerMetJonas(playerCheckpointIds)) {
-            console.log(`Ignoring checkpoint ${checkpointId} (not the right milestone)`)
+            console.log(`Ignoring checkpoint ${checkpointId} (milestone meet Jonas)`)
             return false
         }
     }
@@ -128,7 +138,7 @@ function filterCheckpointsByMilestone(checkpoint: CheckpointDescriptor, playerCh
     if (isCheckpointAfterOnboarding(checkpointId)) {
         // Guests can not complete the onboarding so we allow them to see the last checkpoints not restricted by tags
         if (!isOnboardingDone(playerCheckpointIds) && !playerTags.includes("guest")) {
-            console.log(`Ignoring checkpoint ${checkpointId} (not the right milestone)`)
+            console.log(`Ignoring checkpoint ${checkpointId} (milestone onboarding)`)
             return false
         }
     }
@@ -155,8 +165,8 @@ function filterCheckpointsNPCs(checkpoint: CheckpointDescriptor, playerCheckpoin
             return false
         }
     } else {
-         // player did not pass this checkpoint
-         // display only next Jonas, not others in the future
+        // player did not pass this checkpoint
+        // display only next Jonas, not others in the future
         if (checkpoint.type === "NPC" && checkpoint.npcName as NPCs === "Jonas") {
             if (isNextJonasPlaced) {
                 console.log(`Ignoring checkpoint ${checkpointId} (next Jonas is already placed)`)

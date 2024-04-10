@@ -2,7 +2,7 @@ import { type MapName } from "../main"
 import { getPlayerTags } from "./index"
 import { openCheckpointBanner, openErrorBanner, closeBanner, DOOR_LOCKED } from "./ui";
 import { unlockTownCaveDoor, getCaveDoorToOpen } from "../doors"
-import { processAreas } from "./areas"
+import { placeCheckpoint, processAreas } from "./areas"
 
 export type Tag = "admin" | "br" | "hr" | "ext" | "fr" | "pt" | "alt" | "guest";
 export type NewbieTag = "ext" | "fr" | "pt" | "alt";
@@ -849,6 +849,10 @@ export function canEnterCaveWorld(playerCheckpointIds: string[]): boolean {
     return playerCheckpointIds.includes("4");
 }
 
+export function canGrabJonasPhone(playerCheckpointIds: string[]): boolean {
+    return playerCheckpointIds.includes("6");
+}
+
 export function canLeaveCaveWorld(playerCheckpointIds: string[]): boolean {
     return playerCheckpointIds.includes("7");
 }
@@ -859,6 +863,10 @@ export function canEnterAirport(playerCheckpointIds: string[]): boolean {
 
 export function isOnboardingDone(playerCheckpointIds: string[]): boolean {
     return playerCheckpointIds.includes("34");
+}
+
+export function isCheckpointJonasPhone(checkpointId: string): boolean {
+    return checkpointId === "7";
 }
 
 export function isCheckpointAfterFirstJonas(checkpointId: string): boolean {
@@ -974,7 +982,11 @@ async function triggerCheckpointAction(checkpointId: string) {
 
         // Requirement: Talk with Jonas in the cave
         case "6":
-            // Action: Place Jonas's phone (make sur it is not placed before)
+            // Action: Place Jonas's phone
+            const checkpoint = checkpoints.find(c => c.id === "7")
+            if (checkpoint) {
+                placeCheckpoint(checkpoint)
+            }
             break;
 
         // Requirement: Watch Jonas's phone video

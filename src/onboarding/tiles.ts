@@ -1,6 +1,6 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-import { CheckpointDescriptor } from './checkpoints';
+import { CheckpointDescriptor, isCheckpointJonasPhone } from './checkpoints';
 
 export function placeTile(checkpoint: CheckpointDescriptor) {
     if (checkpoint.type === "NPC") {
@@ -30,19 +30,9 @@ function placeNPCTile(checkpoint: CheckpointDescriptor) {
     }
 }
 
-export function removeNPCTile(xCoord: number, yCoord: number) {
-    WA.room.setTiles([
-        {
-            x: xCoord,
-            y: yCoord,
-            tile: null,
-            layer: "furniture/furniture3"
-        },
-    ])
-}
-
 function placeContentTile(checkpoint: CheckpointDescriptor) {
     console.log(`Placing checkpoint ${checkpoint.id} (content tile)`)
+
     WA.room.setTiles([
         {
             x: checkpoint.coordinates.x,
@@ -51,17 +41,40 @@ function placeContentTile(checkpoint: CheckpointDescriptor) {
             layer: "furniture/furniture1"
         },
     ])
+
+
+    if (isCheckpointJonasPhone(checkpoint.id)) {
+        WA.room.setTiles([
+            {
+                x: checkpoint.coordinates.x,
+                y: checkpoint.coordinates.y,
+                tile: 'smartphone',
+                layer: "furniture/furniture2"
+            },
+        ])
+    }
 }
 
-export function removeContentTile(xCoord: number, yCoord: number) {
+export function removeContentTile(checkpoint: CheckpointDescriptor) {
     WA.room.setTiles([
         {
-            x: xCoord,
-            y: yCoord,
+            x: checkpoint.coordinates.x,
+            y: checkpoint.coordinates.y,
             tile: null,
             layer: "furniture/furniture1"
         },
     ])
+
+    if (isCheckpointJonasPhone(checkpoint.id)) {
+        WA.room.setTiles([
+            {
+                x: checkpoint.coordinates.x,
+                y: checkpoint.coordinates.y,
+                tile: 'smartphone',
+                layer: "furniture/furniture2"
+            },
+        ])
+    }
 }
 
 function placeDirectionTile(checkpoint: CheckpointDescriptor) {
@@ -76,11 +89,11 @@ function placeDirectionTile(checkpoint: CheckpointDescriptor) {
     ])
 }
 
-export function removeDirectionTile(xCoord: number, yCoord: number) {
+export function removeDirectionTile(checkpoint: CheckpointDescriptor) {
     WA.room.setTiles([
         {
-            x: xCoord,
-            y: yCoord,
+            x: checkpoint.coordinates.x,
+            y: checkpoint.coordinates.y,
             tile: null,
             layer: "furniture/furniture1"
         },

@@ -32467,6 +32467,16 @@
          "spacing":0,
          "tilecount":256,
          "tileheight":32,
+         "tiles":[
+                {
+                 "id":231,
+                 "properties":[
+                        {
+                         "name":"name",
+                         "type":"string",
+                         "value":"smartphone"
+                        }]
+                }],
          "tilewidth":32
         }, 
         {
