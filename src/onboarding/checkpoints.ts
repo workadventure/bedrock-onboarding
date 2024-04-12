@@ -131,7 +131,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         id: "7",
         map: "world",
         title: "Look! A smartphone!",
-        description: "Pick up Jonas's phone and watch a video showcasing the innovative products and services offered by Bedrock.",
+        description: "Pick up Jonas' phone and watch a video showcasing the innovative products and services offered by Bedrock.",
         coordinates: {
             x: 24,
             y: 178
@@ -1013,14 +1013,14 @@ async function triggerCheckpointAction(checkpointId: string) {
 
         // Requirement: Talk with Jonas in the cave
         case "6":
-            // Action: Place Jonas's phone
+            // Action: Place Jonas' phone
             const checkpoint6 = checkpoints.find(c => c.id === "7")
             if (checkpoint6) {
                 placeCheckpoint(checkpoint6)
             }
             break;
 
-        // Requirement: Watch Jonas's phone video
+        // Requirement: Watch Jonas' phone video
         case "7":
             // Action: Unlock World cave door + place next Jonas
             unlockWorldBuildingDoor("cave")
@@ -1140,7 +1140,7 @@ async function triggerCheckpointAction(checkpointId: string) {
             // Action: Place next Jonas
             break;
 
-        // Requirement: Enter Jonas's Pickup
+        // Requirement: Enter Jonas' Pickup
         case "32":
             // Action: Go to room Town before backstage
             break;

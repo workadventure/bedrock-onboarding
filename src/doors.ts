@@ -1,11 +1,19 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-import { TileDescriptor } from "@workadventure/iframe-api-typings";
+import { ActionMessage, TileDescriptor } from "@workadventure/iframe-api-typings";
 import { type Tag, NewbieTag, canAccessAchievements, canAccessValues, canAccessLegal, canAccessBridge, canAccessFrance, canAccessHungary, canAccessBelgium, canAccessNetherlands } from "./onboarding/checkpoints";
 import { isOnboardingDone, canEnterCaveWorld, canLeaveCaveWorld, canEnterAirport, employees, everyoneButGuests, employeesAndFrenchNewbies } from "./onboarding/checkpoints";
 import { openErrorBanner, closeBanner, DOOR_LOCKED } from "./onboarding/ui";
+
 let isRoofVisible = true
 
+export function initDoors(map: string, playerTags: Tag[], playerCheckpointIds: string[]) {
+    if (map === "town") {
+        initTownDoors(playerTags, playerCheckpointIds)
+    } else if (map === "world") {
+        initWorldDoors(playerCheckpointIds)
+    }
+}
 /*
 ********************************************* TOWN *********************************************
 */
@@ -34,12 +42,15 @@ let townCaveProfileDoors: TownCaveDoorAccess = {
     pt:  { access: false, leftWall: [[54, 4], [54, 5]], rightWall: [[57, 4], [57, 5]], pillar: [[55, 5], [56, 6]] },
 }
 
-export function initDoors(map: string, playerTags: Tag[], playerCheckpointIds: string[]) {
-    if (map === "town") {
-        initTownDoors(playerTags, playerCheckpointIds)
-    } else if (map === "world") {
-        initWorldDoors(playerCheckpointIds)
-    }
+type HrMeetingDoorName = "hrMeetingDoor1" | "hrMeetingDoor2" | "hrMeetingDoor3" | "hrMeetingDoor4";
+type HRMeetingDoorAccess = {
+    [key in HrMeetingDoorName]: { access: boolean, tilesNamePattern: string, tilesCoordinates: [number, number][] };
+};
+let hrMeetingDoors: HRMeetingDoorAccess = {
+    "hrMeetingDoor1": { access: false, tilesNamePattern: "hr-meeting-door", tilesCoordinates: [[71, 62], [72, 63]] },
+    "hrMeetingDoor2": { access: false, tilesNamePattern: "hr-meeting-door", tilesCoordinates: [[76, 62], [77, 63]] },
+    "hrMeetingDoor3": { access: false, tilesNamePattern: "hr-meeting-door", tilesCoordinates: [[88, 62], [89, 63]] },
+    "hrMeetingDoor4": { access: false, tilesNamePattern: "hr-meeting-door", tilesCoordinates: [[93, 62], [94, 63]] },
 }
 
 function initTownDoors(playerTags: Tag[], playerCheckpointIds: string[]) {
@@ -63,7 +74,6 @@ function initTownDoors(playerTags: Tag[], playerCheckpointIds: string[]) {
             Object.keys(townBuildings).forEach(building => {
                 townBuildings[building as TownBuildingName].access = true;
             });
-            townBuildings.backstage.access = hasAccessToAll;
         }
 
         if (canEnterCaveWorld(playerCheckpointIds)) {
@@ -74,15 +84,19 @@ function initTownDoors(playerTags: Tag[], playerCheckpointIds: string[]) {
         }
     }
 
-    listenTownDoor('hr')
-    listenTownDoor('arcade')
-    listenTownDoor('stadium')
-    listenTownDoor('wikitek')
-    listenTownDoor('streaming')
-    listenTownDoor('cave')
-    listenTownDoor('backstage')
+    for (const key in townBuildings) {
+        listenTownDoor(key as TownBuildingName)
+    }
+
+    for (const key in hrMeetingDoors) {
+        listenHrDoors(key as HrMeetingDoorName, playerTags);
+    }
 
     initTownCaveDoors()
+
+    console.log("townBuildings",townBuildings)
+    console.log("townCaveProfileDoors",townCaveProfileDoors)
+    console.log("hrMeetingDoors",hrMeetingDoors)
 }
 
 function listenTownDoor(building: TownBuildingName) {
@@ -109,6 +123,57 @@ function listenTownDoor(building: TownBuildingName) {
             closeBanner()
         })
     }
+}
+
+function listenHrDoors(meetingDoor: HrMeetingDoorName, playerTags: Tag[]) {
+    let actionMessage: ActionMessage|null
+
+    // initialize the default door state
+    toggleHrMeetingDoor(meetingDoor)
+
+    // only HRs or admins can open/close the doors
+    if (playerTags.some(tag => ["admin", "hr"].includes(tag))) {
+        WA.room.area.onEnter(meetingDoor).subscribe(() => {
+            // display an action message to open or close
+            // that will depend on the current door state
+            actionMessage = WA.ui.displayActionMessage({
+                message: `Press SPACE to ${!hrMeetingDoors[meetingDoor].access ? 'open' : 'close'} the door`,
+                callback: () => {
+                    // send the event
+                    WA.event.broadcast(meetingDoor, !hrMeetingDoors[meetingDoor].access);
+                }
+            })
+        })
+
+        // remove the action message after leaving the area
+        WA.room.area.onLeave(meetingDoor).subscribe(() => {
+            actionMessage?.remove()
+            actionMessage = null
+        })
+    }
+
+    // listen to the event sent by HRs
+    WA.event.on(meetingDoor).subscribe((event) => {
+        hrMeetingDoors[meetingDoor].access = event.data as boolean
+        toggleHrMeetingDoor(meetingDoor)
+    });
+}
+
+function toggleHrMeetingDoor(meetingDoor: HrMeetingDoorName) {
+    const meetingDoorData = hrMeetingDoors[meetingDoor];
+    const tilesCoordinates = getTilesByRectangleCorners(meetingDoorData.tilesCoordinates[0], meetingDoorData.tilesCoordinates[1])
+
+    // Find the tile name, like: hr-meeting-door-closed
+    // exact name with its number will be found down here, like: hr-meeting-door-closed-1
+    const tileName = `${meetingDoorData.tilesNamePattern}-${hrMeetingDoors[meetingDoor].access ? 'open' : 'closed'}`
+    const tiles = tilesCoordinates.map(([xCoord, yCoord], index) => ({
+        x: xCoord,
+        y: yCoord,
+        tile: `${tileName}-${index+1}`,
+        layer: "furniture/furniture2"
+    }));
+
+    WA.room.setTiles(tiles);
 }
 
 function lockTownBuildingDoor(building: TownBuildingName) {
@@ -252,6 +317,10 @@ function initWorldDoors(playerCheckpointIds: string[]) {
 
     unlockWorldBarriers()
     unlockAirportGate()
+
+    console.log("worldBuildings",worldBuildings)
+    console.log("worldBarriers",worldBarriers)
+    console.log("airportGate",airportGate)
 }
 
 function listenWorldDoor(building: WorldBuildingName) {

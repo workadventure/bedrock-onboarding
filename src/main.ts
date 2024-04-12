@@ -14,7 +14,7 @@ export type MapName = "town" | "world";
 
 WA.onInit().then(() => {
     console.log('Scripting API ready');
-
+    
     const playerTags = WA.player.tags as Tag[]
     console.log('Player tags: ', playerTags)
 
@@ -27,6 +27,10 @@ WA.onInit().then(() => {
 
         if (hasMatchingTag) {
             // TODO: uncomment when this method is in prod
+            // WA.controls.disableMapEditor();
+            // WA.controls.disableScreenSharing();
+            // WA.controls.disableWheelZoom();
+            // WA.controls.disableScreenSharing();
             // WA.controls.disableInviteButton();
             displayChecklistButton()
 
