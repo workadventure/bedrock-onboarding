@@ -382,15 +382,14 @@ function unlockWorldBarriers() {
     Object.entries(worldBarriers).forEach(([_barrierName, barrierData]) => {
         // Check if the barrier is accessible
         if (barrierData.access) {
-            // Iterate over the blocking tiles of the barrier and add them to the tilesToRemove array
-            barrierData.blockingTiles.forEach(([xCoord, yCoord]) => {
-                tiles.push({
-                    x: xCoord,
-                    y: yCoord,
-                    tile: null,
-                    layer: "walls/walls1"
-                });
-            });
+            // Iterate over the blocking tiles of the barrier and add them to the tiles array
+            const tilesCoordinates = getTilesByRectangleCorners(barrierData.blockingTiles[0], barrierData.blockingTiles[1])
+            tiles = tilesCoordinates.map(([xCoord, yCoord]) => ({
+                x: xCoord,
+                y: yCoord,
+                tile: null,
+                layer: "walls/walls1"
+            }));
         }
     });
 
