@@ -1,6 +1,6 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-import { CheckpointDescriptor, checkpoints, Checklist, saveChecklist, passCheckpoint, isOnboardingDone, isCheckpointAfterOnboarding, isCheckpointAfterFirstJonas, mustGrabJonasPhone, hasPlayerMetJonas, isCheckpointJonasPhone, canLeaveCaveWorld, getNextCheckpointId } from './checkpoints';
+import { CheckpointDescriptor, checkpoints, Checklist, saveChecklist, passCheckpoint, isOnboardingDone, isCheckpointAfterOnboarding, isCheckpointAfterFirstJonas, hasPlayerTalkedWithJonasInTheCave, hasPlayerMetJonas, isCheckpointJonasPhone, canLeaveCaveWorld, getNextCheckpointId } from './checkpoints';
 import type { NPCs, Tag } from "./checkpoints";
 import { placeTile, removeContentTile, removeDirectionTile } from "./tiles";
 import { openDialogueBox, openWebsite, closeDialogueBox, closeWebsite, openCheckpointBanner } from "./ui";
@@ -46,7 +46,7 @@ export function placeCheckpoint(checkpoint: CheckpointDescriptor) {
 function placeArea(checkpoint: CheckpointDescriptor) {
     console.log(`Placing checkpoint ${checkpoint.id} (area)`)
     const tileSize = 32
-    const areaSize = 128
+    const areaSize = 96
     const tileOriginX = checkpoint.coordinates.x * tileSize
     const tileOriginY = checkpoint.coordinates.y * tileSize
 
@@ -124,8 +124,7 @@ function filterCheckpointsByMilestone(checkpoint: CheckpointDescriptor, playerCh
 
     if (isCheckpointJonasPhone(checkpointId)) {
         // If player did not speak with Jonas yet in the World cave
-        // Or he already pickedup Jonas's phone: don't place the phone
-        if (mustGrabJonasPhone(playerCheckpointIds) || canLeaveCaveWorld(playerCheckpointIds)) {
+        if (!hasPlayerTalkedWithJonasInTheCave(playerCheckpointIds) || canLeaveCaveWorld(playerCheckpointIds)) {
             console.log(`Ignoring checkpoint ${checkpointId} (milestone Jonas phone)`)
             return false
         }

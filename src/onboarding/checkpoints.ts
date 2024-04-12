@@ -847,7 +847,7 @@ export function canEnterCaveWorld(playerCheckpointIds: string[]): boolean {
     return playerCheckpointIds.includes("4");
 }
 
-export function mustGrabJonasPhone(playerCheckpointIds: string[]): boolean {
+export function hasPlayerTalkedWithJonasInTheCave(playerCheckpointIds: string[]): boolean {
     return playerCheckpointIds.includes("6");
 }
 
