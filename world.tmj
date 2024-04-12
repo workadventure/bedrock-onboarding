@@ -3002,150 +3002,6 @@
          "name":"floorLayer",
          "objects":[
                 {
-                 "height":43.974,
-                 "id":20,
-                 "name":"",
-                 "rotation":0,
-                 "text":
-                    {
-                     "text":"Welcome Jonas",
-                     "wrap":true
-                    },
-                 "type":"",
-                 "visible":true,
-                 "width":90.1042,
-                 "x":775.61456666667,
-                 "y":5783.67966666667
-                }, 
-                {
-                 "height":43.974,
-                 "id":21,
-                 "name":"",
-                 "rotation":0,
-                 "text":
-                    {
-                     "text":"+ Vid\u00e9o produit",
-                     "wrap":true
-                    },
-                 "type":"",
-                 "visible":true,
-                 "width":90.1042,
-                 "x":904.61456666667,
-                 "y":5701.34633333334
-                }, 
-                {
-                 "height":43.974,
-                 "id":22,
-                 "name":"",
-                 "rotation":0,
-                 "text":
-                    {
-                     "text":"1. Histoire",
-                     "wrap":true
-                    },
-                 "type":"",
-                 "visible":true,
-                 "width":117.1042,
-                 "x":2366.4479,
-                 "y":6020.34633333333
-                }, 
-                {
-                 "height":43.974,
-                 "id":23,
-                 "name":"",
-                 "rotation":0,
-                 "text":
-                    {
-                     "text":"2. Achievements",
-                     "wrap":true
-                    },
-                 "type":"",
-                 "visible":true,
-                 "width":169.6042,
-                 "x":2443.61456666667,
-                 "y":5043.17966666667
-                }, 
-                {
-                 "height":31.9740000000002,
-                 "id":24,
-                 "name":"",
-                 "rotation":0,
-                 "text":
-                    {
-                     "text":"3. Valeurs",
-                     "wrap":true
-                    },
-                 "type":"",
-                 "visible":true,
-                 "width":123.437533333334,
-                 "x":1748.28123333333,
-                 "y":4459.67966666667
-                }, 
-                {
-                 "height":38.6406666666671,
-                 "id":25,
-                 "name":"",
-                 "rotation":0,
-                 "text":
-                    {
-                     "text":"4. Structure",
-                     "wrap":true
-                    },
-                 "type":"",
-                 "visible":true,
-                 "width":146.770866666666,
-                 "x":620.887293939396,
-                 "y":3192.58875757576
-                }, 
-                {
-                 "height":62.6406666666671,
-                 "id":28,
-                 "name":"",
-                 "rotation":0,
-                 "text":
-                    {
-                     "text":"Vision Client Jonas",
-                     "wrap":true
-                    },
-                 "type":"",
-                 "visible":true,
-                 "width":120.1042,
-                 "x":626.9479,
-                 "y":2100.67966666667
-                }, 
-                {
-                 "height":43.974,
-                 "id":30,
-                 "name":"",
-                 "rotation":0,
-                 "text":
-                    {
-                     "text":"Hongrie: RTL+",
-                     "wrap":true
-                    },
-                 "type":"",
-                 "visible":true,
-                 "width":90.1042,
-                 "x":2975.9479,
-                 "y":1586.67966666667
-                }, 
-                {
-                 "height":43.974,
-                 "id":31,
-                 "name":"",
-                 "rotation":0,
-                 "text":
-                    {
-                     "text":"Belgique: RTL Play",
-                     "wrap":true
-                    },
-                 "type":"",
-                 "visible":true,
-                 "width":90.1042,
-                 "x":3280.22062727272,
-                 "y":406.497848484849
-                }, 
-                {
                  "height":32,
                  "id":38,
                  "name":"to-town",
@@ -3206,38 +3062,6 @@
                  "width":32,
                  "x":864.0625,
                  "y":3711.875
-                }, 
-                {
-                 "height":43.974,
-                 "id":52,
-                 "name":"",
-                 "rotation":0,
-                 "text":
-                    {
-                     "text":"France: 6play",
-                     "wrap":true
-                    },
-                 "type":"",
-                 "visible":true,
-                 "width":90.1042,
-                 "x":2391.61456666667,
-                 "y":2334.67966666667
-                }, 
-                {
-                 "height":43.974,
-                 "id":53,
-                 "name":"",
-                 "rotation":0,
-                 "text":
-                    {
-                     "text":"Pays-bas: videoland",
-                     "wrap":true
-                    },
-                 "type":"",
-                 "visible":true,
-                 "width":90.1042,
-                 "x":1188.9479,
-                 "y":1178.013
                 }, 
                 {
                  "height":27.666666666667,
@@ -3576,15 +3400,15 @@
                  "y":5091.09090909091
                 }, 
                 {
-                 "height":100.666666666666,
+                 "height":15.6666666666661,
                  "id":81,
                  "name":"caveDoor",
                  "rotation":0,
                  "type":"area",
                  "visible":true,
-                 "width":64,
-                 "x":911.375,
-                 "y":5787.20833333333
+                 "width":40,
+                 "x":925.25,
+                 "y":5856
                 }, 
                 {
                  "height":32,
@@ -3636,6 +3460,23 @@
                  "width":96,
                  "x":1632,
                  "y":736
+                }, 
+                {
+                 "height":32,
+                 "id":86,
+                 "name":"valdo",
+                 "properties":[
+                        {
+                         "name":"start",
+                         "type":"bool",
+                         "value":true
+                        }],
+                 "rotation":0,
+                 "type":"area",
+                 "visible":true,
+                 "width":32,
+                 "x":1762.78787878788,
+                 "y":5771.87878787879
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -4719,7 +4560,7 @@
          "y":0
         }],
  "nextlayerid":83,
- "nextobjectid":86,
+ "nextobjectid":87,
  "orientation":"orthogonal",
  "properties":[
         {

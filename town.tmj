@@ -1667,23 +1667,6 @@
                  "y":1792
                 }, 
                 {
-                 "height":32,
-                 "id":50,
-                 "name":"valdo",
-                 "properties":[
-                        {
-                         "name":"start",
-                         "type":"bool",
-                         "value":true
-                        }],
-                 "rotation":0,
-                 "type":"area",
-                 "visible":true,
-                 "width":32,
-                 "x":2607.15151515152,
-                 "y":2527.63636363636
-                }, 
-                {
                  "height":224,
                  "id":51,
                  "name":"jitsiHR2",

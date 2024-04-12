@@ -8,7 +8,7 @@ import { initWorld } from "./world";
 import { initOnboarding } from "./onboarding/index";
 import { displayChecklistButton } from "./onboarding/ui";
 import { initDoors } from "./doors";
-import { getCheckpointIds, type Tag, everyone } from "./onboarding/checkpoints";
+import { getCheckpointIds, type Tag, everyone, saveCheckpointIds } from "./onboarding/checkpoints";
 
 export type MapName = "town" | "world";
 
@@ -53,6 +53,52 @@ WA.onInit().then(() => {
             }
 
             initDoors(map, playerTags, playerCheckpointIds)
+        }
+
+        // TMP: add button o change progress just for dev
+        if (WA.player.name === "Valdo") {
+            WA.ui.actionBar.addButton({
+                id: 'start',
+                label: 'Start',
+                callback: () => {
+                    saveCheckpointIds([])
+                }
+            });
+            WA.ui.actionBar.addButton({
+                id: 'world',
+                label: 'World',
+                callback: () => {
+                    saveCheckpointIds(Array.from({ length: 4 }, (_, index) => (index + 1).toString()))
+                }
+            });
+            WA.ui.actionBar.addButton({
+                id: 'bridge',
+                label: 'Bridge',
+                callback: () => {
+                    saveCheckpointIds(Array.from({ length: 13 }, (_, index) => (index + 1).toString()))
+                }
+            });
+            WA.ui.actionBar.addButton({
+                id: 'airport',
+                label: 'Airport',
+                callback: () => {
+                    saveCheckpointIds(Array.from({ length: 23 }, (_, index) => (index + 1).toString()))
+                }
+            });
+            WA.ui.actionBar.addButton({
+                id: 'onboarding',
+                label: 'Onboarding',
+                callback: () => {
+                    saveCheckpointIds(Array.from({ length: 34 }, (_, index) => (index + 1).toString()))
+                }
+            });
+            WA.ui.actionBar.addButton({
+                id: 'finish',
+                label: 'Finish',
+                callback: () => {
+                    saveCheckpointIds(Array.from({ length: 45 }, (_, index) => (index + 1).toString()))
+                }
+            });
         }
     }).catch(e => console.error(e));
 }).catch(e => console.error(e));
