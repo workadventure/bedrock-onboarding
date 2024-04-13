@@ -188,7 +188,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         id: "11",
         map: "world",
         title: "Discover Bedrock's Values",
-        description: "Chat with NPC Charlie to uncover the core values that drive Bedrock's operations and culture, shaping its identity and direction.",
+        description: "Chat with Charlie to uncover the core values that drive Bedrock's operations and culture, shaping its identity and direction.",
         coordinates: {
             x: 62,
             y: 136

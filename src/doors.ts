@@ -280,7 +280,7 @@ type WorldBarrierAccess = {
 // Define buildings and their minimal access restrictions.
 let worldBarriers: WorldBarrierAccess = {
     achievements: { access: true, blockingTiles: [[84, 168], [87, 168]] },
-    values: { access: true, blockingTiles: [[61, 159], [61, 153]] },
+    values: { access: true, blockingTiles: [[61, 159], [61, 163]] },
     legal: { access: true, blockingTiles: [[37, 107], [37, 111]] },
     bridge: { access: true, blockingTiles: [[18, 83], [22, 83]] },
     france: { access: true, blockingTiles: [[19, 67], [21, 67]] },
@@ -376,36 +376,46 @@ export function unlockWorldBuildingDoor(building: WorldBuildingName) {
 }
 
 function unlockWorldBarriers() {
+    console.log("unlockWorldBarriers()")
     let tiles: TileDescriptor[] = [];
 
     // Iterate over each barrier in the worldBarriers object
     Object.entries(worldBarriers).forEach(([_barrierName, barrierData]) => {
+        console.log("barrierName",_barrierName)
         // Check if the barrier is accessible
         if (barrierData.access) {
+            console.log("has access")
             // Iterate over the blocking tiles of the barrier and add them to the tiles array
             const tilesCoordinates = getTilesByRectangleCorners(barrierData.blockingTiles[0], barrierData.blockingTiles[1])
-            tiles = tilesCoordinates.map(([xCoord, yCoord]) => ({
-                x: xCoord,
-                y: yCoord,
-                tile: null,
-                layer: "walls/walls1"
-            }));
+            tilesCoordinates.forEach(([xCoord, yCoord]) => {
+                tiles.push({
+                    x: xCoord,
+                    y: yCoord,
+                    tile: null,
+                    layer: "walls/walls1"
+                });
+            });
         }
     });
 
+    console.log("tiles",tiles)
     // Remove the tiles for the accessible barriers
     WA.room.setTiles(tiles);
 }
 
 export function unlockWorldBarrier(barrier: WorldBarrierName) {
     const barrierData = worldBarriers[barrier];
+    console.log("barrierData",barrierData)
     const tilesCoordinates = getTilesByRectangleCorners(barrierData.blockingTiles[0], barrierData.blockingTiles[1])
+    console.log("tilesCoordinates",tilesCoordinates)
     const tiles = tilesCoordinates.map(([xCoord, yCoord]) => ({
         x: xCoord,
         y: yCoord,
         tile: null,
         layer: "walls/walls1"
     }));
+
+    console.log("tiles",tiles)
 
     WA.room.setTiles(tiles);
 }
