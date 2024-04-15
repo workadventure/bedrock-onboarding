@@ -108,8 +108,9 @@ function filterCheckpointsByMap(checkpoint: CheckpointDescriptor, mapName: MapNa
 
 function filterCheckpointsByTag(checkpoint: CheckpointDescriptor, playerTags: Tag[]): boolean {
     const checkpointId = checkpoint.id
+    const checkpointTags = checkpoint.tags
 
-    if (checkpoint.tags && checkpoint.tags.every(tag => !playerTags.includes(tag))) {
+    if (checkpointTags && !playerTags.some(tag => checkpointTags.includes(tag))) {
         // At least one tag of the checkpoint matches any of the player's tags
         console.log(`Ignoring checkpoint ${checkpointId} (not the right tags)`)
         return false

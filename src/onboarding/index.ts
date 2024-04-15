@@ -4,9 +4,9 @@ import { Tag, initCheckpoints } from "./checkpoints";
 import { processAreas } from "./areas";
 import { MapName } from "../main";
 
-export async function initOnboarding() {
-    const playerCheckpointIds = await initCheckpoints()
-    processAreas(playerCheckpointIds)
+export async function initOnboarding(playerCheckpointIds: string[]) {
+    const playerCheckpointIdsInit = await initCheckpoints(playerCheckpointIds)
+    processAreas(playerCheckpointIdsInit)
 }
 
 export function getPlayerTags(): Tag[] {

@@ -366,7 +366,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         id: "22",
         map: "world",
         title: "Complete Airport Check-in",
-        description: "Prepare for departure by completing the airport check-in process. Access to the gates requires viewing all content checkpoints.",
+        description: "Prepare for departure by completing the airport check-in process. Accessing the gates requires viewing all content checkpoints.",
         coordinates: {
             x: 55,
             y: 13
@@ -797,8 +797,7 @@ export const checkpoints: CheckpointDescriptor[] = [
     },
 ]
 
-export async function initCheckpoints(): Promise<string[]> {
-    const playerCheckpointIds = await getCheckpointIds()
+export async function initCheckpoints(playerCheckpointIds: string[]): Promise<string[]> {
     if (playerCheckpointIds.length > 1) {
         // Existing player
         console.log("Existing player. Checkpoint IDs: ", playerCheckpointIds)
@@ -876,19 +875,19 @@ export function canAccessFrance(playerCheckpointIds: string[]): boolean {
 }
 
 export function canAccessHungary(playerCheckpointIds: string[]): boolean {
-    return playerCheckpointIds.every(id => ["14", "15"].includes(id));
+    return ["14", "15"].every(id => playerCheckpointIds.includes(id));
 }
 
 export function canAccessBelgium(playerCheckpointIds: string[]): boolean {
-    return playerCheckpointIds.every(id => ["16", "17"].includes(id));
+    return ["16", "17"].every(id => playerCheckpointIds.includes(id));
 }
 
 export function canAccessNetherlands(playerCheckpointIds: string[]): boolean {
-    return playerCheckpointIds.every(id => ["18", "19"].includes(id));
+    return ["18", "19"].every(id => playerCheckpointIds.includes(id));
 }
 
 export function canEnterAirport(playerCheckpointIds: string[]): boolean {
-    return playerCheckpointIds.every(id => ["20", "21"].includes(id));
+    return ["20", "21"].every(id => playerCheckpointIds.includes(id));
 }
 
 export function isOnboardingDone(playerCheckpointIds: string[]): boolean {
@@ -1059,10 +1058,10 @@ async function triggerCheckpointAction(checkpointId: string) {
         case "13":
             // Action: Unlock access to France + place next Jonas
             unlockWorldBarrier("france")
-            const playerCheckpointIds2021 = await getCheckpointIds()
-            const checkpoint2021 = checkpoints.find(c => c.id === getNextJonasCheckpointId(playerCheckpointIds2021))
-            if (checkpoint2021) {
-                placeCheckpoint(checkpoint2021)
+            const playerCheckpointIds13 = await getCheckpointIds()
+            const checkpoint13 = checkpoints.find(c => c.id === getNextJonasCheckpointId(playerCheckpointIds13))
+            if (checkpoint13) {
+                placeCheckpoint(checkpoint13)
             }
             break;
 
@@ -1070,28 +1069,40 @@ async function triggerCheckpointAction(checkpointId: string) {
         case "14":
         case "15":
             // Action: Unlock access to Hungary if either 14 or 15 is done
-            unlockWorldBarrier("hungary")
+            const playerCheckpointIds1415 = await getCheckpointIds()
+            if (canAccessHungary(playerCheckpointIds1415)) {
+                unlockWorldBarrier("hungary")
+            }
             break;
     
         // Requirement: Watch RTL+ video 1 or 2
         case "16":
         case "17":
             // Action: Unlock access to Belgium if either 16 or 17 is done
-            unlockWorldBarrier("belgium")
+            const playerCheckpointIds1617 = await getCheckpointIds()
+            if (canAccessBelgium(playerCheckpointIds1617)) {
+                unlockWorldBarrier("belgium")
+            }
             break;
     
         // Requirement: Watch RTL Play video 1 or 2
         case "18":
         case "19":
             // Action: Unlock access to Netherlands if either 18 or 19 is done
-            unlockWorldBarrier("netherlands")
+            const playerCheckpointIds1819 = await getCheckpointIds()
+            if (canAccessNetherlands(playerCheckpointIds1819)) {
+                unlockWorldBarrier("netherlands")
+            }
             break;
     
         // Requirement: Watch Videoland video 1 or 2
         case "20":
         case "21":
             // Action: Unlock access to airport if either 20 or 21 is done
-            unlockWorldBuildingDoor("airport")
+            const playerCheckpointIds2021 = await getCheckpointIds()
+            if (canEnterAirport(playerCheckpointIds2021)) {
+                unlockWorldBuildingDoor("airport")
+            }
             break;
 
         // Requirement: Watch all customers videos

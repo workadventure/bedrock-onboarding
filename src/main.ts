@@ -35,7 +35,7 @@ WA.onInit().then(() => {
             displayChecklistButton()
 
             initDoors(map, playerTags, playerCheckpointIds)
-            initOnboarding()
+            initOnboarding(playerCheckpointIds)
 
             // Load specific map scripts
             if (map === "town") {

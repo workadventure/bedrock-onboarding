@@ -5,8 +5,6 @@ import { type Tag, NewbieTag, canAccessAchievements, canAccessValues, canAccessL
 import { isOnboardingDone, canEnterCaveWorld, canLeaveCaveWorld, canEnterAirport, employees, everyoneButGuests, employeesAndFrenchNewbies } from "./onboarding/checkpoints";
 import { openErrorBanner, closeBanner, DOOR_LOCKED } from "./onboarding/ui";
 
-let isRoofVisible = true
-
 export function initDoors(map: string, playerTags: Tag[], playerCheckpointIds: string[]) {
     if (map === "town") {
         initTownDoors(playerTags, playerCheckpointIds)
@@ -100,8 +98,10 @@ function initTownDoors(playerTags: Tag[], playerCheckpointIds: string[]) {
 }
 
 function listenTownDoor(building: TownBuildingName) {
+    let isRoofVisible = true
     if (townBuildings[building as TownBuildingName].access) {
         WA.room.area.onEnter(`${building}Door`).subscribe(() => {
+            console.log("listenTownDoor() onEnter")
             unlockTownBuildingDoor(building)
             if (isRoofVisible === true) {
                 isRoofVisible = false
@@ -295,8 +295,6 @@ let airportGate: AirportGateAccess =
     { access: false, turnstile: [[52, 11], [52, 12]], lightsY: [[52, 6], [52, 10]], lightsX: [[48, 5], [52, 5]] }
 
 function initWorldDoors(playerCheckpointIds: string[]) {
-    isRoofVisible = false;
-
     // Apply access restrictions based on player checkpoint
     worldBuildings.cave.access = canLeaveCaveWorld(playerCheckpointIds);
     worldBuildings.airport.access = canEnterAirport(playerCheckpointIds);
@@ -324,17 +322,20 @@ function initWorldDoors(playerCheckpointIds: string[]) {
 }
 
 function listenWorldDoor(building: WorldBuildingName) {
+    // The roof is not vivisble by default for the cave
+    // (player starts inside the cave)
+    let isRoofVisible = building !== "cave"
+
     if (worldBuildings[building as WorldBuildingName].access) {
         WA.room.area.onEnter(`${building}Door`).subscribe(() => {
+            console.log("listenWorldDoor() onEnter")
             unlockWorldBuildingDoor(building)
             if (isRoofVisible === true) {
                 isRoofVisible = false
                 WA.room.hideLayer(`roofs/${building}1`)
-                WA.room.hideLayer(`roofs/${building}2`)
             } else {
                 isRoofVisible = true
                 WA.room.showLayer(`roofs/${building}1`)
-                WA.room.showLayer(`roofs/${building}2`)
             }
         })
     } else {
