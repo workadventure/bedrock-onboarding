@@ -46,7 +46,7 @@ export function placeCheckpoint(checkpoint: CheckpointDescriptor) {
 function placeArea(checkpoint: CheckpointDescriptor) {
     console.log(`Placing checkpoint ${checkpoint.id} (area)`)
     const tileSize = 32
-    const areaSize = 96
+    const areaSize = 128
     const tileOriginX = checkpoint.coordinates.x * tileSize
     const tileOriginY = checkpoint.coordinates.y * tileSize
 

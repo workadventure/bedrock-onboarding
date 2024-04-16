@@ -4,9 +4,11 @@ import { CoWebsite, UIWebsite } from "@workadventure/iframe-api-typings";
 import { checkpoints } from "./checkpoints";
 
 let dialogueBox: UIWebsite|null
+let helicopter: UIWebsite|null
 let coWebsite: CoWebsite|null
 let root: string
 export const DOOR_LOCKED = "The door is locked. You are not qualified to enter here."
+let timeoutId: NodeJS.Timeout | null;
 
 WA.onInit().then(() => {
     const mapUrl = WA.room.mapURL
@@ -14,6 +16,7 @@ WA.onInit().then(() => {
 })
 
 export async function openDialogueBox(checkpointId: string) {
+    console.log("openDialogueBox")
     dialogueBox = await WA.ui.website.open({
         url:  root + `/dialogue-box/index.html?id=${checkpointId}`,
         visible: true,
@@ -48,7 +51,11 @@ export function closeWebsite() {
 }
 
 export function openCheckpointBanner(nextCheckpointId: string) {
-    console.log("Display description of checkpoint", nextCheckpointId)
+    console.log("Display banner of checkpoint", nextCheckpointId)
+    console.log("previous timeoutId",timeoutId)
+    // Clear the previous timeout if it exists
+    if (timeoutId) clearTimeout(timeoutId);
+
 
     if (nextCheckpointId === "-1") {
         // If there is no more checkpoints then all checkpoints have been passed!
@@ -69,7 +76,7 @@ export function openCheckpointBanner(nextCheckpointId: string) {
     const delayBeforeDisplayingNextCheckpoint = 30 * 1000
 
     if (checkpoint) {
-        setTimeout(() => {
+        timeoutId = setTimeout(() => {
             WA.ui.banner.openBanner({
                 id: "onboarding-banner",
                 text: `${checkpoint.title}: ${checkpoint.description}`,
@@ -79,6 +86,8 @@ export function openCheckpointBanner(nextCheckpointId: string) {
                 timeToClose: 120000
             });
         }, delayBeforeDisplayingNextCheckpoint)
+
+        console.log(`new timeoutId (${checkpoint.title})`,timeoutId);
     }
 }
 
@@ -113,4 +122,26 @@ export function displayChecklistButton() {
             }, () => WA.ui.modal.closeModal())
         }
     });
+}
+
+export async function displayHelicopterGIF() {
+    helicopter = await WA.ui.website.open({
+        url: `${root}/helicopter.gif`,
+        visible: true,
+        allowApi: false,
+        allowPolicy: "",   // The list of feature policies allowed
+        position: {
+            vertical: "middle",
+            horizontal: "middle",
+        },
+        size: {            // Size on the UI (available units: px|em|%|cm|in|pc|pt|mm|ex|vw|vh|rem and others values auto|inherit)
+            height: "500px",
+            width: "500px",
+        },
+    })
+}
+
+export function removeHelicopterGIF() {
+    console.log("helicopter",helicopter)
+    helicopter?.close()
 }

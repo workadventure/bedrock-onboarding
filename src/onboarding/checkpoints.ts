@@ -1,8 +1,10 @@
 import { type MapName } from "../main"
 import { getPlayerTags } from "./index"
-import { openCheckpointBanner, openErrorBanner, closeBanner, DOOR_LOCKED } from "./ui";
+import { openCheckpointBanner, openErrorBanner, DOOR_LOCKED, openWebsite } from "./ui";
 import { unlockTownCaveDoor, getCaveDoorToOpen, unlockWorldBuildingDoor, unlockWorldBarrier, unlockAirportGate } from "../doors"
 import { placeCheckpoint, processAreas } from "./areas"
+import { travelFromAirportToRooftop } from "../world"
+import { removeDirectionTile, removeNPCTile, teleportJonas } from "./tiles";
 
 export type Tag = "admin" | "br" | "hr" | "ext" | "fr" | "pt" | "alt" | "guest";
 export type NewbieTag = "ext" | "fr" | "pt" | "alt";
@@ -34,8 +36,8 @@ export interface Checklist {
 export const everyone: Tag[] = ["admin", "br", "hr", "ext", "fr", "pt", "alt", "guest"];
 export const everyoneButGuests: Tag[] = ["admin", "br", "hr", "ext", "fr", "pt", "alt"];
 export const employees: Tag[] = ["admin", "br", "hr"];
-//const newbies: NewbieTag[] = ["ext", "fr", "pt", "alt"];
-export const employeesAndFrenchNewbies: Tag[] = [...employees, "fr"]
+export const newbiesAndGuests: Tag[] = ["ext", "fr", "pt", "alt", "guest"];
+export const newbies: NewbieTag[] = ["ext", "fr", "pt", "alt"];
 
 const jonasCheckpointIds = ["2", "6", "13", "23", "24", "31", "32", "33", "36"]
 /**
@@ -383,14 +385,14 @@ export const checkpoints: CheckpointDescriptor[] = [
         title: "Board the Helicopter with Jonas",
         description: "Jonas awaits you near the helicopter for a scenic journey from the airport to the rooftop of the BR Tour.",
         coordinates: {
-            x: 30,
-            y: 7
+            x: 36,
+            y: 15
         },
         type: "NPC",
         npcName: "Jonas",
-        npcSprite: "right",
+        npcSprite: "front",
         message: `Well, well, well! Look who's ready for a unique experience. It's you, and you've earned it. I've been looking forward to this moment. Come, join me. I've got something special planned.
-        You see that helicopter over there? It's not just any helicopter. It's Bedrock's very own flying machine, reserved exclusively for our incredible employees. I figured I wouldn't need it much myself—I can teleport, after all—but I thought it'd be a fun perk for you all.
+        Why an helicopter? It's not just any helicopter. It's Bedrock's very own flying machine, reserved exclusively for our incredible employees. I figured I wouldn't need it much myself—I can teleport, after all—but I thought it'd be a fun perk for you all.
         So, let's hop in and take to the skies. Sit back, relax, and enjoy the view as we soar above the city. From up here, you'll get a whole new perspective on Bedrock and our place in the world.
         Next stop: the Bedrock Tour. Off we go!`,
         tags: everyoneButGuests,
@@ -597,11 +599,11 @@ export const checkpoints: CheckpointDescriptor[] = [
     {
         id: "38",
         map: "town",
-        title: "Enjoy Arcade Games",
-        description: "Visit the Arcade building and enjoy classic games like Pong and Super Mario!",
+        title: "Visit HR",
+        description: "Visiting the HR building!",
         coordinates: {
-            x: 17,
-            y: 104
+            x: 81,
+            y: 67
         },
         type: "direction",
     },
@@ -628,7 +630,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         },
         type: "content",
         url: "https://workadventu.re/?cell=B29",
-        tags: employeesAndFrenchNewbies,
+        tags: ["fr"],
     },
     {
         id: "41",
@@ -641,7 +643,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         },
         type: "content",
         url: "https://workadventu.re/?cell=B30",
-        tags: employeesAndFrenchNewbies,
+        tags: ["fr"],
     },
     {
         id: "42",
@@ -654,7 +656,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         },
         type: "content",
         url: "https://workadventu.re/?cell=B31",
-        tags: employeesAndFrenchNewbies,
+        tags: ["fr"],
     },
     {
         id: "40",
@@ -775,11 +777,11 @@ export const checkpoints: CheckpointDescriptor[] = [
     {
         id: "44",
         map: "town",
-        title: "Visit HR",
-        description: "Visiting the HR building!",
+        title: "Enjoy Arcade Games",
+        description: "Visit the Arcade building and enjoy classic games like Pong and Super Mario!",
         coordinates: {
-            x: 81,
-            y: 67
+            x: 17,
+            y: 104
         },
         type: "direction",
     },
@@ -890,6 +892,10 @@ export function canEnterAirport(playerCheckpointIds: string[]): boolean {
     return ["20", "21"].every(id => playerCheckpointIds.includes(id));
 }
 
+export function canEnterAirportGates(playerCheckpointIds: string[]): boolean {
+    return playerCheckpointIds.includes("22");
+}
+
 export function isOnboardingDone(playerCheckpointIds: string[]): boolean {
     return playerCheckpointIds.includes("34");
 }
@@ -960,8 +966,6 @@ export function saveCheckpointIds(checkpointIds: string[]): void {
 }
 
 export async function passCheckpoint(checkpointId: string) {
-    closeBanner()
-
     const playerCheckpointIds = await getCheckpointIds()
     const checklist = await getChecklist()
 
@@ -988,6 +992,42 @@ async function markCheckpointAsDone(checkpointId: string) {
     checklist[checkpointIdx].done = checkpointIdx !== -1;
 
     saveChecklist(checklist)
+}
+
+// When the dialogue box is closed, this event is fired
+export function registerCloseDialogueBoxListener() {
+    WA.player.state.onVariableChange('closeDialogueBoxEvent').subscribe(async (value) => {
+        const checkpoint = value as CheckpointDescriptor|null
+        if (checkpoint) {
+            console.log('Variable "closeDialogueBoxEvent" changed. New value: ', checkpoint);
+            // If the NPC has a content to show after the dialogue box is closed, open the content
+            if (checkpoint.url) {
+                console.log("Open URL",checkpoint.url)
+                openWebsite(checkpoint.url)
+            }
+        
+            // If it's Jonas, remove its area and teleport him
+            if (checkpoint.npcName === "Jonas") {
+                WA.room.area.delete(checkpoint.id)
+        
+                // Don't teleport Jonas if it's the one at the airport (checkpoint 23)
+                if (checkpoint.id === "23") {
+                    console.log("Remove Jonas")
+                    removeNPCTile(checkpoint)
+                } else {
+                    console.log("Teleport Jonas")
+                    teleportJonas(checkpoint.coordinates.x, checkpoint.coordinates.y)
+                }
+            } else if (checkpoint.type === "direction") {
+                console.log("Remove direction area and tile")
+                WA.room.area.delete(checkpoint.id)
+                removeDirectionTile(checkpoint)
+            }
+        
+            console.log("checkpoint.id",checkpoint.id)
+            await passCheckpoint(checkpoint.id)
+        }
+    });
 }
 
 async function triggerCheckpointAction(checkpointId: string) {
@@ -1105,7 +1145,7 @@ async function triggerCheckpointAction(checkpointId: string) {
             }
             break;
 
-        // Requirement: Watch all customers videos
+        // Requirement: Talk with check-in guy
         case "22":
             // Action: Unlock airport boarding gate
             unlockAirportGate()
@@ -1113,7 +1153,8 @@ async function triggerCheckpointAction(checkpointId: string) {
 
         // Requirement: Talk with Jonas near the Helicopter
         case "23":
-            // Action: Don't teleport Jonas + Fly to the BR Tour rooftop
+            // Action: Fly to the BR Tour rooftop
+            await travelFromAirportToRooftop()
             break;
 
         // Requirement: Talk with Jonas on the BR Tour rooftop

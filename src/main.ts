@@ -8,11 +8,11 @@ import { initWorld } from "./world";
 import { initOnboarding } from "./onboarding/index";
 import { displayChecklistButton } from "./onboarding/ui";
 import { initDoors } from "./doors";
-import { getCheckpointIds, type Tag, everyone, saveCheckpointIds } from "./onboarding/checkpoints";
+import { getCheckpointIds, type Tag, everyone, saveCheckpointIds, employees, registerCloseDialogueBoxListener } from "./onboarding/checkpoints";
 
 export type MapName = "town" | "world";
 
-WA.onInit().then(() => {
+WA.onInit().then(async () => {
     console.log('Scripting API ready');
     
     const playerTags = WA.player.tags as Tag[]
@@ -24,24 +24,30 @@ WA.onInit().then(() => {
         console.log('Scripting API Extra ready');
         const map = WA.state.map as MapName
         const playerCheckpointIds = await getCheckpointIds()
+        registerCloseDialogueBoxListener()
 
         if (hasMatchingTag) {
-            // TODO: uncomment when this method is in prod
-            // WA.controls.disableMapEditor();
-            // WA.controls.disableScreenSharing();
-            // WA.controls.disableWheelZoom();
-            // WA.controls.disableScreenSharing();
-            // WA.controls.disableInviteButton();
-            displayChecklistButton()
-
+            // WA.controls.disableInviteButton();        
             initDoors(map, playerTags, playerCheckpointIds)
-            initOnboarding(playerCheckpointIds)
+
+            // Prevent starting the onboarding if employee
+            // TODO: uncomment/comment the condition if you need to test the onboarding process locally
+            //if (!playerTags.some(tag => employees.includes(tag))) {
+                // TODO: uncomment when this method is in prod
+                // WA.controls.disableMapEditor();
+                // WA.controls.disableScreenSharing();
+                // WA.controls.disableWheelZoom();
+                // WA.controls.disableScreenSharing();
+                displayChecklistButton()
+
+                initOnboarding(playerCheckpointIds)
+            //}
 
             // Load specific map scripts
             if (map === "town") {
                 initTown()
             } else if (map === "world") {
-                initWorld(playerCheckpointIds)
+                initWorld(playerTags, playerCheckpointIds)
             }
        
         } else {
@@ -55,7 +61,7 @@ WA.onInit().then(() => {
             initDoors(map, playerTags, playerCheckpointIds)
         }
 
-        // TMP: add button o change progress just for dev
+        // TODO: Remove this after (add button to change progress just for debug)
         if (WA.player.name === "Valdo") {
             WA.ui.actionBar.addButton({
                 id: 'start',
@@ -82,7 +88,7 @@ WA.onInit().then(() => {
                 id: 'airport',
                 label: 'Airport',
                 callback: () => {
-                    saveCheckpointIds(Array.from({ length: 23 }, (_, index) => (index + 1).toString()))
+                    saveCheckpointIds(Array.from({ length: 22 }, (_, index) => (index + 1).toString()))
                 }
             });
             WA.ui.actionBar.addButton({

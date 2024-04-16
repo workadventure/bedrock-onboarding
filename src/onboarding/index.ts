@@ -1,6 +1,6 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-import { Tag, initCheckpoints } from "./checkpoints";
+import { type Tag, initCheckpoints } from "./checkpoints";
 import { processAreas } from "./areas";
 import { MapName } from "../main";
 

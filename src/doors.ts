@@ -1,15 +1,33 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
 import { ActionMessage, TileDescriptor } from "@workadventure/iframe-api-typings";
-import { type Tag, NewbieTag, canAccessAchievements, canAccessValues, canAccessLegal, canAccessBridge, canAccessFrance, canAccessHungary, canAccessBelgium, canAccessNetherlands } from "./onboarding/checkpoints";
-import { isOnboardingDone, canEnterCaveWorld, canLeaveCaveWorld, canEnterAirport, employees, everyoneButGuests, employeesAndFrenchNewbies } from "./onboarding/checkpoints";
+import {
+    type Tag,
+    type NewbieTag,
+    employees,
+    everyoneButGuests,
+    canEnterCaveWorld,
+    canLeaveCaveWorld,
+    canAccessAchievements,
+    canAccessValues,
+    canAccessLegal,
+    canAccessBridge,
+    canAccessFrance,
+    canAccessHungary,
+    canAccessBelgium,
+    canAccessNetherlands,
+    canEnterAirport,
+    canEnterAirportGates,
+    isOnboardingDone,
+} from "./onboarding/checkpoints";
+import { getTilesByRectangleCorners } from "./onboarding/tiles";
 import { openErrorBanner, closeBanner, DOOR_LOCKED } from "./onboarding/ui";
 
 export function initDoors(map: string, playerTags: Tag[], playerCheckpointIds: string[]) {
     if (map === "town") {
         initTownDoors(playerTags, playerCheckpointIds)
     } else if (map === "world") {
-        initWorldDoors(playerCheckpointIds)
+        initWorldDoors(playerTags, playerCheckpointIds)
     }
 }
 /*
@@ -68,17 +86,20 @@ function initTownDoors(playerTags: Tag[], playerCheckpointIds: string[]) {
         townBuildings.wikitek.access = hasAccessToAll;
         townBuildings.backstage.access = hasAccessToAll;
 
+        if (canEnterCaveWorld(playerCheckpointIds)) {
+            townCaveProfileDoors.alt.access = playerTags.includes("alt");
+            townCaveProfileDoors.fr.access = playerTags.includes("fr");
+            townCaveProfileDoors.ext.access = playerTags.includes("ext");
+            townCaveProfileDoors.pt.access = playerTags.includes("pt");
+        }
+
+        // unlock all doors if employee
         if (playerTags.some(tag => employees.includes(tag))) {
+            console.log("Open all town doors")
             Object.keys(townBuildings).forEach(building => {
                 townBuildings[building as TownBuildingName].access = true;
             });
-        }
-
-        if (canEnterCaveWorld(playerCheckpointIds)) {
-            townCaveProfileDoors.alt.access = playerTags.includes("alt");
-            townCaveProfileDoors.fr.access = playerTags.some(tag => employeesAndFrenchNewbies.includes(tag))
-            townCaveProfileDoors.ext.access = playerTags.includes("ext");
-            townCaveProfileDoors.pt.access = playerTags.includes("pt");
+            townCaveProfileDoors.fr.access = true;
         }
     }
 
@@ -246,7 +267,7 @@ export function getCaveDoorToOpen(playerTags: Tag[]): NewbieTag|null {
     // get the cave door to open depending on the player tags (for external use)
     let door: NewbieTag | null = null
     
-    if (playerTags.some(tag => employees.includes(tag))) {
+    if (playerTags.includes("fr")) {
         door = "fr"
     } else if (playerTags.includes("alt")) {
         door = "alt"
@@ -294,7 +315,7 @@ type AirportGateAccess = { access: boolean, turnstile: [number, number][], light
 let airportGate: AirportGateAccess = 
     { access: false, turnstile: [[52, 11], [52, 12]], lightsY: [[52, 6], [52, 10]], lightsX: [[48, 5], [52, 5]] }
 
-function initWorldDoors(playerCheckpointIds: string[]) {
+function initWorldDoors(playerTags: Tag[], playerCheckpointIds: string[]) {
     // Apply access restrictions based on player checkpoint
     worldBuildings.cave.access = canLeaveCaveWorld(playerCheckpointIds);
     worldBuildings.airport.access = canEnterAirport(playerCheckpointIds);
@@ -308,13 +329,28 @@ function initWorldDoors(playerCheckpointIds: string[]) {
     worldBarriers.belgium.access = canAccessBelgium(playerCheckpointIds);
     worldBarriers.netherlands.access = canAccessNetherlands(playerCheckpointIds);
 
-    airportGate.access = canEnterAirport(playerCheckpointIds);
+    airportGate.access = canEnterAirportGates(playerCheckpointIds);
+
+    // unlock all doors if employee
+    if (playerTags.some(tag => employees.includes(tag))) {
+        console.log("Open all world doors")
+        Object.keys(worldBuildings).forEach(building => {
+            worldBuildings[building as WorldBuildingName].access = true;
+        });
+        Object.keys(worldBarriers).forEach(building => {
+            worldBarriers[building as WorldBarrierName].access = true;
+        });
+
+        airportGate.access = true;
+    }
 
     listenWorldDoor('cave')
     listenWorldDoor('airport')
 
     unlockWorldBarriers()
-    unlockAirportGate()
+    if (airportGate.access) {
+        unlockAirportGate()
+    }
 
     console.log("worldBuildings",worldBuildings)
     console.log("worldBarriers",worldBarriers)
@@ -399,7 +435,6 @@ function unlockWorldBarriers() {
         }
     });
 
-    console.log("tiles",tiles)
     // Remove the tiles for the accessible barriers
     WA.room.setTiles(tiles);
 }
@@ -416,59 +451,38 @@ export function unlockWorldBarrier(barrier: WorldBarrierName) {
         layer: "walls/walls1"
     }));
 
-    console.log("tiles",tiles)
-
     WA.room.setTiles(tiles);
 }
 
 export function unlockAirportGate() {
-    if (airportGate.access) {
-        const turnstileTilesCoordinates = getTilesByRectangleCorners(airportGate.turnstile[0], airportGate.turnstile[1])
-        const lightsYTilesCoordinates = getTilesByRectangleCorners(airportGate.lightsY[0], airportGate.lightsY[1])
-        const lightsXTilesCoordinates = getTilesByRectangleCorners(airportGate.lightsX[0], airportGate.lightsX[1])
-    
-    
-        const turnstileTiles = turnstileTilesCoordinates.map(([xCoord, yCoord], index) => ({
-            x: xCoord,
-            y: yCoord,
-            tile: `airport-turnstile-open-${index+1}`,
-            layer: "furniture/furniture3"
-        }));
-        const lightsYTiles = lightsYTilesCoordinates.map(([xCoord, yCoord], index) => ({
-            x: xCoord,
-            y: yCoord,
-            tile: `floor-light-y-${index + 1}`,
-            layer: "furniture/furniture1"
-        }));
-        const lightsXTiles = lightsXTilesCoordinates.map(([xCoord, yCoord], index) => ({
-            x: xCoord,
-            y: yCoord,
-            tile: `floor-light-x-${index + 1}`,
-            layer: "furniture/furniture1"
-        }));
-        
-        // Combine turnstile, vertical and horizontal lights into one array in order to open the gate
-        const combinedTiles = [...turnstileTiles, ...lightsYTiles, ...lightsXTiles];
-        WA.room.setTiles(combinedTiles);
-    }
-}
+    console.log("unlockAirportGate()")
+    const turnstileTilesCoordinates = getTilesByRectangleCorners(airportGate.turnstile[0], airportGate.turnstile[1])
+    // FIXME: Tiles are not all placed at the same time so better skip this anim for now
+    // TODO: remove if no fix is found
+    //const lightsYTilesCoordinates = getTilesByRectangleCorners(airportGate.lightsY[0], airportGate.lightsY[1])
+    //const lightsXTilesCoordinates = getTilesByRectangleCorners(airportGate.lightsX[0], airportGate.lightsX[1])
 
-/*
-********************************************* Utils *********************************************
-*/
-// Generates in-between range of tiles coordinates from top-left and bottom-right coordinates
-function getTilesByRectangleCorners(topLeft: number[], bottomRight: number[]): number[][] {
-    const tiles = [];
-    const [topLeftX, topLeftY] = topLeft;
-    const [bottomRightX, bottomRightY] = bottomRight;
-
-    // Iterate over the rows first
-    for (let y = topLeftY; y <= bottomRightY; y++) {
-        // Then iterate over the columns
-        for (let x = topLeftX; x <= bottomRightX; x++) {
-            // Add the current tile coordinates to the tiles array
-            tiles.push([x, y]);
-        }
-    }
-    return tiles;
+    const turnstileTiles = turnstileTilesCoordinates.map(([xCoord, yCoord], index) => ({
+        x: xCoord,
+        y: yCoord,
+        tile: `airport-turnstile-open-${index+1}`,
+        layer: "furniture/furniture3"
+    }));
+    // const lightsYTiles = lightsYTilesCoordinates.map(([xCoord, yCoord], index) => ({
+    //     x: xCoord,
+    //     y: yCoord,
+    //     tile: `floor-light-y-${index + 1}`,
+    //     layer: "furniture/furniture1"
+    // }));
+    // const lightsXTiles = lightsXTilesCoordinates.map(([xCoord, yCoord], index) => ({
+    //     x: xCoord,
+    //     y: yCoord,
+    //     tile: `floor-light-x-${index + 1}`,
+    //     layer: "furniture/furniture1"
+    // }));
+    
+    // Combine turnstile, vertical and horizontal lights into one array in order to open the gate
+    //const combinedTiles = [...turnstileTiles, ...lightsYTiles, ...lightsXTiles];
+    const combinedTiles = turnstileTiles
+    WA.room.setTiles(combinedTiles);
 }

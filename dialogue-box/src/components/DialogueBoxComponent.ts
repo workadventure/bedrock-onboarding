@@ -1,8 +1,6 @@
 import { AvatarComponent } from './AvatarComponent';
 import { MessageComponent } from './MessageComponent';
-import { CheckpointDescriptor, passCheckpoint } from '../../../src/onboarding/checkpoints';
-import { removeDirectionTile, teleportJonas } from "../../../src/onboarding/tiles";
-import { openWebsite } from "../../../src/onboarding/ui";
+import { CheckpointDescriptor } from '../../../src/onboarding/checkpoints';
 
 interface DialogueBoxProps {
     checkpoint: CheckpointDescriptor;
@@ -29,29 +27,20 @@ export class DialogueBoxComponent implements DialogueBoxProps {
 
         this.setupDOM();
 
-        // This event will be triggered from the pagination logic (when the 'Close' button is clicked)
-        document.addEventListener('destroy', () => {
-            this.dialogueContainer.remove();
+        // This event is triggered from the pagination logic (when the 'Close' button is clicked)
+        document.addEventListener('destroy', async () => {
+            await WA.player.state.saveVariable("closeDialogueBoxEvent", this.checkpoint, {
+                public: false,
+                persist: false,
+                scope: "room",
+            });
 
-            // If the NPC has a content to show after the dialogue box is closed, open the content
-            if (this.checkpoint.url) {
-                console.log("Open URL",this.checkpoint.url)
-                openWebsite(this.checkpoint.url)
+            // get current iframe ID
+            const websiteId = WA.iframeId;
+            if (websiteId) {
+                const website = await WA.ui.website.getById(websiteId);
+                website?.close()
             }
-
-            // If it's Jonas, remove its area and teleport him
-            if (this.checkpoint.npcName === "Jonas") {
-                console.log("Teleport Jonas")
-                WA.room.area.delete(this.checkpoint.id)
-                teleportJonas(this.checkpoint.coordinates.x, this.checkpoint.coordinates.y)
-            } else if (this.checkpoint.type === "direction") {
-                console.log("Remove direction area and tile")
-                WA.room.area.delete(this.checkpoint.id)
-                removeDirectionTile(this.checkpoint)
-            }
-
-            console.log("this.checkpoint.id",this.checkpoint.id)
-            passCheckpoint(this.checkpoint.id)
         });
     }
 

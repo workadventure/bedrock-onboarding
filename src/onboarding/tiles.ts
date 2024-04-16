@@ -44,6 +44,7 @@ function placeContentTile(checkpoint: CheckpointDescriptor) {
 
 
     if (isCheckpointJonasPhone(checkpoint.id)) {
+        // place smartphone above content tile
         WA.room.setTiles([
             {
                 x: checkpoint.coordinates.x,
@@ -53,6 +54,17 @@ function placeContentTile(checkpoint: CheckpointDescriptor) {
             },
         ])
     }
+}
+
+export function removeNPCTile(checkpoint: CheckpointDescriptor) {
+    WA.room.setTiles([
+        {
+            x: checkpoint.coordinates.x,
+            y: checkpoint.coordinates.y,
+            tile: null,
+            layer: "furniture/furniture3"
+        },
+    ])
 }
 
 export function removeContentTile(checkpoint: CheckpointDescriptor) {
@@ -66,6 +78,7 @@ export function removeContentTile(checkpoint: CheckpointDescriptor) {
     ])
 
     if (isCheckpointJonasPhone(checkpoint.id)) {
+        // remove smartphone
         WA.room.area.delete(checkpoint.id)
         WA.room.setTiles([
             {
@@ -168,4 +181,21 @@ function animateTeleportHalo(xCoord: number, yCoord: number) {
         }))
         WA.room.setTiles(noTiles)
     }, animationDuration)
+}
+
+// Generates in-between range of tiles coordinates from top-left and bottom-right coordinates
+export function getTilesByRectangleCorners(topLeft: number[], bottomRight: number[]): number[][] {
+    const tiles = [];
+    const [topLeftX, topLeftY] = topLeft;
+    const [bottomRightX, bottomRightY] = bottomRight;
+
+    // Iterate over the rows first
+    for (let y = topLeftY; y <= bottomRightY; y++) {
+        // Then iterate over the columns
+        for (let x = topLeftX; x <= bottomRightX; x++) {
+            // Add the current tile coordinates to the tiles array
+            tiles.push([x, y]);
+        }
+    }
+    return tiles;
 }
