@@ -2,6 +2,7 @@
 
 import { CoWebsite, UIWebsite } from "@workadventure/iframe-api-typings";
 import { checkpoints } from "../Data/Checkpoints";
+import { isURL } from "../Helpers/UI";
 
 export const DOOR_LOCKED = "The door is locked. You are not qualified to enter here."
 
@@ -48,9 +49,8 @@ export function closeDialogueBox() {
 }
 
 export async function openWebsite(url: string) {
-    // TODO: use 'url' when all content is defined.
-    console.log("TMP: We should have open:",url)
-    coWebsite = await WA.nav.openCoWebSite("https://workadventu.re/")
+    const finalUrl = isURL(url) ? url : `${root}/content/${url}`
+    coWebsite = await WA.nav.openCoWebSite(finalUrl)
 }
 
 export function closeWebsite() {

@@ -87,7 +87,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         npcName: "Jonas",
         npcSprite: "front",
         message: `Ah, there you are! Ready to venture further into the world of Bedrock? Let me provide you with some additional guidance as you prepare to explore beyond the cave.`,
-        url: "https://drive.google.com/file/d/14xQEkRCnBRTkwCh1b4JpDmo_ejJX9Lz5/view?usp=sharing",
+        url: "https://www.youtube.com/embed/Ld2Xg1L7Dng",
         tags: everyoneButGuests,
     },
     {
@@ -100,7 +100,7 @@ export const checkpoints: CheckpointDescriptor[] = [
             y: 178
         },
         type: "content",
-        url: "https://drive.google.com/file/d/17kxTBaUItYcfJbKSAa1CAHDU3v6UlxUE/view?usp=sharing",
+        url: "https://www.youtube.com/embed/_ilLJY_JdCw",
         tags: everyoneButGuests,
     },
     {
@@ -128,7 +128,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         npcName: "Aria",
         npcSprite: "front",
         message: `Greetings, traveler! I'm Aria, here to share with you the rich history of Bedrock. From our humble beginnings to our current endeavors, there's much to learn about our journey. Let me regale you with tales of our past. Check out this document to learn more!`,
-        url: "https://drive.google.com/file/d/1j3LgdBTNldFPWhBUPOGwBLY--xO7cId0/view?usp=sharing",
+        url: "9_History.pdf",
         tags: everyoneButGuests,
     },
     {
@@ -144,7 +144,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         npcName: "Murielle",
         npcSprite: "front",
         message: `Hello there! I'm Murielle, and I'm excited to tell you about the incredible achievements of Bedrock. Our journey has been filled with milestones and successes that have shaped who we are today. Let's celebrate our accomplishments together! Check out this video of the BR Day!`,
-        url: "https://drive.google.com/open?id=1PKex-OnTEKfJbzPTqEeCxZOK1DysrMV9&usp=drive_fs",
+        url: "https://www.youtube.com/embed/91d_nNvooVI",
         tags: everyoneButGuests,
     },
     {
@@ -160,7 +160,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         npcName: "Charlie",
         npcSprite: "left",
         message: `Hey, nice to meet you! I'm Charlie, and I'm here to talk to you about the core values that drive Bedrock. Our values are at the heart of everything we do, guiding us as we work towards our goals. Let's dive into what makes us tick. Check out this document to learn more!`,
-        url: "https://drive.google.com/file/d/1ipdSh7YJ99YCjYrbnbUUyoTrv5ppT9oL/view?usp=sharing",
+        url: "11_Values.pdf",
         tags: everyoneButGuests,
     },
     {
@@ -176,7 +176,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         npcName: "Diana",
         npcSprite: "front",
         message: `Greetings, adventurer! I'm Diana, and I'm here to shed some light on the legal side of Bedrock. Understanding our legal structure and organizational setup is crucial for transparency and compliance. Let's explore this together. Check out this document to learn more!`,
-        url: "https://workadventu.re/?cell=J60",
+        url: "12_Legal.pdf",
         tags: everyoneButGuests,
     },
     {
@@ -192,9 +192,13 @@ export const checkpoints: CheckpointDescriptor[] = [
         npcName: "Jonas",
         npcSprite: "front",
         message: `Ah, I see you've made it this far! Excellent. I've been meaning to thank you for bringing me my phone. Seems I dropped it during my last teleportation. Thank you for returning it. Now, back to business—there's much to discuss about our journey ahead.
-        Before you cross that bridge, I want to share something crucial about Bedrock. You see, our customers are not just clients; they're partners, and they play a significant role in defining who we are. Our collaborations across the globe not only reflect our reach but also our commitment to delivering exceptional service and innovation.
-        Pride in our work and our partners is a core part of our identity. It's something that you'll find deeply ingrained in every project, every team, and every success story at Bedrock. This is why, just beyond this bridge, you'll embark on a unique journey through four countries: France, Hungary, Belgium, and the Netherlands. Each of these represents a cornerstone of our customer base, showcasing the diverse and impactful work we've achieved together.
-        Off you go, and enjoy the journey through our global footprint!`,
+        Before you cross that bridge, I want to share something crucial about Bedrock:
+        Bedrock builds and powers end-to-end streaming services for leading media companies, with best-in-class user experience across avod, svod and hybrid business models and devices with deep broadcast roots.
+        We deliver on demand video, linear channels and live sports.
+        Our vision is to be on par with (or better than) the global players so that our partners can engage and entertain their users in the same professional way.
+        You see, our customers are not just clients; they're partners, and they play a significant role in defining who we are. Our collaborations not only reflect our reach but also our commitment to delivering exceptional service and innovation.
+        Pride in our work and our partners is a core part of our identity. It's something that you'll find deeply ingrained in every project, every team, and every success story at Bedrock. This is why, just beyond this bridge, you'll embark on a unique journey through four countries: France, Hungary, Belgium, and the Netherlands.
+        Each of these represents a cornerstone of our customer base, showcasing the diverse and impactful work we've achieved together. Off you go, and enjoy the journey through our global footprint!`,
         tags: everyoneButGuests,
     },
     {
@@ -210,7 +214,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         npcName: "Pierre",
         npcSprite: "front",
         message: `Hello! My name is Pierre. Welcome to Paris, and welcome to the world of Bedrock. Allow me to introduce you to our partnership with 6play, France's premier streaming service. Let's explore together, shall we? Check out this video to learn more!`,
-        url: "https://drive.google.com/file/d/14sL8VNlrI-sX4sOvf963G3WsgvIVKMN5/view?usp=sharing",
+        url: "https://www.youtube.com/embed/ZJvKCVJN8b4",
         tags: everyoneButGuests,
     },
     {
@@ -226,7 +230,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         npcName: "Emilie",
         npcSprite: "front",
         message: `Hi there! I'm Emilie, and I'm thrilled to share more about our collaboration with 6play. We've got some exciting things in store for you, so let's dive right in and discover what makes 6play unique. Check out this video to learn more!`,
-        url: "https://drive.google.com/file/d/1g6WcLd04VLuxitxvBOlBrd0xx1LIBI9u/view?usp=sharing",
+        url: "https://www.youtube.com/embed/tZb-XhkAn4Q",
         tags: everyoneButGuests,
     },
     {
@@ -242,7 +246,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         npcName: "Eva",
         npcSprite: "front",
         message: `Hi! I'm Eva, and I'm here to talk to you about our partnership with RTL+. Get ready for an adventure as we explore the world of Hungarian streaming together. Check out this video to learn more!`,
-        url: "https://drive.google.com/file/d/14uROluBfmphPszUB0-4MtcjCJxn1tH9_/view?usp=sharing",
+        url: "https://www.youtube.com/embed/eVbLx5ghvF4",
         tags: everyoneButGuests,
     },
     {
@@ -258,7 +262,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         npcName: "Gabor",
         npcSprite: "front",
         message: `Hello! I'm Gabor, and I'm excited to tell you more about RTL+. Hungary's streaming scene is buzzing with excitement, and we're proud to be a part of it. Let's uncover the magic of RTL+. Check out this video to learn more!`,
-        url: "https://drive.google.com/open?id=1BZgxdihlRBZ289dc4EiJNPbnBjdZxhtv&usp=drive_fs",
+        url: "https://www.youtube.com/embed/3noqlEEAIy4",
         tags: everyoneButGuests,
     },
     {
@@ -274,7 +278,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         npcName: "Luc",
         npcSprite: "front",
         message: `Hello there! I'm Luc, and I'm here to showcase Bedrock's collaboration with RTL Play. From Belgium to the world, let's explore the wonders of streaming together. Check out this video to learn more!`,
-        url: "https://drive.google.com/file/d/1j5_133tmosFpBHL2CXj3CqPGX9YwPp-h/view?usp=sharing",
+        url: "https://www.youtube.com/embed/qlFus49BGvg",
         tags: everyoneButGuests,
     },
     {
@@ -290,7 +294,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         npcName: "Emma",
         npcSprite: "front",
         message: `Hey! I'm Emma, and I'm thrilled to share more about RTL Play with you. Belgium's streaming landscape is diverse and vibrant, and we're at the heart of it. Let's dive in and discover what makes RTL Play special. Check out this video to learn more!`,
-        url: "https://drive.google.com/file/d/14uqHR0Ri8W4tuXzswBjRVA8HztOOMvpO/view?usp=sharing",
+        url: "https://www.youtube.com/embed/E3MfccMX6R4",
         tags: everyoneButGuests,
     },
     {
@@ -306,7 +310,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         npcName: "Hans",
         npcSprite: "front",
         message: `Hi! I'm Hans, and I'm here to talk to you about Videoland. Get ready for an immersive experience as we explore the world of Dutch streaming together. Check out this video to learn more!`,
-        url: "https://drive.google.com/file/d/14uUahKs0pwveQ5UrzL4QdoS2ee8rJv_H/view?usp=sharing",
+        url: "https://www.youtube.com/embed/McR3oR6C1ZQ",
         tags: everyoneButGuests,
     },
     {
@@ -322,7 +326,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         npcName: "Ingrid",
         npcSprite: "front",
         message: `Hi there! I'm Ingrid, and I'm excited to tell you more about Videoland. The Netherlands is home to a wealth of streaming content, and we're here to bring it to you. Let's embark on this journey together. Check out this document to learn more!`,
-        url: "https://drive.google.com/open?id=1BflS6L3E6OnPTfED_5igHaEiwyFDhjTR&usp=drive_fs",
+        url: "https://www.youtube.com/embed/1d56o9IOnGE",
         tags: everyoneButGuests,
     },
     {
@@ -387,7 +391,12 @@ export const checkpoints: CheckpointDescriptor[] = [
         type: "NPC",
         npcName: "Christine",
         npcSprite: "left",
-        message: `Greetings! I'm Christine, the CHRO of Bedrock. Join me as we explore the vital role of Human Resources in our company's success. Let's dive into the world of HR together. Check out this document to learn more!`,
+        message: `Welcome to Bedrock!
+        As Chief Human Resources Officer my role is to support the development of our employees by implementing human resources policies in line with the company’s strategic orientations.
+        By joining the Bedrock adventure you integrate an international and innovative company building the standards of streaming technologies where kindness is the watchword.
+        To help you navigate our environment you will find in the following steps of your onboarding some useful information on our organization, HR policy or even the office life and contacts.
+        Do not hesitate to reach out to the HR team if you have any further questions.
+        Looking forward to meeting you !`,
         tags: everyoneButGuests,
     },
     {
@@ -400,7 +409,7 @@ export const checkpoints: CheckpointDescriptor[] = [
             y: 129
         },
         type: "content",
-        url: "https://drive.google.com/file/d/1jWuojTxm6FkXxdvm3KU0wCvLu9PGGOwY/view?usp=sharing",
+        url: "26_Departments.pdf",
         tags: everyoneButGuests,
     },
     {
@@ -413,7 +422,7 @@ export const checkpoints: CheckpointDescriptor[] = [
             y: 137
         },
         type: "content",
-        url: "https://workadventu.re/?cell=J72",
+        url: "https://www.youtube.com/embed/B-OxhHvgInk",
         tags: everyoneButGuests,
     },
     {
@@ -445,7 +454,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         npcName: "Julie",
         npcSprite: "front",
         message: `Hey there! I'm Julie, and I'm excited to give you a virtual tour of Bedrock's office spaces. From cozy meeting rooms to vibrant break areas, we've got everything you need for a productive work environment. Let me show you around! Check out this document to learn more!`,
-        url: "https://workadventu.re/?cell=J74",
+        url: "https://www.youtube.com/embed/Rqn-V-C0VwE",
         tags: everyoneButGuests,
     },
     {
@@ -515,7 +524,7 @@ export const checkpoints: CheckpointDescriptor[] = [
             y: 43
         },
         type: "content",
-        url: "https://workadventu.re/?cell=J75",
+        url: "https://www.youtube.com/embed/_8jMD0yyD8A",
         tags: everyoneButGuests,
     },
     {
@@ -590,7 +599,7 @@ export const checkpoints: CheckpointDescriptor[] = [
             y: 101
         },
         type: "content",
-        url: "https://workadventu.re/?cell=B29",
+        url: "40_Contacts_FR.pdf",
         tags: ["fr"],
     },
     {
@@ -603,7 +612,7 @@ export const checkpoints: CheckpointDescriptor[] = [
             y: 100
         },
         type: "content",
-        url: "https://workadventu.re/?cell=B30",
+        url: "https://bedrockstreaming.atlassian.net/wiki/spaces/HID/pages/1478590621/Mes+Outils+RH",
         tags: ["fr"],
     },
     {
@@ -616,7 +625,7 @@ export const checkpoints: CheckpointDescriptor[] = [
             y: 100
         },
         type: "content",
-        url: "https://workadventu.re/?cell=B31",
+        url: "42_HR_FR.pdf",
         tags: ["fr"],
     },
     {
@@ -629,7 +638,7 @@ export const checkpoints: CheckpointDescriptor[] = [
             y: 101
         },
         type: "content",
-        url: "https://workadventu.re/?cell=C29",
+        url: "43_Contacts_PT.pdf",
         tags: ["pt"]
     },
     {
@@ -655,7 +664,7 @@ export const checkpoints: CheckpointDescriptor[] = [
             y: 100
         },
         type: "content",
-        url: "https://workadventu.re/?cell=C31",
+        url: "45_HR_PT.pdf",
         tags: ["pt"]
     },
     {
@@ -668,7 +677,7 @@ export const checkpoints: CheckpointDescriptor[] = [
             y: 101
         },
         type: "content",
-        url: "https://workadventu.re/?cell=D29",
+        url: "46_HR_ALT.pdf",
         tags: ["alt"]
     },
     {
@@ -681,7 +690,7 @@ export const checkpoints: CheckpointDescriptor[] = [
             y: 100
         },
         type: "content",
-        url: "https://workadventu.re/?cell=D30",
+        url: "https://view.genial.ly/65113d540b1729001198b6d5",
         tags: ["alt"]
     },
     {
@@ -694,7 +703,7 @@ export const checkpoints: CheckpointDescriptor[] = [
             y: 100
         },
         type: "content",
-        url: "https://workadventu.re/?cell=D31",
+        url: "48_HR_ALT.pdf",
         tags: ["alt"]
     },
     {
@@ -707,7 +716,7 @@ export const checkpoints: CheckpointDescriptor[] = [
             y: 101
         },
         type: "content",
-        url: "https://workadventu.re/?cell=E29",
+        url: "49_Contacts_EXT.pdf",
         tags: ["ext"]
     },
     {
@@ -756,7 +765,7 @@ export const checkpoints: CheckpointDescriptor[] = [
             y: 93
         },
         type: "content",
-        url: "https://workadventu.re/?cell=X",
+        url: "https://tech.bedrockstreaming.com/",
     },
 ]
 

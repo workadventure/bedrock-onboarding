@@ -35,7 +35,7 @@ WA.onInit().then(async () => {
 
             // Prevent starting the onboarding if employee
             // TODO: uncomment/comment the condition if you need to test the onboarding process locally
-            if (!playerTags.some(tag => employees.includes(tag))) {
+            //if (!playerTags.some(tag => employees.includes(tag))) {
                 // TODO: uncomment when this method is in prod
                 // WA.controls.disableMapEditor();
                 // WA.controls.disableScreenSharing();
@@ -45,7 +45,7 @@ WA.onInit().then(async () => {
 
                 const playerCheckpointIdsInit = await initCheckpoints(playerCheckpointIds)
                 processAreas(playerCheckpointIdsInit)
-            }
+            //}
 
             // Load specific map scripts
             if (map === "town") {
