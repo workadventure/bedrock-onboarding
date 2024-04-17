@@ -1,19 +1,26 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
 import { CoWebsite, UIWebsite } from "@workadventure/iframe-api-typings";
-import { checkpoints } from "./checkpoints";
+import { checkpoints } from "../Data/Checkpoints";
+
+export const DOOR_LOCKED = "The door is locked. You are not qualified to enter here."
 
 let dialogueBox: UIWebsite|null
 let helicopter: UIWebsite|null
 let coWebsite: CoWebsite|null
-let root: string
-export const DOOR_LOCKED = "The door is locked. You are not qualified to enter here."
-let timeoutId: NodeJS.Timeout | null;
 
-WA.onInit().then(() => {
-    const mapUrl = WA.room.mapURL
-    root = mapUrl.substring(0, mapUrl.lastIndexOf("/"))
-})
+let root: string
+
+export async function initRootURL() {
+    console.log("initRootURL", root)
+    await WA.onInit().then(() => {
+        console.log("onInit", root)
+        const mapUrl = WA.room.mapURL
+        console.log("mapUrl", mapUrl)
+        root = mapUrl.substring(0, mapUrl.lastIndexOf("/"))
+        console.log("root", root)
+    })
+}
 
 export async function openDialogueBox(checkpointId: string) {
     console.log("openDialogueBox")
@@ -52,10 +59,6 @@ export function closeWebsite() {
 
 export function openCheckpointBanner(nextCheckpointId: string) {
     console.log("Display banner of checkpoint", nextCheckpointId)
-    console.log("previous timeoutId",timeoutId)
-    // Clear the previous timeout if it exists
-    if (timeoutId) clearTimeout(timeoutId);
-
 
     if (nextCheckpointId === "-1") {
         // If there is no more checkpoints then all checkpoints have been passed!
@@ -73,10 +76,11 @@ export function openCheckpointBanner(nextCheckpointId: string) {
     
     // Search for the message to display depending on the player's checkpoint
     const checkpoint = checkpoints.find(c => c.id === nextCheckpointId)
-    const delayBeforeDisplayingNextCheckpoint = 30 * 1000
+    //const delayBeforeDisplayingNextCheckpoint = 30 * 1000
 
     if (checkpoint) {
-        timeoutId = setTimeout(() => {
+        // FIXME: Find out why banners stack
+        //setTimeout(() => {
             WA.ui.banner.openBanner({
                 id: "onboarding-banner",
                 text: `${checkpoint.title}: ${checkpoint.description}`,
@@ -85,9 +89,7 @@ export function openCheckpointBanner(nextCheckpointId: string) {
                 closable: false,
                 timeToClose: 120000
             });
-        }, delayBeforeDisplayingNextCheckpoint)
-
-        console.log(`new timeoutId (${checkpoint.title})`,timeoutId);
+        //}, delayBeforeDisplayingNextCheckpoint)
     }
 }
 
@@ -107,6 +109,7 @@ export function closeBanner() {
 }
 
 export function displayChecklistButton() {
+    console.log("displayChecklistButton", root)
     WA.ui.actionBar.addButton({
         id: 'checklist-btn',
         type: 'action',
@@ -142,6 +145,5 @@ export async function displayHelicopterGIF() {
 }
 
 export function removeHelicopterGIF() {
-    console.log("helicopter",helicopter)
     helicopter?.close()
 }

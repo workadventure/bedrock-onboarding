@@ -3,14 +3,16 @@ console.log('Main script started successfully');
 
 import { bootstrapExtra } from "@workadventure/scripting-api-extra";
 
-import { initTown } from "./town";
-import { initWorld } from "./world";
-import { initOnboarding } from "./onboarding/index";
-import { displayChecklistButton } from "./onboarding/ui";
-import { initDoors } from "./doors";
-import { getCheckpointIds, type Tag, everyone, saveCheckpointIds, employees, registerCloseDialogueBoxListener } from "./onboarding/checkpoints";
-
-export type MapName = "town" | "world";
+import type { Tag } from "./Onboarding/Type/Tags"
+import type { Map } from "./Onboarding/Type/Maps"
+import { employees, everyone } from "./Onboarding/Data/Tags"
+import { initCheckpoints, registerCloseDialogueBoxListener } from "./Onboarding/Services/CheckpointsManager"
+import { displayChecklistButton, initRootURL } from "./Onboarding/Services/UIManager";
+import { initDoors } from "./Onboarding/Services/DoorsManager";
+import { initTown } from "./Onboarding/Maps/Town";
+import { initWorld } from "./Onboarding/Maps/World";
+import { processAreas } from "./Onboarding/Services/AreasManager";
+import { getCheckpointIds, setCheckpointIds } from "./Onboarding/Helpers/Checkpoints";
 
 WA.onInit().then(async () => {
     console.log('Scripting API ready');
@@ -22,8 +24,9 @@ WA.onInit().then(async () => {
 
     bootstrapExtra().then(async () => {
         console.log('Scripting API Extra ready');
-        const map = WA.state.map as MapName
+        const map = WA.state.map as Map
         const playerCheckpointIds = await getCheckpointIds()
+        await initRootURL()
         registerCloseDialogueBoxListener()
 
         if (hasMatchingTag) {
@@ -32,7 +35,7 @@ WA.onInit().then(async () => {
 
             // Prevent starting the onboarding if employee
             // TODO: uncomment/comment the condition if you need to test the onboarding process locally
-            //if (!playerTags.some(tag => employees.includes(tag))) {
+            if (!playerTags.some(tag => employees.includes(tag))) {
                 // TODO: uncomment when this method is in prod
                 // WA.controls.disableMapEditor();
                 // WA.controls.disableScreenSharing();
@@ -40,8 +43,9 @@ WA.onInit().then(async () => {
                 // WA.controls.disableScreenSharing();
                 displayChecklistButton()
 
-                initOnboarding(playerCheckpointIds)
-            //}
+                const playerCheckpointIdsInit = await initCheckpoints(playerCheckpointIds)
+                processAreas(playerCheckpointIdsInit)
+            }
 
             // Load specific map scripts
             if (map === "town") {
@@ -67,42 +71,49 @@ WA.onInit().then(async () => {
                 id: 'start',
                 label: 'Start',
                 callback: () => {
-                    saveCheckpointIds([])
+                    setCheckpointIds([])
                 }
             });
             WA.ui.actionBar.addButton({
                 id: 'world',
                 label: 'World',
                 callback: () => {
-                    saveCheckpointIds(Array.from({ length: 4 }, (_, index) => (index + 1).toString()))
+                    setCheckpointIds(Array.from({ length: 4 }, (_, index) => (index + 1).toString()))
                 }
             });
             WA.ui.actionBar.addButton({
                 id: 'bridge',
                 label: 'Bridge',
                 callback: () => {
-                    saveCheckpointIds(Array.from({ length: 13 }, (_, index) => (index + 1).toString()))
+                    setCheckpointIds(Array.from({ length: 13 }, (_, index) => (index + 1).toString()))
                 }
             });
             WA.ui.actionBar.addButton({
                 id: 'airport',
                 label: 'Airport',
                 callback: () => {
-                    saveCheckpointIds(Array.from({ length: 22 }, (_, index) => (index + 1).toString()))
+                    setCheckpointIds(Array.from({ length: 22 }, (_, index) => (index + 1).toString()))
+                }
+            });
+            WA.ui.actionBar.addButton({
+                id: 'town',
+                label: 'Town',
+                callback: () => {
+                    setCheckpointIds(Array.from({ length: 32 }, (_, index) => (index + 1).toString()))
                 }
             });
             WA.ui.actionBar.addButton({
                 id: 'onboarding',
                 label: 'Onboarding',
                 callback: () => {
-                    saveCheckpointIds(Array.from({ length: 34 }, (_, index) => (index + 1).toString()))
+                    setCheckpointIds(Array.from({ length: 34 }, (_, index) => (index + 1).toString()))
                 }
             });
             WA.ui.actionBar.addButton({
                 id: 'finish',
                 label: 'Finish',
                 callback: () => {
-                    saveCheckpointIds(Array.from({ length: 45 }, (_, index) => (index + 1).toString()))
+                    setCheckpointIds(Array.from({ length: 45 }, (_, index) => (index + 1).toString()))
                 }
             });
         }

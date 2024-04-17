@@ -1,27 +1,12 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
 import { ActionMessage, TileDescriptor } from "@workadventure/iframe-api-typings";
-import {
-    type Tag,
-    type NewbieTag,
-    employees,
-    everyoneButGuests,
-    canEnterCaveWorld,
-    canLeaveCaveWorld,
-    canAccessAchievements,
-    canAccessValues,
-    canAccessLegal,
-    canAccessBridge,
-    canAccessFrance,
-    canAccessHungary,
-    canAccessBelgium,
-    canAccessNetherlands,
-    canEnterAirport,
-    canEnterAirportGates,
-    isOnboardingDone,
-} from "./onboarding/checkpoints";
-import { getTilesByRectangleCorners } from "./onboarding/tiles";
-import { openErrorBanner, closeBanner, DOOR_LOCKED } from "./onboarding/ui";
+import { employees, everyoneButGuests } from "../Data/Tags";
+import { canAccessAchievements, canAccessBelgium, canAccessBridge, canAccessFrance, canAccessHungary, canAccessLegal, canAccessNetherlands, canAccessValues, canEnterAirport, canEnterAirportGates, canEnterBRTour, canEnterBRTourFloor0, canEnterBRTourFloor1, canEnterBRTourFloor2, canEnterBRTourFloor3, canEnterCaveWorld, canLeaveBRTour, canLeaveCaveWorld, isWorldMapDone, isOnboardingDone } from "../Helpers/Checkpoints";
+import type { AirportGateAccess, BrTourFloorAccess, BrTourFloorName, HRMeetingDoorAccess, HrMeetingDoorName, TownBuildingAccess, TownBuildingName, TownCaveDoorAccess, WorldBarrierAccess, WorldBarrierName, WorldBuildingAccess, WorldBuildingName } from "../Type/Doors";
+import type { NewbieTag, Tag } from "../Type/Tags";
+import { DOOR_LOCKED, closeBanner, openErrorBanner } from "./UIManager";
+import { getTilesByRectangleCorners } from "../Helpers/Tiles";
 
 export function initDoors(map: string, playerTags: Tag[], playerCheckpointIds: string[]) {
     if (map === "town") {
@@ -33,10 +18,6 @@ export function initDoors(map: string, playerTags: Tag[], playerCheckpointIds: s
 /*
 ********************************************* TOWN *********************************************
 */
-type TownBuildingName = "hr" | "arcade" | "stadium" | "wikitek" | "streaming" | "cave" | "backstage";
-type TownBuildingAccess = {
-    [key in TownBuildingName]: { access: boolean, blockingTiles: [number, number][] };
-};
 // Define buildings and their minimal access restrictions.
 let townBuildings: TownBuildingAccess = {
     hr: { access: true, blockingTiles: [[80, 74], [83, 74]] },
@@ -46,11 +27,9 @@ let townBuildings: TownBuildingAccess = {
     streaming: { access: false, blockingTiles: [[69, 40], [72, 40]] },
     cave: { access: false, blockingTiles: [[49, 11], [50, 11]] },
     backstage: { access: false, blockingTiles: [[29, 49], [30, 51]] },
+    service: { access: false, blockingTiles: [[10, 39], [12, 41]] },
 };
 
-type TownCaveDoorAccess = {
-    [key in NewbieTag]: { access: boolean, leftWall: [number, number][], rightWall: [number, number][], pillar: [number, number][] };
-};
 let townCaveProfileDoors: TownCaveDoorAccess = {
     alt: { access: false, leftWall: [[41, 4], [41, 5]], rightWall: [[44, 4], [44, 5]], pillar: [[42, 5], [43, 6]] },
     fr: { access: false, leftWall: [[45, 2], [45, 3]], rightWall: [[48, 2], [48, 3]], pillar: [[46, 3], [47, 4]] },
@@ -58,10 +37,6 @@ let townCaveProfileDoors: TownCaveDoorAccess = {
     pt:  { access: false, leftWall: [[54, 4], [54, 5]], rightWall: [[57, 4], [57, 5]], pillar: [[55, 5], [56, 6]] },
 }
 
-type HrMeetingDoorName = "hrMeetingDoor1" | "hrMeetingDoor2" | "hrMeetingDoor3" | "hrMeetingDoor4";
-type HRMeetingDoorAccess = {
-    [key in HrMeetingDoorName]: { access: boolean, tilesNamePattern: string, tilesCoordinates: [number, number][] };
-};
 let hrMeetingDoors: HRMeetingDoorAccess = {
     "hrMeetingDoor1": { access: false, tilesNamePattern: "hr-meeting-door", tilesCoordinates: [[71, 62], [72, 63]] },
     "hrMeetingDoor2": { access: false, tilesNamePattern: "hr-meeting-door", tilesCoordinates: [[76, 62], [77, 63]] },
@@ -81,6 +56,7 @@ function initTownDoors(playerTags: Tag[], playerCheckpointIds: string[]) {
         townBuildings.stadium.access = true;
         townBuildings.cave.access = true;
         townBuildings.hr.access = true;
+        townBuildings.service.access = isWorldMapDone(playerCheckpointIds);
         townBuildings.arcade.access = hasAccessToAll;
         townBuildings.streaming.access = hasAccessToAll;
         townBuildings.wikitek.access = hasAccessToAll;
@@ -121,19 +97,38 @@ function initTownDoors(playerTags: Tag[], playerCheckpointIds: string[]) {
 function listenTownDoor(building: TownBuildingName) {
     let isRoofVisible = true
     if (townBuildings[building as TownBuildingName].access) {
-        WA.room.area.onEnter(`${building}Door`).subscribe(() => {
-            console.log("listenTownDoor() onEnter")
-            unlockTownBuildingDoor(building)
-            if (isRoofVisible === true) {
-                isRoofVisible = false
-                WA.room.hideLayer(`roofs/${building}1`)
-                WA.room.hideLayer(`roofs/${building}2`)
-            } else {
-                isRoofVisible = true
-                WA.room.showLayer(`roofs/${building}1`)
-                WA.room.showLayer(`roofs/${building}2`)
-            }
-        })
+        // we have to create a dedicated condition here because the backstage roof is shared between to entries: serviceDoor and backstageDoor
+        // backstageDoor shows/hides the backstage roof like normal
+        // but serviceDoor must also show/hide the backstage1 roof + the stadium1 roof
+        if (building === "service") {
+            WA.room.area.onEnter(`${building}Door`).subscribe(() => {
+                console.log("listenTownDoor() onEnter")
+                unlockTownBuildingDoor(building)
+                if (isRoofVisible === true) {
+                    isRoofVisible = false
+                    WA.room.hideLayer(`roofs/backstage1`)
+                    WA.room.hideLayer(`roofs/stadium1`)
+                } else {
+                    isRoofVisible = true
+                    WA.room.showLayer(`roofs/backstage1`)
+                    WA.room.showLayer(`roofs/stadium1`)
+                }
+            })
+        } else {
+            WA.room.area.onEnter(`${building}Door`).subscribe(() => {
+                console.log("listenTownDoor() onEnter")
+                unlockTownBuildingDoor(building)
+                if (isRoofVisible === true) {
+                    isRoofVisible = false
+                    WA.room.hideLayer(`roofs/${building}1`)
+                    WA.room.hideLayer(`roofs/${building}2`)
+                } else {
+                    isRoofVisible = true
+                    WA.room.showLayer(`roofs/${building}1`)
+                    WA.room.showLayer(`roofs/${building}2`)
+                }
+            })
+        }
     } else {
         lockTownBuildingDoor(building)
         // Display a message saying that access is denied.
@@ -210,7 +205,7 @@ function lockTownBuildingDoor(building: TownBuildingName) {
     WA.room.setTiles(tiles);
 }
 
-function unlockTownBuildingDoor(building: TownBuildingName) {
+export function unlockTownBuildingDoor(building: TownBuildingName) {
     const buildingData = townBuildings[building];
     const tilesCoordinates = getTilesByRectangleCorners(buildingData.blockingTiles[0], buildingData.blockingTiles[1])
     const tiles = tilesCoordinates.map(([xCoord, yCoord]) => ({
@@ -284,20 +279,12 @@ export function getCaveDoorToOpen(playerTags: Tag[]): NewbieTag|null {
 ********************************************* WORLD *********************************************
 */
 
-type WorldBuildingName = "cave" | "airport";
-type WorldBuildingAccess = {
-    [key in WorldBuildingName]: { access: boolean, blockingTiles: [number, number][] };
-};
 // Define buildings and their minimal access restrictions.
 let worldBuildings: WorldBuildingAccess = {
     cave: { access: false, blockingTiles: [[29, 181], [29, 182]] },
     airport: { access: false, blockingTiles: [[51, 22],[53, 22]] },
 };
 
-type WorldBarrierName = "achievements" | "values" | "legal" | "bridge" | "france" | "hungary" | "belgium" | "netherlands";
-type WorldBarrierAccess = {
-    [key in WorldBarrierName]: { access: boolean, blockingTiles: [number, number][] };
-};
 // Define buildings and their minimal access restrictions.
 let worldBarriers: WorldBarrierAccess = {
     achievements: { access: true, blockingTiles: [[84, 168], [87, 168]] },
@@ -310,10 +297,17 @@ let worldBarriers: WorldBarrierAccess = {
     netherlands: { access: true, blockingTiles: [[70, 30], [70, 34]] },
 };
 
-
-type AirportGateAccess = { access: boolean, turnstile: [number, number][], lightsY: [number, number][], lightsX: [number, number][] };
 let airportGate: AirportGateAccess = 
     { access: false, turnstile: [[52, 11], [52, 12]], lightsY: [[52, 6], [52, 10]], lightsX: [[48, 5], [52, 5]] }
+
+let brTourFloors: BrTourFloorAccess = {
+    floor4: { access: false, tilesNamePattern: "rooftop-to-floor4", tilesCoordinates: [[23, 117], [23, 117]] },
+    floor3: { access: false, tilesNamePattern: "floor4-to-floor3", tilesCoordinates: [[22, 126], [25, 126]] },
+    floor2: { access: false, tilesNamePattern: "floor3-to-floor2", tilesCoordinates: [[22, 133], [25, 133]] },
+    floor1: { access: false, tilesNamePattern: "floor2-to-floor1", tilesCoordinates: [[22, 140], [25, 140]] },
+    floor0: { access: false, tilesNamePattern: "floor1-to-floor0", tilesCoordinates: [[22, 147], [25, 147]] },
+    exit: { access: false, tilesNamePattern: "floor0-to-exit", tilesCoordinates: [[22, 154], [25, 154]] },
+};
 
 function initWorldDoors(playerTags: Tag[], playerCheckpointIds: string[]) {
     // Apply access restrictions based on player checkpoint
@@ -331,17 +325,28 @@ function initWorldDoors(playerTags: Tag[], playerCheckpointIds: string[]) {
 
     airportGate.access = canEnterAirportGates(playerCheckpointIds);
 
+    brTourFloors.floor4.access = canEnterBRTour(playerCheckpointIds)
+    brTourFloors.floor3.access = canEnterBRTourFloor3(playerCheckpointIds)
+    brTourFloors.floor2.access = canEnterBRTourFloor2(playerCheckpointIds)
+    brTourFloors.floor1.access = canEnterBRTourFloor1(playerCheckpointIds)
+    brTourFloors.floor0.access = canEnterBRTourFloor0(playerCheckpointIds)
+    brTourFloors.exit.access = canLeaveBRTour(playerCheckpointIds)
+
     // unlock all doors if employee
     if (playerTags.some(tag => employees.includes(tag))) {
         console.log("Open all world doors")
         Object.keys(worldBuildings).forEach(building => {
             worldBuildings[building as WorldBuildingName].access = true;
         });
-        Object.keys(worldBarriers).forEach(building => {
-            worldBarriers[building as WorldBarrierName].access = true;
+        Object.keys(worldBarriers).forEach(barrier => {
+            worldBarriers[barrier as WorldBarrierName].access = true;
         });
 
         airportGate.access = true;
+
+        Object.keys(brTourFloors).forEach(floor => {
+            brTourFloors[floor as BrTourFloorName].access = true;
+        });
     }
 
     listenWorldDoor('cave')
@@ -352,9 +357,12 @@ function initWorldDoors(playerTags: Tag[], playerCheckpointIds: string[]) {
         unlockAirportGate()
     }
 
+    initBrTourFloorAccess()
+
     console.log("worldBuildings",worldBuildings)
     console.log("worldBarriers",worldBarriers)
     console.log("airportGate",airportGate)
+    console.log("brTourFloors",brTourFloors)
 }
 
 function listenWorldDoor(building: WorldBuildingName) {
@@ -485,4 +493,48 @@ export function unlockAirportGate() {
     //const combinedTiles = [...turnstileTiles, ...lightsYTiles, ...lightsXTiles];
     const combinedTiles = turnstileTiles
     WA.room.setTiles(combinedTiles);
+}
+
+export function unlockBrTourFloorAccess(floor: BrTourFloorName) {
+    console.log("unlockBrTourFloorAccess()")
+    let tiles: TileDescriptor[] = [];
+    const floorData = brTourFloors[floor];
+    const floorToLayerNameMap: { [key in BrTourFloorName]: string } = {
+        "floor4": "walls/walls2",
+        "floor3": "tour/4",
+        "floor2": "tour/3",
+        "floor1": "tour/2",
+        "floor0": "tour/1",
+        "exit": "tour/0"
+    };
+    const tilesCoordinates = getTilesByRectangleCorners(floorData.tilesCoordinates[0], floorData.tilesCoordinates[1])
+    // first we need to remove the wall
+    tilesCoordinates.forEach(([xCoord, yCoord]) => {
+        tiles.push({
+            x: xCoord,
+            y: yCoord,
+            tile: null,
+            layer: floorToLayerNameMap[floor]
+        });
+    })
+    // then we need to place the exit tiles
+    tilesCoordinates.forEach(([xCoord, yCoord], index) => {
+        tiles.push({
+            x: xCoord,
+            y: yCoord,
+            tile: `${floorData.tilesNamePattern}-open-${index+1}`,
+            layer: floorToLayerNameMap[floor]
+        });
+    })
+
+    // Unlock access for the accessible floors
+    WA.room.setTiles(tiles);
+}
+
+function initBrTourFloorAccess() {
+    Object.keys(brTourFloors).forEach(floor => {
+        if (brTourFloors[floor as BrTourFloorName].access === true) {
+            unlockBrTourFloorAccess(floor as BrTourFloorName)
+        }
+    });
 }

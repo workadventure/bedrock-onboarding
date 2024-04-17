@@ -1,45 +1,6 @@
-import { type MapName } from "../main"
-import { getPlayerTags } from "./index"
-import { openCheckpointBanner, openErrorBanner, DOOR_LOCKED, openWebsite } from "./ui";
-import { unlockTownCaveDoor, getCaveDoorToOpen, unlockWorldBuildingDoor, unlockWorldBarrier, unlockAirportGate } from "../doors"
-import { placeCheckpoint, processAreas } from "./areas"
-import { travelFromAirportToRooftop } from "../world"
-import { removeDirectionTile, removeNPCTile, teleportJonas } from "./tiles";
+import { CheckpointDescriptor } from "../Type/Checkpoints"
+import { everyone, everyoneButGuests } from "./Tags"
 
-export type Tag = "admin" | "br" | "hr" | "ext" | "fr" | "pt" | "alt" | "guest";
-export type NewbieTag = "ext" | "fr" | "pt" | "alt";
-export type NPCs = "Aria" | "Baptiste" | "Charlie" | "Christine" | "Diana" | "Emilie" | "Emma" | "Eva" | "Gabor" | "Hans" | "Ingrid" | "Jonas" | "Julia" | "Julie" | "Luc" | "Murielle" | "Nicolas" | "Pierre" | "Shiby" | "Vianey";
-
-export interface CheckpointDescriptor {
-    id: string;
-    map: MapName;
-    title: string;
-    description: string;
-    coordinates: {
-        x: number;
-        y: number;
-    }
-    type: "NPC" | "content" | "direction";
-    message?: string;
-    url?: string;
-    tags?: Tag[];
-    npcName?: NPCs;
-    npcSprite?: "front" | "left" | "right" | "back";
-}
-
-export interface Checklist {
-    id: string;
-    title: string;
-    done: boolean;
-}
-
-export const everyone: Tag[] = ["admin", "br", "hr", "ext", "fr", "pt", "alt", "guest"];
-export const everyoneButGuests: Tag[] = ["admin", "br", "hr", "ext", "fr", "pt", "alt"];
-export const employees: Tag[] = ["admin", "br", "hr"];
-export const newbiesAndGuests: Tag[] = ["ext", "fr", "pt", "alt", "guest"];
-export const newbies: NewbieTag[] = ["ext", "fr", "pt", "alt"];
-
-const jonasCheckpointIds = ["2", "6", "13", "23", "24", "31", "32", "33", "36"]
 /**
  * All possible checkpoints for all use cases
  * @constant
@@ -105,7 +66,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         id: "5",
         map: "world",
         title: "Hello World!",
-        description: "Entered the expansive World map, still within the depths of the cave.",
+        description: "Enter the expansive E-learning map and discover the world o Bedrock.",
         type: "direction",
         coordinates: {
             x: 42,
@@ -461,7 +422,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         title: "View Organizational Chart",
         description: "Study the organizational chart of Bedrock with Nicolas, illustrating the hierarchical structure and reporting relationships within the company.",
         coordinates: {
-            x: 27,
+            x: 17,
             y: 143
         },
         type: "NPC",
@@ -590,7 +551,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         title: "Visit the Stadium",
         description: "Explore the stadium and its features, including a visioconference tool on the stage and front-row seats.",
         coordinates: {
-            x: 20,
+            x: 19,
             y: 60
         },
         type: "direction",
@@ -600,7 +561,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         id: "38",
         map: "town",
         title: "Visit HR",
-        description: "Visiting the HR building!",
+        description: "Explore the HR building. That's where you can have interviews!",
         coordinates: {
             x: 81,
             y: 67
@@ -622,7 +583,7 @@ export const checkpoints: CheckpointDescriptor[] = [
     {
         id: "40",
         map: "town",
-        title: "Your Contacts",
+        title: "Your Contacts (FR)",
         description: "Access essential information about your contacts within the company.",
         coordinates: {
             x: 79,
@@ -635,7 +596,7 @@ export const checkpoints: CheckpointDescriptor[] = [
     {
         id: "41",
         map: "town",
-        title: "Your Daily Tools",
+        title: "Your Daily Tools (FR)",
         description: "Access a curated collection of productivity tools to streamline your workflow.",
         coordinates: {
             x: 88,
@@ -648,7 +609,7 @@ export const checkpoints: CheckpointDescriptor[] = [
     {
         id: "42",
         map: "town",
-        title: "HR System",
+        title: "HR System (FR)",
         description: "Access detailed information about HR processes, policies, and procedures.",
         coordinates: {
             x: 71,
@@ -659,9 +620,9 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: ["fr"],
     },
     {
-        id: "40",
+        id: "43",
         map: "town",
-        title: "Your Contacts",
+        title: "Your Contacts (PT)",
         description: "Access essential information about your contacts within the company.",
         coordinates: {
             x: 79,
@@ -672,9 +633,9 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: ["pt"]
     },
     {
-        id: "41",
+        id: "44",
         map: "town",
-        title: "Your Daily Tools",
+        title: "Your Daily Tools (PT)",
         description: "Access a curated collection of productivity tools to streamline your workflow.",
         coordinates: {
             x: 88,
@@ -685,9 +646,9 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: ["pt"]
     },
     {
-        id: "42",
+        id: "45",
         map: "town",
-        title: "HR System",
+        title: "HR System (PT)",
         description: "Access detailed information about HR processes, policies, and procedures.",
         coordinates: {
             x: 71,
@@ -698,9 +659,9 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: ["pt"]
     },
     {
-        id: "40",
+        id: "46",
         map: "town",
-        title: "Your Contacts",
+        title: "Your Contacts (ALT)",
         description: "Access essential information about your contacts within the company.",
         coordinates: {
             x: 79,
@@ -711,9 +672,9 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: ["alt"]
     },
     {
-        id: "41",
+        id: "47",
         map: "town",
-        title: "Your Daily Tools",
+        title: "Your Daily Tools (ALT)",
         description: "Access a curated collection of productivity tools to streamline your workflow.",
         coordinates: {
             x: 88,
@@ -724,9 +685,9 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: ["alt"]
     },
     {
-        id: "42",
+        id: "48",
         map: "town",
-        title: "HR System",
+        title: "HR System (ALT)",
         description: "Access detailed information about HR processes, policies, and procedures.",
         coordinates: {
             x: 71,
@@ -737,9 +698,9 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: ["alt"]
     },
     {
-        id: "40",
+        id: "49",
         map: "town",
-        title: "Your Contacts",
+        title: "Your Contacts (EXT)",
         description: "Access essential information about your contacts within the company.",
         coordinates: {
             x: 79,
@@ -750,9 +711,9 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: ["ext"]
     },
     {
-        id: "41",
+        id: "50",
         map: "town",
-        title: "Your Daily Tools",
+        title: "Your Daily Tools (EXT)",
         description: "Access a curated collection of productivity tools to streamline your workflow.",
         coordinates: {
             x: 88,
@@ -763,7 +724,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: ["ext"]
     },
     {
-        id: "43",
+        id: "51",
         map: "town",
         title: "Check out the Streaming Wall",
         description: "Visit the Streaming Wall building and watch videos showcasing Bedrock's customers and their experiences.",
@@ -775,7 +736,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: everyoneButGuests,
     },
     {
-        id: "44",
+        id: "52",
         map: "town",
         title: "Enjoy Arcade Games",
         description: "Visit the Arcade building and enjoy classic games like Pong and Super Mario!",
@@ -786,7 +747,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         type: "direction",
     },
     {
-        id: "45",
+        id: "53",
         map: "town",
         title: "Bedrock News Billboard",
         description: "Complete your journey by discoving the latest news and updates about Bedrock!",
@@ -799,410 +760,15 @@ export const checkpoints: CheckpointDescriptor[] = [
     },
 ]
 
-export async function initCheckpoints(playerCheckpointIds: string[]): Promise<string[]> {
-    if (playerCheckpointIds.length > 1) {
-        // Existing player
-        console.log("Existing player. Checkpoint IDs: ", playerCheckpointIds)
-    } else {
-        // New player
-        console.log("New player.")
-        saveCheckpointIds(["0"])
-        return ["0"]
-    }
+/**
+ * All checkpoints where Jonas appears
+ * @constant
+ */
+export const jonasCheckpointIds = ["2", "6", "13", "23", "24", "31", "32", "33", "36"]
 
-    return playerCheckpointIds
-}
-
-export function getNextCheckpointId(checklist: Checklist[]): string {
-     // Find the first checklist item that is not done
-     const nextCheckpoint = checklist.find(checkpoint => !checkpoint.done);
-
-     // If a next checkpoint is found, return its ID; otherwise, return -1
-     return nextCheckpoint ? nextCheckpoint.id : "-1";
-}
-
-export function getNextJonasCheckpointId(playerCheckpointIds: string[]): string {
-     // Convert string elements to numbers for both playerCheckpointIds and jonasCheckpointIds
-     const numericPlayerCheckpointIds: number[] = playerCheckpointIds.map(Number);
-     const numericJonasCheckpoints: number[] = jonasCheckpointIds.map(Number);
- 
-     // Find the highest checkpoint ID the player has reached
-     const maxPlayerCheckpointId = Math.max(...numericPlayerCheckpointIds);
- 
-     // Find the next Jonas checkpoint ID
-     const nextJonasCheckpointId = numericJonasCheckpoints.find(id => id > maxPlayerCheckpointId);
- 
-     // If there is a next Jonas checkpoint, return its ID as a string; otherwise, return "-1"
-     return nextJonasCheckpointId !== undefined ? nextJonasCheckpointId.toString() : "-1";
-}
-
-export function isCheckpointPassed(playerCheckpointIds: string[], checkpointId: string): boolean {
-    return playerCheckpointIds.includes(checkpointId);
-}
-
-export function hasPlayerMetJonas(playerCheckpointIds: string[]): boolean {
-    return playerCheckpointIds.includes("2");
-}
-
-export function canEnterCaveWorld(playerCheckpointIds: string[]): boolean {
-    return playerCheckpointIds.includes("4");
-}
-
-export function hasPlayerTalkedWithJonasInTheCave(playerCheckpointIds: string[]): boolean {
-    return playerCheckpointIds.includes("6");
-}
-
-export function canLeaveCaveWorld(playerCheckpointIds: string[]): boolean {
-    return playerCheckpointIds.includes("7");
-}
-
-export function canAccessAchievements(playerCheckpointIds: string[]): boolean {
-    return playerCheckpointIds.includes("9");
-}
-
-export function canAccessValues(playerCheckpointIds: string[]): boolean {
-    return playerCheckpointIds.includes("10");
-}
-
-export function canAccessLegal(playerCheckpointIds: string[]): boolean {
-    return playerCheckpointIds.includes("11");
-}
-
-export function canAccessBridge(playerCheckpointIds: string[]): boolean {
-    return playerCheckpointIds.includes("12");
-}
-
-export function canAccessFrance(playerCheckpointIds: string[]): boolean {
-    return playerCheckpointIds.includes("13");
-}
-
-export function canAccessHungary(playerCheckpointIds: string[]): boolean {
-    return ["14", "15"].every(id => playerCheckpointIds.includes(id));
-}
-
-export function canAccessBelgium(playerCheckpointIds: string[]): boolean {
-    return ["16", "17"].every(id => playerCheckpointIds.includes(id));
-}
-
-export function canAccessNetherlands(playerCheckpointIds: string[]): boolean {
-    return ["18", "19"].every(id => playerCheckpointIds.includes(id));
-}
-
-export function canEnterAirport(playerCheckpointIds: string[]): boolean {
-    return ["20", "21"].every(id => playerCheckpointIds.includes(id));
-}
-
-export function canEnterAirportGates(playerCheckpointIds: string[]): boolean {
-    return playerCheckpointIds.includes("22");
-}
-
-export function isOnboardingDone(playerCheckpointIds: string[]): boolean {
-    return playerCheckpointIds.includes("34");
-}
-
-export function isCheckpointJonasPhone(checkpointId: string): boolean {
-    return checkpointId === "7";
-}
-
-export function isCheckpointAfterFirstJonas(checkpointId: string): boolean {
-    // Don't display rest of checkpoints if player did not meet Jonas
-    const checkpointIdNumber = parseInt(checkpointId, 10);
-    return checkpointIdNumber > 2;
-}
-
-export function isCheckpointAfterOnboarding(checkpointId: string): boolean {
-    // Don't display checkpoints after on boarding if it's not done yet
-    const checkpointIdNumber = parseInt(checkpointId, 10);
-    return checkpointIdNumber > 34;
-}
-
-export async function getChecklist(): Promise<Checklist[]> {
-    let checklist: Checklist[] = [];
-
-    const playerVariable = await WA.player.state.checklist as Checklist[]
-
-    if (playerVariable) {
-        checklist = playerVariable;
-    } else {
-        // If data is not present on the server, initialize it
-        saveChecklist(checklist)
-    }
-
-    return checklist;
-}
-
-export function saveChecklist(checklist: Checklist[]): void {
-    WA.player.state.saveVariable("checklist", checklist, {
-        public: false,
-        persist: true,
-        ttl: 48 * 3600,
-        scope: "world",
-      });
-}
-
-export async function getCheckpointIds(): Promise<string[]> {
-    let checkpointIds: string[] = [];
-
-    // Fetch the data from the server
-    const playerVariable = await WA.player.state.checkpointIds as string[]
-
-    if (playerVariable) {
-        checkpointIds = playerVariable;
-    } else {
-        // If data is not present on the server, initialize it
-        saveCheckpointIds(checkpointIds)
-    }
-
-    return checkpointIds;
-}
-
-export function saveCheckpointIds(checkpointIds: string[]): void {
-    WA.player.state.saveVariable("checkpointIds", checkpointIds, {
-        public: false,
-        persist: true,
-        ttl: 48 * 3600,
-        scope: "world",
-      });
-}
-
-export async function passCheckpoint(checkpointId: string) {
-    const playerCheckpointIds = await getCheckpointIds()
-    const checklist = await getChecklist()
-
-    // Affect checkpoint only if it has not been passed already
-    if (isCheckpointPassed(playerCheckpointIds, checkpointId)) {
-        console.log("(State: unchanged) Old checkpoint passed", checkpointId)
-    } else {
-        console.log("(State: update) New checkpoint passed", checkpointId);
-
-        playerCheckpointIds.push(checkpointId)
-        saveCheckpointIds(playerCheckpointIds)
-
-        await markCheckpointAsDone(checkpointId)
-        await triggerCheckpointAction(checkpointId);
-        openCheckpointBanner(getNextCheckpointId(checklist))
-    }
-}
-
-async function markCheckpointAsDone(checkpointId: string) {
-    let checklist = await getChecklist()
-
-    // mark the checkpoint as done
-    const checkpointIdx = checklist.findIndex(checkpoint => checkpoint.id === checkpointId)
-    checklist[checkpointIdx].done = checkpointIdx !== -1;
-
-    saveChecklist(checklist)
-}
-
-// When the dialogue box is closed, this event is fired
-export function registerCloseDialogueBoxListener() {
-    WA.player.state.onVariableChange('closeDialogueBoxEvent').subscribe(async (value) => {
-        const checkpoint = value as CheckpointDescriptor|null
-        if (checkpoint) {
-            console.log('Variable "closeDialogueBoxEvent" changed. New value: ', checkpoint);
-            // If the NPC has a content to show after the dialogue box is closed, open the content
-            if (checkpoint.url) {
-                console.log("Open URL",checkpoint.url)
-                openWebsite(checkpoint.url)
-            }
-        
-            // If it's Jonas, remove its area and teleport him
-            if (checkpoint.npcName === "Jonas") {
-                WA.room.area.delete(checkpoint.id)
-        
-                // Don't teleport Jonas if it's the one at the airport (checkpoint 23)
-                if (checkpoint.id === "23") {
-                    console.log("Remove Jonas")
-                    removeNPCTile(checkpoint)
-                } else {
-                    console.log("Teleport Jonas")
-                    teleportJonas(checkpoint.coordinates.x, checkpoint.coordinates.y)
-                }
-            } else if (checkpoint.type === "direction") {
-                console.log("Remove direction area and tile")
-                WA.room.area.delete(checkpoint.id)
-                removeDirectionTile(checkpoint)
-            }
-        
-            console.log("checkpoint.id",checkpoint.id)
-            await passCheckpoint(checkpoint.id)
-        }
-    });
-}
-
-async function triggerCheckpointAction(checkpointId: string) {
-    switch (checkpointId) {
-        // Requirement: Meet Jonas for the first time
-        case "2":
-            // Action: Place rest of checkpoints
-            const playerCheckpointIds2 = await getCheckpointIds()
-            processAreas(playerCheckpointIds2)
-            break;
-        // Requirement: Read the cave PC dialogue
-        case "4":
-            // Action: Unlock Town cave door
-            const playerTags = getPlayerTags()
-            const door = getCaveDoorToOpen(playerTags)
-            if (door) {
-                unlockTownCaveDoor(door)
-            } else {
-                openErrorBanner(DOOR_LOCKED)
-            }
-            break;
-
-        // Requirement: Talk with Jonas in the cave
-        case "6":
-            // Action: Place Jonas' phone
-            const checkpoint6 = checkpoints.find(c => c.id === "7")
-            if (checkpoint6) {
-                placeCheckpoint(checkpoint6)
-            }
-            break;
-
-        // Requirement: Watch Jonas' phone video
-        case "7":
-            // Action: Unlock World cave door + place next Jonas
-            unlockWorldBuildingDoor("cave")
-            const playerCheckpointIds7 = await getCheckpointIds()
-            const checkpoint7 = checkpoints.find(c => c.id === getNextJonasCheckpointId(playerCheckpointIds7))
-            if (checkpoint7) {
-                placeCheckpoint(checkpoint7)
-            }
-            break;
-
-        // Requirement: Check History content
-        case "9":
-            // Action: Unlock access to Achievements content
-            unlockWorldBarrier("achievements")
-            break;
-
-        // Requirement: Check Achievements content
-        case "10":
-            // Action: Unlock access to Values content
-            unlockWorldBarrier("values")
-            break;
-
-        // Requirement: Check Values content
-        case "11":
-            // Action: Unlock access to Legal content
-            unlockWorldBarrier("legal")
-            break;
-
-        // Requirement: Check Legal content
-        case "12":
-            // Action: Unlock Access to bridge
-            unlockWorldBarrier("bridge")
-            break;
-
-        // Requirement: Talk with Jonas about Customer Success
-        case "13":
-            // Action: Unlock access to France + place next Jonas
-            unlockWorldBarrier("france")
-            const playerCheckpointIds13 = await getCheckpointIds()
-            const checkpoint13 = checkpoints.find(c => c.id === getNextJonasCheckpointId(playerCheckpointIds13))
-            if (checkpoint13) {
-                placeCheckpoint(checkpoint13)
-            }
-            break;
-
-        // Requirement: Watch 6play video 1 or 2
-        case "14":
-        case "15":
-            // Action: Unlock access to Hungary if either 14 or 15 is done
-            const playerCheckpointIds1415 = await getCheckpointIds()
-            if (canAccessHungary(playerCheckpointIds1415)) {
-                unlockWorldBarrier("hungary")
-            }
-            break;
-    
-        // Requirement: Watch RTL+ video 1 or 2
-        case "16":
-        case "17":
-            // Action: Unlock access to Belgium if either 16 or 17 is done
-            const playerCheckpointIds1617 = await getCheckpointIds()
-            if (canAccessBelgium(playerCheckpointIds1617)) {
-                unlockWorldBarrier("belgium")
-            }
-            break;
-    
-        // Requirement: Watch RTL Play video 1 or 2
-        case "18":
-        case "19":
-            // Action: Unlock access to Netherlands if either 18 or 19 is done
-            const playerCheckpointIds1819 = await getCheckpointIds()
-            if (canAccessNetherlands(playerCheckpointIds1819)) {
-                unlockWorldBarrier("netherlands")
-            }
-            break;
-    
-        // Requirement: Watch Videoland video 1 or 2
-        case "20":
-        case "21":
-            // Action: Unlock access to airport if either 20 or 21 is done
-            const playerCheckpointIds2021 = await getCheckpointIds()
-            if (canEnterAirport(playerCheckpointIds2021)) {
-                unlockWorldBuildingDoor("airport")
-            }
-            break;
-
-        // Requirement: Talk with check-in guy
-        case "22":
-            // Action: Unlock airport boarding gate
-            unlockAirportGate()
-            break;
-
-        // Requirement: Talk with Jonas near the Helicopter
-        case "23":
-            // Action: Fly to the BR Tour rooftop
-            await travelFromAirportToRooftop()
-            break;
-
-        // Requirement: Talk with Jonas on the BR Tour rooftop
-        case "24":
-            // Action: Unlock access to BR Tour floor 4 + place next Jonas
-            break;
-
-        // Requirement: Check floor 4
-        case "25":
-            // Action: Unlock floor 3 
-            break;
-
-        // Requirement: Check floor 3
-        case "26":
-            // Action: Unlock floor 2
-            break;
-
-        // Requirement: Check floor 2
-        case "27":
-            // Action: Unlock floor 1
-            break;
-
-        // Requirement: Check floor 1
-        case "28":
-            // Action: Unlock floor 0
-            break;
-
-        // Requirement: Check floor 0
-        case "29":
-            // Action: Unlock BR Tour exit door
-            break;
-
-        // Requirement: Talk with Jonas at its Pickup
-        case "31":
-            // Action: Place next Jonas
-            break;
-
-        // Requirement: Enter Jonas' Pickup
-        case "32":
-            // Action: Go to room Town before backstage
-            break;
-
-        // Requirement: Check backstage content
-        case "34":
-            // Action: Unlock backstage door to stage + place next Jonas
-            break;
-            
-        default:
-            break;
-    }
-}
+/**
+ * All checkpoints after the last onboarding checkpoint (except Jonas checkpoint)
+ * @constant
+ */
+// We start at index 35 and we add 19 = 53
+export const checkpointIdsAfterOnboarding = Array.from({ length: 19 }, (_, index) => (index + 35).toString())

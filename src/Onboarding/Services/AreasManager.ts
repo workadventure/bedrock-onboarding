@@ -1,11 +1,15 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-import { CheckpointDescriptor, checkpoints, Checklist, saveChecklist, passCheckpoint, isOnboardingDone, isCheckpointAfterOnboarding, isCheckpointAfterFirstJonas, hasPlayerTalkedWithJonasInTheCave, hasPlayerMetJonas, isCheckpointJonasPhone, canLeaveCaveWorld, getNextCheckpointId } from './checkpoints';
-import type { NPCs, Tag } from "./checkpoints";
-import { placeTile, removeContentTile, removeDirectionTile } from "./tiles";
-import { openDialogueBox, openWebsite, closeDialogueBox, closeWebsite, openCheckpointBanner } from "./ui";
-import { type MapName } from "../main"
-import { getPlayerTags, getMapName } from "./index"
+import { checkpoints, checkpointIdsAfterOnboarding } from "../Data/Checkpoints";
+import { canLeaveCaveWorld, getNextCheckpointId, hasPlayerMetJonas, hasPlayerTalkedWithJonasInTheCave, isCheckpointAfterFirstJonas, isCheckpointAfterOnboarding, isCheckpointJonasPhone, isCheckpointPassed, isOnboardingDone, setChecklist } from "../Helpers/Checkpoints";
+import { getMapName } from "../Helpers/Maps";
+import { getPlayerTags } from "../Helpers/Tags";
+import { Checklist, CheckpointDescriptor, type NPC } from "../Type/Checkpoints";
+import type { Map } from "../Type/Maps";
+import type { Tag } from "../Type/Tags";
+import { passCheckpoint, placeCheckpoint } from "./CheckpointsManager";
+import { removeContentTile, removeDirectionTile } from "./TilesManager";
+import { closeDialogueBox, closeWebsite, openCheckpointBanner, openDialogueBox, openWebsite } from "./UIManager";
 
 let isNextJonasPlaced = false
 
@@ -34,16 +38,30 @@ export function processAreas(playerCheckpointIds: string[]) {
         }
     });
 
-    saveChecklist(checklist)
+    setChecklist(checklist)
     openCheckpointBanner(getNextCheckpointId(checklist))
 }
 
-export function placeCheckpoint(checkpoint: CheckpointDescriptor) {
-    placeArea(checkpoint)
-    placeTile(checkpoint)
+export function processAreasAfterOnboarding(playerCheckpointIds: string[]) {
+    const playerTags = getPlayerTags()
+
+    console.log("Processing areas after on boarding...")
+    console.log("checkpointIdsAfterOnboarding",checkpointIdsAfterOnboarding)
+    // we only need to filter by tag (for the Wikitek content) since we don't have restrictions at this point
+    checkpointIdsAfterOnboarding.forEach((checkpointId) => {
+        const checkpoint = checkpoints.find(c => c.id === checkpointId)
+        if (checkpoint) {
+            if (filterCheckpointsByTag(checkpoint, playerTags)) {
+                // Ignore if checkpoint is not already done
+                if (!isCheckpointPassed(playerCheckpointIds, checkpointId)) {
+                    placeCheckpoint(checkpoint)
+                }
+            }
+        }
+    })
 }
 
-function placeArea(checkpoint: CheckpointDescriptor) {
+export function placeArea(checkpoint: CheckpointDescriptor) {
     console.log(`Placing checkpoint ${checkpoint.id} (area)`)
     const tileSize = 32
     const areaSize = 128
@@ -94,7 +112,7 @@ function placeArea(checkpoint: CheckpointDescriptor) {
     });
 }
 
-function filterCheckpointsByMap(checkpoint: CheckpointDescriptor, mapName: MapName): boolean {
+function filterCheckpointsByMap(checkpoint: CheckpointDescriptor, mapName: Map): boolean {
     const checkpointId = checkpoint.id
 
     if (mapName !== checkpoint.map) {
@@ -110,6 +128,10 @@ function filterCheckpointsByTag(checkpoint: CheckpointDescriptor, playerTags: Ta
     const checkpointId = checkpoint.id
     const checkpointTags = checkpoint.tags
 
+    console.log("*********",checkpoint.title)
+    console.log("playerTags",playerTags)
+    console.log("checkpointTags",checkpointTags)
+    console.log("playerTags.some(tag => checkpointTags.includes(tag)",playerTags.some(tag => checkpointTags?.includes(tag)))
     if (checkpointTags && !playerTags.some(tag => checkpointTags.includes(tag))) {
         // At least one tag of the checkpoint matches any of the player's tags
         console.log(`Ignoring checkpoint ${checkpointId} (not the right tags)`)
@@ -158,7 +180,7 @@ function filterCheckpointsNPCs(checkpoint: CheckpointDescriptor, playerCheckpoin
         // player already passed this checkpoint
 
         // Don't display passed Jonas NPCs
-        if (checkpoint.type === "NPC" && checkpoint.npcName as NPCs === "Jonas") {
+        if (checkpoint.type === "NPC" && checkpoint.npcName as NPC === "Jonas") {
             console.log(`Ignoring checkpoint ${checkpointId} (already met this Jonas)`)
             return false
         }
@@ -171,7 +193,7 @@ function filterCheckpointsNPCs(checkpoint: CheckpointDescriptor, playerCheckpoin
     } else {
         // player did not pass this checkpoint
         // display only next Jonas, not others in the future
-        if (checkpoint.type === "NPC" && checkpoint.npcName as NPCs === "Jonas") {
+        if (checkpoint.type === "NPC" && checkpoint.npcName as NPC === "Jonas") {
             if (isNextJonasPlaced) {
                 console.log(`Ignoring checkpoint ${checkpointId} (next Jonas is already placed)`)
                 return false

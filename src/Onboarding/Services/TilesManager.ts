@@ -1,6 +1,10 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-import { CheckpointDescriptor, isCheckpointJonasPhone } from './checkpoints';
+import { TileDescriptor } from "@workadventure/iframe-api-typings";
+import { floorToCollisionsCoordMap, floorToContentCoordMap } from "../Data/Maps";
+import { isCheckpointInBrTour, isCheckpointJonasPhone } from "../Helpers/Checkpoints"
+import { CheckpointDescriptor } from "../Type/Checkpoints"
+import type { BrTourFloor } from "../Type/Maps";
 
 export function placeTile(checkpoint: CheckpointDescriptor) {
     if (checkpoint.type === "NPC") {
@@ -14,7 +18,7 @@ export function placeTile(checkpoint: CheckpointDescriptor) {
     }
 }
 
-function placeNPCTile(checkpoint: CheckpointDescriptor) {
+export function placeNPCTile(checkpoint: CheckpointDescriptor) {
     console.log(`Placing checkpoint ${checkpoint.id} (NPC tile)`)
     if (checkpoint.npcName && checkpoint.npcSprite) {
         const lowercaseName = checkpoint.npcName.toLowerCase()
@@ -24,13 +28,13 @@ function placeNPCTile(checkpoint: CheckpointDescriptor) {
                 x: checkpoint.coordinates.x,
                 y: checkpoint.coordinates.y,
                 tile: `npc-${lowercaseName}-${checkpoint.npcSprite}`,
-                layer: "furniture/furniture3"
+                layer: isCheckpointInBrTour(checkpoint.id) ? "tour/content" : "furniture/furniture3"
             },
         ])
     }
 }
 
-function placeContentTile(checkpoint: CheckpointDescriptor) {
+export function placeContentTile(checkpoint: CheckpointDescriptor) {
     console.log(`Placing checkpoint ${checkpoint.id} (content tile)`)
 
     WA.room.setTiles([
@@ -38,7 +42,7 @@ function placeContentTile(checkpoint: CheckpointDescriptor) {
             x: checkpoint.coordinates.x,
             y: checkpoint.coordinates.y,
             tile: 'content',
-            layer: "furniture/furniture1"
+            layer: isCheckpointInBrTour(checkpoint.id) ? "tour/content" : "furniture/furniture1"
         },
     ])
 
@@ -62,7 +66,7 @@ export function removeNPCTile(checkpoint: CheckpointDescriptor) {
             x: checkpoint.coordinates.x,
             y: checkpoint.coordinates.y,
             tile: null,
-            layer: "furniture/furniture3"
+            layer:  isCheckpointInBrTour(checkpoint.id) ? "tour/content" : "furniture/furniture3"
         },
     ])
 }
@@ -73,7 +77,7 @@ export function removeContentTile(checkpoint: CheckpointDescriptor) {
             x: checkpoint.coordinates.x,
             y: checkpoint.coordinates.y,
             tile: null,
-            layer: "furniture/furniture1"
+            layer:  isCheckpointInBrTour(checkpoint.id) ? "tour/content" : "furniture/furniture1"
         },
     ])
 
@@ -183,19 +187,66 @@ function animateTeleportHalo(xCoord: number, yCoord: number) {
     }, animationDuration)
 }
 
-// Generates in-between range of tiles coordinates from top-left and bottom-right coordinates
-export function getTilesByRectangleCorners(topLeft: number[], bottomRight: number[]): number[][] {
-    const tiles = [];
-    const [topLeftX, topLeftY] = topLeft;
-    const [bottomRightX, bottomRightY] = bottomRight;
+// Hide the NPCs or content of BR Tour floors by
+// placing a building tile above them when the floor is hidden
+export function placeTileBrTourFloor(floor: BrTourFloor) {
+    let tiles: TileDescriptor[] = [];
 
-    // Iterate over the rows first
-    for (let y = topLeftY; y <= bottomRightY; y++) {
-        // Then iterate over the columns
-        for (let x = topLeftX; x <= bottomRightX; x++) {
-            // Add the current tile coordinates to the tiles array
-            tiles.push([x, y]);
-        }
+    const contentCoord = floorToContentCoordMap[floor];
+    if (contentCoord !== null) {
+        console.log("place content tile on coordinates",contentCoord)
+        tiles.push({
+            x: contentCoord.x,
+            y: contentCoord.y,
+            tile: `hide-checkpoint-floor-${floor}`,
+                layer: "above/above2"
+        });
     }
-    return tiles;
+
+    const collisionsCoord = floorToCollisionsCoordMap[floor];
+    if (collisionsCoord !== null) {
+        console.log("remove collision tiles on coordinates",collisionsCoord)
+        collisionsCoord.forEach(([xCoord, yCoord]) => {
+            tiles.push({
+                x: xCoord,
+                y: yCoord,
+                tile: null,
+                layer: "collisions"
+            });
+        })
+    }
+
+    WA.room.setTiles(tiles);
+}
+
+// Show the NPCs or content of BR Tour floors by
+// removing a building tile above them when the floor is hidden
+export function removeTileBrTourFloor(floor: BrTourFloor) {
+    let tiles: TileDescriptor[] = [];
+
+    const contentCoord = floorToContentCoordMap[floor];
+    if (contentCoord !== null) {
+        console.log("remove content tile on coordinates",contentCoord)
+        tiles.push({
+            x: contentCoord.x,
+            y: contentCoord.y,
+            tile: null,
+            layer: "above/above2"
+        });
+    }
+
+    const collisionsCoord = floorToCollisionsCoordMap[floor];
+    if (collisionsCoord !== null) {
+        console.log("add collision tiles on coordinates",collisionsCoord)
+        collisionsCoord.forEach(([xCoord, yCoord]) => {
+            tiles.push({
+                x: xCoord,
+                y: yCoord,
+                tile: "collision",
+                layer: "collisions"
+            });
+        })
+    }
+
+    WA.room.setTiles(tiles);
 }

@@ -1,6 +1,6 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-import { Checklist } from "../../src/onboarding/checkpoints";
+import { Checklist } from "../../src/Onboarding/Type/Checkpoints";
 
 window.onload = async () => {
     try {

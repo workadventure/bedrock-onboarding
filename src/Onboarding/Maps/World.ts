@@ -1,8 +1,14 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-import { type Tag, canEnterCaveWorld, employees } from "./onboarding/checkpoints";
-import { getTilesByRectangleCorners } from "./onboarding/tiles";
-import { displayHelicopterGIF, removeHelicopterGIF } from "./onboarding/ui";
+import { employees } from "../Data/Tags";
+import { brTourFloors } from "../Data/Maps";
+import { canEnterCaveWorld } from "../Helpers/Checkpoints";
+import { getTilesByRectangleCorners } from "../Helpers/Tiles";
+import { pause } from "../Helpers/Utils";
+import { displayHelicopterGIF, removeHelicopterGIF } from "../Services/UIManager";
+import type { Tag } from "../Type/Tags";
+import type { BrTourFloor } from "../Type/Maps";
+import { placeTileBrTourFloor, removeTileBrTourFloor } from "../Services/TilesManager";
 
 let isRoofVisible = false
 
@@ -14,37 +20,36 @@ export async function initWorld(playerTags: Tag[], playerCheckpointIds: string[]
         //WA.nav.goToRoom("/@/bedrock-1710774685/onboardingbr/town")
     }
 
-    // Floors system
-    const floors = ['ext', '0', '1', '2', '3', '4', 'roof'];
-
-    generateTourFloorsTransition(floors);
+    generateTourFloorsTransition();
 
     listenDoor('cave')
 }
 
-function generateTourFloorsTransition(arr: string[]) {
+function generateTourFloorsTransition() {
     // Forward iteration
-    for (let i = 0; i < arr.length - 1; i++) {
-        const fromFloor = arr[i]
-        const toFloor = arr[i + 1]
+    for (let i = 0; i < brTourFloors.length - 1; i++) {
+        const fromFloor = brTourFloors[i]
+        const toFloor = brTourFloors[i + 1]
 
         listenFloorTransition(fromFloor, toFloor)
     }
 
     // Backward iteration
-    for (let i = arr.length - 1; i > 0; i--) {
-        const fromFloor = arr[i]
-        const toFloor = arr[i - 1]
+    for (let i = brTourFloors.length - 1; i > 0; i--) {
+        const fromFloor = brTourFloors[i]
+        const toFloor = brTourFloors[i - 1]
 
         listenFloorTransition(fromFloor, toFloor)
     }
 }
 
-function listenFloorTransition(from: string, to: string) {
+function listenFloorTransition(from: BrTourFloor, to: BrTourFloor) {
     WA.room.area.onEnter(`${from}-${to}`).subscribe(() => {
         WA.nav.goToRoom(`#from-${from}-${to}`)
         WA.room.hideLayer(`tour/${from}`)
+        placeTileBrTourFloor(from)
         WA.room.showLayer(`tour/${to}`)
+        removeTileBrTourFloor(to)
     })
 }
 
@@ -63,31 +68,31 @@ function listenDoor(room: string) {
 }
 
 export async function travelFromAirportToRooftop() {
-    const cameraDuration = 10 * 1000
-    await pause(1000)
+    const cameraDuration = 20 * 1000
 
     console.log("disablePlayerControls")
     WA.controls.disablePlayerControls()
-    await pause(1000)
+    // FIXME: Remove the pauses when the API bug will be fixed
+    await pause(100)
 
     // Zoom out above the helicopter tiles
     console.log("camera.set")
     WA.camera.set(39 * 32, 13 * 32, 1000, 1000, true, true);
-    await pause(1000)
+    await pause(100)
+
+    console.log("displayHelicopterGIF")
+    await displayHelicopterGIF()
+    await pause(100)
 
     // We need to remove the woka from the current viewport
     // But we can't teleport him at the rooftop yet, so we teleport him at the map entry
     console.log("player.teleport")
     WA.player.teleport(50 * 32, 180 * 32);
-    await pause(1000)
-
-    console.log("displayHelicopterGIF")
-    displayHelicopterGIF()
-    await pause(1000)
+    await pause(100)
 
     console.log("removeAirportHelicopter")
     removeHelicopterTiles()
-    await pause(1000)
+    await pause(100)
    
     console.log("moveCameraToRooftop")
     moveCameraToRooftop(32 * 32, 118 * 32, cameraDuration)
@@ -96,26 +101,22 @@ export async function travelFromAirportToRooftop() {
 
     console.log("placeRooftopHelicopter")
     placeRooftopHelicopter()
-    await pause(1000)
+    await pause(100)
 
     console.log("removeHelicopterGIF")
     removeHelicopterGIF()
-    await pause(1000)
+    await pause(100)
 
     // Teleport the player onto the rooftop
     console.log("player.teleport")
     WA.player.teleport(27 * 32, 116 * 32);
-    await pause(1000)
+    await pause(100)
 
     console.log("restorePlayerControls")
     WA.controls.restorePlayerControls()
-    await pause(1000)
+    await pause(100)
 
     WA.camera.followPlayer(true)
-}
-
-async function pause(duration: number) {
-    return new Promise(resolve => setTimeout(resolve, duration));
 }
 
 function removeHelicopterTiles() {
