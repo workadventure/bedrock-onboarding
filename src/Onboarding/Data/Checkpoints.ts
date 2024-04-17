@@ -595,8 +595,8 @@ export const checkpoints: CheckpointDescriptor[] = [
         title: "Your Contacts (FR)",
         description: "Access essential information about your contacts within the company.",
         coordinates: {
-            x: 79,
-            y: 101
+            x: 82,
+            y: 100
         },
         type: "content",
         url: "40_Contacts_FR.pdf",
@@ -622,7 +622,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         description: "Access detailed information about HR processes, policies, and procedures.",
         coordinates: {
             x: 71,
-            y: 100
+            y: 98
         },
         type: "content",
         url: "42_HR_FR.pdf",
@@ -634,8 +634,8 @@ export const checkpoints: CheckpointDescriptor[] = [
         title: "Your Contacts (PT)",
         description: "Access essential information about your contacts within the company.",
         coordinates: {
-            x: 79,
-            y: 101
+            x: 82,
+            y: 100
         },
         type: "content",
         url: "43_Contacts_PT.pdf",
@@ -661,7 +661,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         description: "Access detailed information about HR processes, policies, and procedures.",
         coordinates: {
             x: 71,
-            y: 100
+            y: 98
         },
         type: "content",
         url: "45_HR_PT.pdf",
@@ -673,8 +673,8 @@ export const checkpoints: CheckpointDescriptor[] = [
         title: "Your Contacts (ALT)",
         description: "Access essential information about your contacts within the company.",
         coordinates: {
-            x: 79,
-            y: 101
+            x: 82,
+            y: 100
         },
         type: "content",
         url: "46_HR_ALT.pdf",
@@ -700,7 +700,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         description: "Access detailed information about HR processes, policies, and procedures.",
         coordinates: {
             x: 71,
-            y: 100
+            y: 98
         },
         type: "content",
         url: "48_HR_ALT.pdf",
@@ -712,8 +712,8 @@ export const checkpoints: CheckpointDescriptor[] = [
         title: "Your Contacts (EXT)",
         description: "Access essential information about your contacts within the company.",
         coordinates: {
-            x: 79,
-            y: 101
+            x: 82,
+            y: 100
         },
         type: "content",
         url: "49_Contacts_EXT.pdf",
