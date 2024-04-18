@@ -5,7 +5,7 @@ import { bootstrapExtra } from "@workadventure/scripting-api-extra";
 
 import type { Tag } from "./Onboarding/Type/Tags"
 import type { Map } from "./Onboarding/Type/Maps"
-import { employees, everyone } from "./Onboarding/Data/Tags"
+import { everyone, newbies } from "./Onboarding/Data/Tags"
 import { initCheckpoints, registerCloseDialogueBoxListener } from "./Onboarding/Services/CheckpointsManager"
 import { displayChecklistButton, initRootURL } from "./Onboarding/Services/UIManager";
 import { initDoors } from "./Onboarding/Services/DoorsManager";
@@ -13,6 +13,7 @@ import { initTown } from "./Onboarding/Maps/Town";
 import { initWorld } from "./Onboarding/Maps/World";
 import { processAreas } from "./Onboarding/Services/AreasManager";
 import { getCheckpointIds, setCheckpointIds } from "./Onboarding/Helpers/Checkpoints";
+import { initTags } from "./Onboarding/Helpers/Tags";
 
 WA.onInit().then(async () => {
     console.log('Scripting API ready');
@@ -25,33 +26,35 @@ WA.onInit().then(async () => {
     bootstrapExtra().then(async () => {
         console.log('Scripting API Extra ready');
         const map = WA.state.map as Map
-        const playerCheckpointIds = await getCheckpointIds()
+        await initTags()
         await initRootURL()
+        const playerCheckpointIds = await getCheckpointIds()
+  
         registerCloseDialogueBoxListener()
 
         if (hasMatchingTag) {
-            // WA.controls.disableInviteButton();        
+            // FIXME: wait for the new controls API to be released
+            // WA.controls.disableInviteButton();
+            // WA.controls.disableMapEditor();
+            // WA.controls.disableScreenSharing();
+            // WA.controls.disableWheelZoom();
+            // WA.controls.disableScreenSharing();
+
             initDoors(map, playerTags, playerCheckpointIds)
 
-            // Prevent starting the onboarding if employee
-            // TODO: uncomment/comment the condition if you need to test the onboarding process locally
-            if (!playerTags.some(tag => employees.includes(tag))) {
-                // TODO: uncomment when this method is in prod
-                // WA.controls.disableMapEditor();
-                // WA.controls.disableScreenSharing();
-                // WA.controls.disableWheelZoom();
-                // WA.controls.disableScreenSharing();
+            // Do the onboarding only for players with at least one newbie tag
+            if (playerTags.some(tag => newbies.includes(tag))) {
                 displayChecklistButton()
 
                 const playerCheckpointIdsInit = await initCheckpoints(playerCheckpointIds)
                 processAreas(playerCheckpointIdsInit)
-            }
-
-            // Load specific map scripts
-            if (map === "town") {
-                initTown()
-            } else if (map === "world") {
-                initWorld(playerTags, playerCheckpointIds)
+    
+                // Load specific map scripts
+                if (map === "town") {
+                    initTown()
+                } else if (map === "world") {
+                    initWorld(playerTags, playerCheckpointIds)
+                }
             }
        
         } else {
