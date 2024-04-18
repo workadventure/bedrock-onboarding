@@ -13,6 +13,7 @@ export interface CheckpointDescriptor {
         y: number;
     }
     type: "NPC" | "content" | "direction";
+    xp: number;
     message?: string;
     url?: string;
     tags?: Tag[];

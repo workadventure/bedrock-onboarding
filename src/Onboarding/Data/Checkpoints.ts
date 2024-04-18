@@ -17,6 +17,7 @@ export const checkpoints: CheckpointDescriptor[] = [
             y: 110
         },
         tags: everyone,
+        xp: 10,
     },
     {
         id: "2",
@@ -36,6 +37,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         Lastly, don’t hesitate to revisit any part of the onboarding experience if you feel like you missed something. Our goal is for you to feel confident and informed about your new role here at Bedrock.
         Now, if you’re ready, let’s get started. Your first checkpoint is just ahead. Oh, and one more thing - keep an eye out for me! I’ll be popping up from time to time to check in on your progress. Safe travels through Bedrock, and remember, this journey is as much about discovery as it is about finding your place in our community. Off you go!`,
         tags: everyoneButGuests,
+        xp: 10,
     },
     {
         id: "3",
@@ -48,6 +50,7 @@ export const checkpoints: CheckpointDescriptor[] = [
             y: 15
         },
         tags: everyoneButGuests,
+        xp: 15,
     },
     {
         id: "4",
@@ -61,18 +64,20 @@ export const checkpoints: CheckpointDescriptor[] = [
         type: "direction",
         message: `While checking this antique PC, you discover that Jonas registered your profile, granting you access to the other side. It seems your journey is about to take a significant step forward.`,
         tags: everyoneButGuests,
+        xp: 15,
     },
     {
         id: "5",
         map: "world",
         title: "Hello World!",
-        description: "Enter the expansive E-learning map and discover the world o Bedrock.",
+        description: "Enter the expansive E-learning map and discover the world of Bedrock.",
         type: "direction",
         coordinates: {
             x: 42,
             y: 198
         },
         tags: everyoneButGuests,
+        xp: 20,
     },
     {
         id: "6",
@@ -89,6 +94,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         message: `Ah, there you are! Ready to venture further into the world of Bedrock? Let me provide you with some additional guidance as you prepare to explore beyond the cave.`,
         url: "https://www.youtube.com/embed/Ld2Xg1L7Dng",
         tags: everyoneButGuests,
+        xp: 20,
     },
     {
         id: "7",
@@ -102,6 +108,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         type: "content",
         url: "https://www.youtube.com/embed/_ilLJY_JdCw",
         tags: everyoneButGuests,
+        xp: 20,
     },
     {
         id: "8",
@@ -114,6 +121,7 @@ export const checkpoints: CheckpointDescriptor[] = [
             y: 183
         },
         tags: everyoneButGuests,
+        xp: 30,
     },
     {
         id: "9",
@@ -130,6 +138,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         message: `Greetings, traveler! I'm Aria, here to share with you the rich history of Bedrock. From our humble beginnings to our current endeavors, there's much to learn about our journey. Let me regale you with tales of our past. Check out this document to learn more!`,
         url: "9_History.pdf",
         tags: everyoneButGuests,
+        xp: 40,
     },
     {
         id: "10",
@@ -146,6 +155,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         message: `Hello there! I'm Murielle, and I'm excited to tell you about the incredible achievements of Bedrock. Our journey has been filled with milestones and successes that have shaped who we are today. Let's celebrate our accomplishments together! Check out this video of the BR Day!`,
         url: "https://www.youtube.com/embed/91d_nNvooVI",
         tags: everyoneButGuests,
+        xp: 40,
     },
     {
         id: "11",
@@ -162,6 +172,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         message: `Hey, nice to meet you! I'm Charlie, and I'm here to talk to you about the core values that drive Bedrock. Our values are at the heart of everything we do, guiding us as we work towards our goals. Let's dive into what makes us tick. Check out this document to learn more!`,
         url: "11_Values.pdf",
         tags: everyoneButGuests,
+        xp: 40,
     },
     {
         id: "12",
@@ -178,6 +189,8 @@ export const checkpoints: CheckpointDescriptor[] = [
         message: `Greetings, adventurer! I'm Diana, and I'm here to shed some light on the legal side of Bedrock. Understanding our legal structure and organizational setup is crucial for transparency and compliance. Let's explore this together. Check out this document to learn more!`,
         url: "12_Legal.pdf",
         tags: everyoneButGuests,
+
+        xp: 40,
     },
     {
         id: "13",
@@ -200,6 +213,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         Pride in our work and our partners is a core part of our identity. It's something that you'll find deeply ingrained in every project, every team, and every success story at Bedrock. This is why, just beyond this bridge, you'll embark on a unique journey through four countries: France, Hungary, Belgium, and the Netherlands.
         Each of these represents a cornerstone of our customer base, showcasing the diverse and impactful work we've achieved together. Off you go, and enjoy the journey through our global footprint!`,
         tags: everyoneButGuests,
+        xp: 50,
     },
     {
         id: "14",
@@ -216,6 +230,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         message: `Hello! My name is Pierre. Welcome to Paris, and welcome to the world of Bedrock. Allow me to introduce you to our partnership with 6play, France's premier streaming service. Let's explore together, shall we? Check out this video to learn more!`,
         url: "https://www.youtube.com/embed/ZJvKCVJN8b4",
         tags: everyoneButGuests,
+        xp: 50,
     },
     {
         id: "15",
@@ -232,6 +247,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         message: `Hi there! I'm Emilie, and I'm thrilled to share more about our collaboration with 6play. We've got some exciting things in store for you, so let's dive right in and discover what makes 6play unique. Check out this video to learn more!`,
         url: "https://www.youtube.com/embed/tZb-XhkAn4Q",
         tags: everyoneButGuests,
+        xp: 50,
     },
     {
         id: "16",
@@ -248,6 +264,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         message: `Hi! I'm Eva, and I'm here to talk to you about our partnership with RTL+. Get ready for an adventure as we explore the world of Hungarian streaming together. Check out this video to learn more!`,
         url: "https://www.youtube.com/embed/eVbLx5ghvF4",
         tags: everyoneButGuests,
+        xp: 50,
     },
     {
         id: "17",
@@ -264,6 +281,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         message: `Hello! I'm Gabor, and I'm excited to tell you more about RTL+. Hungary's streaming scene is buzzing with excitement, and we're proud to be a part of it. Let's uncover the magic of RTL+. Check out this video to learn more!`,
         url: "https://www.youtube.com/embed/3noqlEEAIy4",
         tags: everyoneButGuests,
+        xp: 50,
     },
     {
         id: "18",
@@ -280,6 +298,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         message: `Hello there! I'm Luc, and I'm here to showcase Bedrock's collaboration with RTL Play. From Belgium to the world, let's explore the wonders of streaming together. Check out this video to learn more!`,
         url: "https://www.youtube.com/embed/qlFus49BGvg",
         tags: everyoneButGuests,
+        xp: 50,
     },
     {
         id: "19",
@@ -296,6 +315,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         message: `Hey! I'm Emma, and I'm thrilled to share more about RTL Play with you. Belgium's streaming landscape is diverse and vibrant, and we're at the heart of it. Let's dive in and discover what makes RTL Play special. Check out this video to learn more!`,
         url: "https://www.youtube.com/embed/E3MfccMX6R4",
         tags: everyoneButGuests,
+        xp: 50,
     },
     {
         id: "20",
@@ -312,6 +332,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         message: `Hi! I'm Hans, and I'm here to talk to you about Videoland. Get ready for an immersive experience as we explore the world of Dutch streaming together. Check out this video to learn more!`,
         url: "https://www.youtube.com/embed/McR3oR6C1ZQ",
         tags: everyoneButGuests,
+        xp: 50,
     },
     {
         id: "21",
@@ -328,6 +349,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         message: `Hi there! I'm Ingrid, and I'm excited to tell you more about Videoland. The Netherlands is home to a wealth of streaming content, and we're here to bring it to you. Let's embark on this journey together. Check out this document to learn more!`,
         url: "https://www.youtube.com/embed/1d56o9IOnGE",
         tags: everyoneButGuests,
+        xp: 50,
     },
     {
         id: "22",
@@ -342,13 +364,14 @@ export const checkpoints: CheckpointDescriptor[] = [
         npcName: "Vianey",
         npcSprite: "left",
         message: `Welcome to the airport! I'm Vianey, and I'll be guiding you through the check-in process. Before we proceed, let me congratulate you on completing your journey through Bedrock's onboarding experience. It seems you've traveled far and checked all contents on all previous locations. Well done! As a reward, here's your ticket that allows you to pass through the gates. Safe travel!`,
-        tags: everyoneButGuests
+        tags: everyoneButGuests,
+        xp: 50,
     },
     {
         id: "23",
         map: "world",
         title: "Board the Helicopter with Jonas",
-        description: "Jonas awaits you near the helicopter for a scenic journey from the airport to the rooftop of the BR Tour.",
+        description: "Jonas awaits you near the helicopter for a scenic journey from the airport to the rooftop of the BR Tower.",
         coordinates: {
             x: 36,
             y: 15
@@ -359,14 +382,15 @@ export const checkpoints: CheckpointDescriptor[] = [
         message: `Well, well, well! Look who's ready for a unique experience. It's you, and you've earned it. I've been looking forward to this moment. Come, join me. I've got something special planned.
         Why an helicopter? It's not just any helicopter. It's Bedrock's very own flying machine, reserved exclusively for our incredible employees. I figured I wouldn't need it much myself—I can teleport, after all—but I thought it'd be a fun perk for you all.
         So, let's hop in and take to the skies. Sit back, relax, and enjoy the view as we soar above the city. From up here, you'll get a whole new perspective on Bedrock and our place in the world.
-        Next stop: the Bedrock Tour. Off we go!`,
+        Next stop: the Bedrock Tower. Off we go!`,
         tags: everyoneButGuests,
+        xp: 20,
     },
     {
         id: "24",
         map: "world",
-        title: "The Bedrock Tour",
-        description: "You've landed on the rooftop of the Bedrock Tour, the heart of the company. Jonas wants to speak to you before you enter the building.",
+        title: "The Bedrock Tower",
+        description: "You've landed on the rooftop of the Bedrock Tower, the heart of the company. Jonas wants to speak to you before you enter the building.",
         coordinates: {
             x: 23,
             y: 114
@@ -375,9 +399,10 @@ export const checkpoints: CheckpointDescriptor[] = [
         npcName: "Jonas",
         npcSprite: "back",
         message: `Before we venture inside, take a moment to appreciate the view from up here. It's quite spectacular, isn't it? From this vantage point, you can see the sprawling landscape of our company and the vibrant city beyond.
-        But enough introspection for now. The real adventure lies ahead, within the walls of the Bedrock Tour. Inside, you'll discover the inner workings of our company and meet some of the people who make it all possible.
+        But enough introspection for now. The real adventure lies ahead, within the walls of the Bedrock Tower. Inside, you'll discover the inner workings of our company and meet some of the people who make it all possible.
         So, when you're ready, let's step inside and begin our exploration. The CHRO floor is our first destination—a place where the heartbeat of our company, our people, comes to life.`,
         tags: everyoneButGuests,
+        xp: 20,
     },
     {
         id: "25",
@@ -398,6 +423,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         Do not hesitate to reach out to the HR team if you have any further questions.
         Looking forward to meeting you !`,
         tags: everyoneButGuests,
+        xp: 20,
     },
     {
         id: "26",
@@ -411,6 +437,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         type: "content",
         url: "26_Departments.pdf",
         tags: everyoneButGuests,
+        xp: 20,
     },
     {
         id: "27",
@@ -424,6 +451,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         type: "content",
         url: "https://www.youtube.com/embed/B-OxhHvgInk",
         tags: everyoneButGuests,
+        xp: 20,
     },
     {
         id: "28",
@@ -440,6 +468,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         message: `Hello! I'm Nicolas, and I'll be your guide to Bedrock's organizational chart. Understanding our structure is key to navigating our company effectively. Let's map it out together. Check out this document to learn more!`,
         url: "https://airtable.com/appKpJQwbYs2xn4IS/paghiLXWHi7tWPE4O",
         tags: everyoneButGuests,
+        xp: 20,
     },
     {
         id: "29",
@@ -456,18 +485,20 @@ export const checkpoints: CheckpointDescriptor[] = [
         message: `Hey there! I'm Julie, and I'm excited to give you a virtual tour of Bedrock's office spaces. From cozy meeting rooms to vibrant break areas, we've got everything you need for a productive work environment. Let me show you around! Check out this document to learn more!`,
         url: "https://www.youtube.com/embed/Rqn-V-C0VwE",
         tags: everyoneButGuests,
+        xp: 20,
     },
     {
         id: "30",
         map: "world",
-        title: "Exit the BR Tour",
-        description: "Step outside the BR Tour and prepare for your next adventure with Bedrock.",
+        title: "Exit the BR Tower",
+        description: "Step outside the BR Tower and prepare for your next adventure with Bedrock.",
         type: "direction",
         coordinates: {
             x: 24,
             y: 159
         },
         tags: everyoneButGuests,
+        xp: 10,
     },
     {
         id: "31",
@@ -481,8 +512,9 @@ export const checkpoints: CheckpointDescriptor[] = [
         type: "NPC",
         npcName: "Jonas",
         npcSprite: "back",
-        message: `Ah, there you are! Ready to head back to town? Before we go, let's make sure you've absorbed everything from the BR Tour. Do you feel confident with all the information about Bedrock now? So let's continue our trip!`,
+        message: `Ah, there you are! Ready to head back to town? Before we go, let's make sure you've absorbed everything from the BR Tower. Do you feel confident with all the information about Bedrock now? So let's continue our trip!`,
         tags: everyoneButGuests,
+        xp: 10,
     },
     {
         id: "32",
@@ -498,6 +530,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         npcSprite: "left",
         message: `Hop in, let's head back to town. I'll drive you there myself. It's been quite the journey, hasn't it? But we're not done yet. There's still much to explore and learn about Bedrock. Let's continue your onboarding journey together.`,
         tags: everyoneButGuests,
+        xp: 10,
     },
     {
         id: "33",
@@ -513,6 +546,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         npcSprite: "left",
         message: `Welcome to the stadium private backstage area. Feel free to explore and make yourself comfortable. As for me, I've got a conference to prepare for. I'm afraid I must leave you here for now. Time is of the essence, and I'm running a bit behind schedule. But don't worry, you're in good hands. Enjoy your time backstage, you might find some useful information here!`,
         tags: everyoneButGuests,
+        xp: 10,
     },
     {
         id: "34",
@@ -526,6 +560,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         type: "content",
         url: "https://www.youtube.com/embed/_8jMD0yyD8A",
         tags: everyoneButGuests,
+        xp: 10,
     },
     {
         id: "35",
@@ -538,6 +573,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         },
         type: "direction",
         tags: everyoneButGuests,
+        xp: 10,
     },
     {
         id: "36",
@@ -553,6 +589,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         npcSprite: "front",
         message: `Well, it seems our journey together is coming to an end. I hope this onboarding experience has been illuminating for you. Remember, every step you take here contributes to the tapestry of Bedrock's success. Now, I must attend to some final preparations for a keynote presentation. Thank you for your time, and best of luck on your endeavors ahead. Farewell!`,
         tags: everyoneButGuests,
+        xp: 10,
     },
     {
         id: "37",
@@ -565,6 +602,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         },
         type: "direction",
         tags: everyoneButGuests,
+        xp: 10,
     },
     {
         id: "38",
@@ -576,6 +614,7 @@ export const checkpoints: CheckpointDescriptor[] = [
             y: 67
         },
         type: "direction",
+        xp: 20,
     },
     {
         id: "39",
@@ -588,6 +627,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         },
         type: "direction",
         tags: everyoneButGuests,
+        xp: 20,
     },
     {
         id: "40",
@@ -601,6 +641,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         type: "content",
         url: "40_Contacts_FR.pdf",
         tags: ["fr"],
+        xp: 0,
     },
     {
         id: "41",
@@ -614,6 +655,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         type: "content",
         url: "https://bedrockstreaming.atlassian.net/wiki/spaces/HID/pages/1478590621/Mes+Outils+RH",
         tags: ["fr"],
+        xp: 0,
     },
     {
         id: "42",
@@ -627,6 +669,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         type: "content",
         url: "42_HR_FR.pdf",
         tags: ["fr"],
+        xp: 0,
     },
     {
         id: "43",
@@ -639,7 +682,8 @@ export const checkpoints: CheckpointDescriptor[] = [
         },
         type: "content",
         url: "43_Contacts_PT.pdf",
-        tags: ["pt"]
+        tags: ["pt"],
+        xp: 0,
     },
     {
         id: "44",
@@ -652,7 +696,8 @@ export const checkpoints: CheckpointDescriptor[] = [
         },
         type: "content",
         url: "https://workadventu.re/?cell=C30",
-        tags: ["pt"]
+        tags: ["pt"],
+        xp: 0,
     },
     {
         id: "45",
@@ -665,7 +710,8 @@ export const checkpoints: CheckpointDescriptor[] = [
         },
         type: "content",
         url: "45_HR_PT.pdf",
-        tags: ["pt"]
+        tags: ["pt"],
+        xp: 0,
     },
     {
         id: "46",
@@ -678,7 +724,8 @@ export const checkpoints: CheckpointDescriptor[] = [
         },
         type: "content",
         url: "46_HR_ALT.pdf",
-        tags: ["alt"]
+        tags: ["alt"],
+        xp: 0,
     },
     {
         id: "47",
@@ -691,7 +738,8 @@ export const checkpoints: CheckpointDescriptor[] = [
         },
         type: "content",
         url: "https://view.genial.ly/65113d540b1729001198b6d5",
-        tags: ["alt"]
+        tags: ["alt"],
+        xp: 0,
     },
     {
         id: "48",
@@ -704,7 +752,8 @@ export const checkpoints: CheckpointDescriptor[] = [
         },
         type: "content",
         url: "48_HR_ALT.pdf",
-        tags: ["alt"]
+        tags: ["alt"],
+        xp: 0,
     },
     {
         id: "49",
@@ -717,7 +766,8 @@ export const checkpoints: CheckpointDescriptor[] = [
         },
         type: "content",
         url: "49_Contacts_EXT.pdf",
-        tags: ["ext"]
+        tags: ["ext"],
+        xp: 0,
     },
     {
         id: "50",
@@ -730,7 +780,8 @@ export const checkpoints: CheckpointDescriptor[] = [
         },
         type: "content",
         url: "https://workadventu.re/?cell=E30",
-        tags: ["ext"]
+        tags: ["ext"],
+        xp: 0,
     },
     {
         id: "51",
@@ -743,6 +794,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         },
         type: "direction",
         tags: everyoneButGuests,
+        xp: 20,
     },
     {
         id: "52",
@@ -754,6 +806,7 @@ export const checkpoints: CheckpointDescriptor[] = [
             y: 104
         },
         type: "direction",
+        xp: 10,
     },
     {
         id: "53",
@@ -766,6 +819,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         },
         type: "content",
         url: "https://tech.bedrockstreaming.com/",
+        xp: 10,
     },
 ]
 

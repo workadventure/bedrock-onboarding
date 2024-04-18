@@ -2,8 +2,8 @@
 
 import { ActionMessage, TileDescriptor } from "@workadventure/iframe-api-typings";
 import { employees, everyoneButGuests } from "../Data/Tags";
-import { canAccessAchievements, canAccessBelgium, canAccessBridge, canAccessFrance, canAccessHungary, canAccessLegal, canAccessNetherlands, canAccessValues, canEnterAirport, canEnterAirportGates, canEnterBRTour, canEnterBRTourFloor0, canEnterBRTourFloor1, canEnterBRTourFloor2, canEnterBRTourFloor3, canEnterCaveWorld, canLeaveBRTour, canLeaveCaveWorld, isWorldMapDone, isOnboardingDone } from "../Helpers/Checkpoints";
-import type { AirportGateAccess, BrTourFloorAccess, BrTourFloorName, HRMeetingDoorAccess, HrMeetingDoorName, TownBuildingAccess, TownBuildingName, TownCaveDoorAccess, WorldBarrierAccess, WorldBarrierName, WorldBuildingAccess, WorldBuildingName } from "../Type/Doors";
+import { canAccessAchievements, canAccessBelgium, canAccessBridge, canAccessFrance, canAccessHungary, canAccessLegal, canAccessNetherlands, canAccessValues, canEnterAirport, canEnterAirportGates, canEnterBRTower, canEnterBRTowerFloor0, canEnterBRTowerFloor1, canEnterBRTowerFloor2, canEnterBRTowerFloor3, canEnterCaveWorld, canLeaveBRTower, canLeaveCaveWorld, isWorldMapDone, isOnboardingDone } from "../Helpers/Checkpoints";
+import type { AirportGateAccess, BrTowerFloorAccess, BrTowerFloorName, HRMeetingDoorAccess, HrMeetingDoorName, TownBuildingAccess, TownBuildingName, TownCaveDoorAccess, WorldBarrierAccess, WorldBarrierName, WorldBuildingAccess, WorldBuildingName } from "../Type/Doors";
 import type { NewbieTag, Tag } from "../Type/Tags";
 import { DOOR_LOCKED, closeBanner, openErrorBanner } from "./UIManager";
 import { getTilesByRectangleCorners } from "../Helpers/Tiles";
@@ -300,7 +300,7 @@ let worldBarriers: WorldBarrierAccess = {
 let airportGate: AirportGateAccess = 
     { access: false, turnstile: [[52, 11], [52, 12]], lightsY: [[52, 6], [52, 10]], lightsX: [[48, 5], [52, 5]] }
 
-let brTourFloors: BrTourFloorAccess = {
+let brTowerFloors: BrTowerFloorAccess = {
     floor4: { access: false, tilesNamePattern: "rooftop-to-floor4", tilesCoordinates: [[23, 117], [23, 117]] },
     floor3: { access: false, tilesNamePattern: "floor4-to-floor3", tilesCoordinates: [[22, 126], [25, 126]] },
     floor2: { access: false, tilesNamePattern: "floor3-to-floor2", tilesCoordinates: [[22, 133], [25, 133]] },
@@ -325,12 +325,12 @@ function initWorldDoors(playerTags: Tag[], playerCheckpointIds: string[]) {
 
     airportGate.access = canEnterAirportGates(playerCheckpointIds);
 
-    brTourFloors.floor4.access = canEnterBRTour(playerCheckpointIds)
-    brTourFloors.floor3.access = canEnterBRTourFloor3(playerCheckpointIds)
-    brTourFloors.floor2.access = canEnterBRTourFloor2(playerCheckpointIds)
-    brTourFloors.floor1.access = canEnterBRTourFloor1(playerCheckpointIds)
-    brTourFloors.floor0.access = canEnterBRTourFloor0(playerCheckpointIds)
-    brTourFloors.exit.access = canLeaveBRTour(playerCheckpointIds)
+    brTowerFloors.floor4.access = canEnterBRTower(playerCheckpointIds)
+    brTowerFloors.floor3.access = canEnterBRTowerFloor3(playerCheckpointIds)
+    brTowerFloors.floor2.access = canEnterBRTowerFloor2(playerCheckpointIds)
+    brTowerFloors.floor1.access = canEnterBRTowerFloor1(playerCheckpointIds)
+    brTowerFloors.floor0.access = canEnterBRTowerFloor0(playerCheckpointIds)
+    brTowerFloors.exit.access = canLeaveBRTower(playerCheckpointIds)
 
     // unlock all doors if employee
     if (playerTags.some(tag => employees.includes(tag))) {
@@ -344,8 +344,8 @@ function initWorldDoors(playerTags: Tag[], playerCheckpointIds: string[]) {
 
         airportGate.access = true;
 
-        Object.keys(brTourFloors).forEach(floor => {
-            brTourFloors[floor as BrTourFloorName].access = true;
+        Object.keys(brTowerFloors).forEach(floor => {
+            brTowerFloors[floor as BrTowerFloorName].access = true;
         });
     }
 
@@ -357,12 +357,12 @@ function initWorldDoors(playerTags: Tag[], playerCheckpointIds: string[]) {
         unlockAirportGate()
     }
 
-    initBrTourFloorAccess()
+    initBrTowerFloorAccess()
 
     console.log("worldBuildings",worldBuildings)
     console.log("worldBarriers",worldBarriers)
     console.log("airportGate",airportGate)
-    console.log("brTourFloors",brTourFloors)
+    console.log("brTowerFloors",brTowerFloors)
 }
 
 function listenWorldDoor(building: WorldBuildingName) {
@@ -495,17 +495,17 @@ export function unlockAirportGate() {
     WA.room.setTiles(combinedTiles);
 }
 
-export function unlockBrTourFloorAccess(floor: BrTourFloorName) {
-    console.log("unlockBrTourFloorAccess()")
+export function unlockBrTowerFloorAccess(floor: BrTowerFloorName) {
+    console.log("unlockBrTowerFloorAccess()")
     let tiles: TileDescriptor[] = [];
-    const floorData = brTourFloors[floor];
-    const floorToLayerNameMap: { [key in BrTourFloorName]: string } = {
+    const floorData = brTowerFloors[floor];
+    const floorToLayerNameMap: { [key in BrTowerFloorName]: string } = {
         "floor4": "walls/walls2",
-        "floor3": "tour/4",
-        "floor2": "tour/3",
-        "floor1": "tour/2",
-        "floor0": "tour/1",
-        "exit": "tour/0"
+        "floor3": "tower/4",
+        "floor2": "tower/3",
+        "floor1": "tower/2",
+        "floor0": "tower/1",
+        "exit": "tower/0"
     };
     const tilesCoordinates = getTilesByRectangleCorners(floorData.tilesCoordinates[0], floorData.tilesCoordinates[1])
     // first we need to remove the wall
@@ -531,10 +531,10 @@ export function unlockBrTourFloorAccess(floor: BrTourFloorName) {
     WA.room.setTiles(tiles);
 }
 
-function initBrTourFloorAccess() {
-    Object.keys(brTourFloors).forEach(floor => {
-        if (brTourFloors[floor as BrTourFloorName].access === true) {
-            unlockBrTourFloorAccess(floor as BrTourFloorName)
+function initBrTowerFloorAccess() {
+    Object.keys(brTowerFloors).forEach(floor => {
+        if (brTowerFloors[floor as BrTowerFloorName].access === true) {
+            unlockBrTowerFloorAccess(floor as BrTowerFloorName)
         }
     });
 }

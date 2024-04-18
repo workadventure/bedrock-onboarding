@@ -2,9 +2,9 @@
 
 import { TileDescriptor } from "@workadventure/iframe-api-typings";
 import { floorToCollisionsCoordMap, floorToContentCoordMap } from "../Data/Maps";
-import { isCheckpointInBrTour, isCheckpointJonasPhone } from "../Helpers/Checkpoints"
+import { isCheckpointInBrTower, isCheckpointJonasPhone } from "../Helpers/Checkpoints"
 import { CheckpointDescriptor } from "../Type/Checkpoints"
-import type { BrTourFloor } from "../Type/Maps";
+import type { BrTowerFloor } from "../Type/Maps";
 
 export function placeTile(checkpoint: CheckpointDescriptor) {
     if (checkpoint.type === "NPC") {
@@ -28,7 +28,7 @@ export function placeNPCTile(checkpoint: CheckpointDescriptor) {
                 x: checkpoint.coordinates.x,
                 y: checkpoint.coordinates.y,
                 tile: `npc-${lowercaseName}-${checkpoint.npcSprite}`,
-                layer: isCheckpointInBrTour(checkpoint.id) ? "tour/content" : "furniture/furniture3"
+                layer: isCheckpointInBrTower(checkpoint.id) ? "tower/content" : "furniture/furniture3"
             },
         ])
     }
@@ -42,7 +42,7 @@ export function placeContentTile(checkpoint: CheckpointDescriptor) {
             x: checkpoint.coordinates.x,
             y: checkpoint.coordinates.y,
             tile: 'content',
-            layer: isCheckpointInBrTour(checkpoint.id) ? "tour/content" : "furniture/furniture1"
+            layer: isCheckpointInBrTower(checkpoint.id) ? "tower/content" : "furniture/furniture1"
         },
     ])
 
@@ -66,7 +66,7 @@ export function removeNPCTile(checkpoint: CheckpointDescriptor) {
             x: checkpoint.coordinates.x,
             y: checkpoint.coordinates.y,
             tile: null,
-            layer:  isCheckpointInBrTour(checkpoint.id) ? "tour/content" : "furniture/furniture3"
+            layer:  isCheckpointInBrTower(checkpoint.id) ? "tower/content" : "furniture/furniture3"
         },
     ])
 }
@@ -77,7 +77,7 @@ export function removeContentTile(checkpoint: CheckpointDescriptor) {
             x: checkpoint.coordinates.x,
             y: checkpoint.coordinates.y,
             tile: null,
-            layer:  isCheckpointInBrTour(checkpoint.id) ? "tour/content" : "furniture/furniture1"
+            layer:  isCheckpointInBrTower(checkpoint.id) ? "tower/content" : "furniture/furniture1"
         },
     ])
 
@@ -187,9 +187,9 @@ function animateTeleportHalo(xCoord: number, yCoord: number) {
     }, animationDuration)
 }
 
-// Hide the NPCs or content of BR Tour floors by
+// Hide the NPCs or content of BR Tower floors by
 // placing a building tile above them when the floor is hidden
-export function placeTileBrTourFloor(floor: BrTourFloor) {
+export function placeTileBrTowerFloor(floor: BrTowerFloor) {
     let tiles: TileDescriptor[] = [];
 
     const contentCoord = floorToContentCoordMap[floor];
@@ -219,9 +219,9 @@ export function placeTileBrTourFloor(floor: BrTourFloor) {
     WA.room.setTiles(tiles);
 }
 
-// Show the NPCs or content of BR Tour floors by
+// Show the NPCs or content of BR Tower floors by
 // removing a building tile above them when the floor is hidden
-export function removeTileBrTourFloor(floor: BrTourFloor) {
+export function removeTileBrTowerFloor(floor: BrTowerFloor) {
     let tiles: TileDescriptor[] = [];
 
     const contentCoord = floorToContentCoordMap[floor];

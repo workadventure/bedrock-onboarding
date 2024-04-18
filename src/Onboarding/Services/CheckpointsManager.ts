@@ -4,7 +4,7 @@ import { getPlayerTags } from "../Helpers/Tags"
 import { travelFromAirportToRooftop } from "../Maps/World"
 import { CheckpointDescriptor } from "../Type/Checkpoints"
 import { placeArea, processAreas, processAreasAfterOnboarding } from "./AreasManager"
-import { getCaveDoorToOpen, unlockAirportGate, unlockBrTourFloorAccess, unlockTownBuildingDoor, unlockTownCaveDoor, unlockWorldBarrier, unlockWorldBuildingDoor } from "./DoorsManager"
+import { getCaveDoorToOpen, unlockAirportGate, unlockBrTowerFloorAccess, unlockTownBuildingDoor, unlockTownCaveDoor, unlockWorldBarrier, unlockWorldBuildingDoor } from "./DoorsManager"
 import { placeTile, removeDirectionTile, removeNPCTile, teleportJonas } from "./TilesManager"
 import { DOOR_LOCKED, closeBanner, openCheckpointBanner, openErrorBanner, openWebsite } from "./UIManager"
 import { pause } from "../Helpers/Utils";
@@ -222,47 +222,47 @@ async function triggerCheckpointAction(checkpointId: string) {
 
         // Requirement: Talk with Jonas near the Helicopter
         case "23":
-            // Action: Fly to the BR Tour rooftop + place next Jonas
+            // Action: Fly to the BR Tower rooftop + place next Jonas
             await travelFromAirportToRooftop()
             console.log("TRAVEL FINISHED")
             placeNextJonasCheckpoint()
             break;
 
-        // Requirement: Talk with Jonas on the BR Tour rooftop
+        // Requirement: Talk with Jonas on the BR Tower rooftop
         case "24":
-            // Action: Unlock access to BR Tour floor 4 + place next Jonas
-            unlockBrTourFloorAccess("floor4")
+            // Action: Unlock access to BR Tower floor 4 + place next Jonas
+            unlockBrTowerFloorAccess("floor4")
             placeNextJonasCheckpoint()
             break;
 
         // Requirement: Check floor 4
         case "25":
             // Action: Unlock floor 3
-            unlockBrTourFloorAccess("floor3")
+            unlockBrTowerFloorAccess("floor3")
             break;
 
         // Requirement: Check floor 3
         case "26":
             // Action: Unlock floor 2
-            unlockBrTourFloorAccess("floor2")
+            unlockBrTowerFloorAccess("floor2")
             break;
 
         // Requirement: Check floor 2
         case "27":
             // Action: Unlock floor 1
-            unlockBrTourFloorAccess("floor1")
+            unlockBrTowerFloorAccess("floor1")
             break;
 
         // Requirement: Check floor 1
         case "28":
             // Action: Unlock floor 0
-            unlockBrTourFloorAccess("floor0")
+            unlockBrTowerFloorAccess("floor0")
             break;
 
         // Requirement: Check floor 0
         case "29":
-            // Action: Unlock BR Tour exit door
-            unlockBrTourFloorAccess("exit")
+            // Action: Unlock BR Tower exit door
+            unlockBrTowerFloorAccess("exit")
             break;
 
         // Requirement: Talk with Jonas at its Pickup
@@ -275,7 +275,7 @@ async function triggerCheckpointAction(checkpointId: string) {
         // Requirement: Enter Jonas' Pickup
         case "32":
             // Action: Go to room Town before backstage
-            WA.nav.goToRoom("/@/bedrock-1710774685/onboardingbr/town#from-tour")
+            WA.nav.goToRoom("/@/bedrock-1710774685/onboardingbr/town#from-tower")
             break;
 
         // Requirement: Talk to Jonas in the backstage or check backstage content

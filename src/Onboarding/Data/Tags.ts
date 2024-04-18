@@ -1,4 +1,4 @@
-import type { NewbieTag, Tag } from "../Type/Tags";
+import type { Tag } from "../Type/Tags";
 
 /**
  * All possible tags a player could have
@@ -28,4 +28,4 @@ export const newbiesAndGuests: Tag[] = ["ext", "fr", "pt", "alt", "guest"];
  * All possible tags a newbie could have
  * @constant
  */
-export const newbies: NewbieTag[] = ["ext", "fr", "pt", "alt"];
+export const newbies: Tag[] = ["ext", "fr", "pt", "alt", "admin"];

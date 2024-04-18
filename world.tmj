@@ -3200,7 +3200,7 @@
                  "x":0,
                  "y":0
                 }],
-         "name":"tour",
+         "name":"tower",
          "opacity":1,
          "type":"group",
          "visible":true,
@@ -33546,11 +33546,11 @@
         {
          "columns":20,
          "firstgid":98266,
-         "image":"tilesets\/BR_Tour.png",
+         "image":"tilesets\/BR_Tower.png",
          "imageheight":1280,
          "imagewidth":640,
          "margin":0,
-         "name":"BR_Tour",
+         "name":"BR_Tower",
          "spacing":0,
          "tilecount":800,
          "tileheight":32,

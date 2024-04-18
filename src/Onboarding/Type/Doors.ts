@@ -34,7 +34,7 @@ export type WorldBarrierAccess = {
 
 export type AirportGateAccess = { access: boolean, turnstile: [number, number][], lightsY: [number, number][], lightsX: [number, number][] };
 
-export type BrTourFloorName = "exit" | "floor0" | "floor1" | "floor2" | "floor3" | "floor4";
-export type BrTourFloorAccess = {
-    [key in BrTourFloorName]: { access: boolean, tilesNamePattern: string, tilesCoordinates: [number, number][] };
+export type BrTowerFloorName = "exit" | "floor0" | "floor1" | "floor2" | "floor3" | "floor4";
+export type BrTowerFloorAccess = {
+    [key in BrTowerFloorName]: { access: boolean, tilesNamePattern: string, tilesCoordinates: [number, number][] };
 };

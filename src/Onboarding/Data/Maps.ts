@@ -1,17 +1,17 @@
-import type { BrTourFloor } from "../Type/Maps";
+import type { BrTowerFloor } from "../Type/Maps";
 
 /**
- * All floors of the BR Tour
+ * All floors of the BR Tower
  * @constant
  */
-export const brTourFloors: BrTourFloor[] = ['ext', '0', '1', '2', '3', '4', 'roof'];
+export const brTowerFloors: BrTowerFloor[] = ['ext', '0', '1', '2', '3', '4', 'roof'];
 
 /**
- * Coordinates of each BR Tour floor content location
+ * Coordinates of each BR Tower floor content location
  * This is used for showing or hiding content based on the floor transition 
  * @constant
  */
-export const floorToContentCoordMap: { [key in BrTourFloor]: { x: number, y: number } | null } = {
+export const floorToContentCoordMap: { [key in BrTowerFloor]: { x: number, y: number } | null } = {
     "roof": null,
     "4": { x: 31, y: 124 },
     "3": { x: 29, y: 129 },
@@ -22,11 +22,11 @@ export const floorToContentCoordMap: { [key in BrTourFloor]: { x: number, y: num
 }
 
 /**
- * Coordinates of collision tile in BR Tour floors
+ * Coordinates of collision tile in BR Tower floors
  * This is used for adding or removing floor collisions based on the floor transition 
  * @constant
  */
-export const floorToCollisionsCoordMap: { [key in BrTourFloor]: [number, number][]|null } = {
+export const floorToCollisionsCoordMap: { [key in BrTowerFloor]: [number, number][]|null } = {
     "roof": null,
     "4": [[15, 122], [21, 122], [32, 122], [18, 124], [29, 123], [30, 123], [29, 124], [30, 124], [29, 125], [30, 125]],
     "3": [[16, 129], [17, 129], [15, 131], [16, 131], [17, 131], [18, 131], [15, 132], [16, 132], [17, 132], [18, 132], [20, 129], [20, 130], [20, 131], [28, 130], [29, 130], [30, 130], [28, 131], [29, 131], [30, 131], [28, 132], [29, 132], [30, 132]],

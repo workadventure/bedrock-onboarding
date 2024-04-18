@@ -1,16 +1,14 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
 import { employees } from "../Data/Tags";
-import { brTourFloors } from "../Data/Maps";
+import { brTowerFloors } from "../Data/Maps";
 import { canEnterCaveWorld } from "../Helpers/Checkpoints";
 import { getTilesByRectangleCorners } from "../Helpers/Tiles";
 import { pause } from "../Helpers/Utils";
 import { displayHelicopterGIF, removeHelicopterGIF } from "../Services/UIManager";
 import type { Tag } from "../Type/Tags";
-import type { BrTourFloor } from "../Type/Maps";
-import { placeTileBrTourFloor, removeTileBrTourFloor } from "../Services/TilesManager";
-
-let isRoofVisible = false
+import type { BrTowerFloor } from "../Type/Maps";
+import { placeTileBrTowerFloor, removeTileBrTowerFloor } from "../Services/TilesManager";
 
 export async function initWorld(playerTags: Tag[], playerCheckpointIds: string[]) {
     console.log('World script started successfully');
@@ -20,50 +18,34 @@ export async function initWorld(playerTags: Tag[], playerCheckpointIds: string[]
         //WA.nav.goToRoom("/@/bedrock-1710774685/onboardingbr/town")
     }
 
-    generateTourFloorsTransition();
-
-    listenDoor('cave')
+    generateTowerFloorsTransition();
 }
 
-function generateTourFloorsTransition() {
+function generateTowerFloorsTransition() {
     // Forward iteration
-    for (let i = 0; i < brTourFloors.length - 1; i++) {
-        const fromFloor = brTourFloors[i]
-        const toFloor = brTourFloors[i + 1]
+    for (let i = 0; i < brTowerFloors.length - 1; i++) {
+        const fromFloor = brTowerFloors[i]
+        const toFloor = brTowerFloors[i + 1]
 
         listenFloorTransition(fromFloor, toFloor)
     }
 
     // Backward iteration
-    for (let i = brTourFloors.length - 1; i > 0; i--) {
-        const fromFloor = brTourFloors[i]
-        const toFloor = brTourFloors[i - 1]
+    for (let i = brTowerFloors.length - 1; i > 0; i--) {
+        const fromFloor = brTowerFloors[i]
+        const toFloor = brTowerFloors[i - 1]
 
         listenFloorTransition(fromFloor, toFloor)
     }
 }
 
-function listenFloorTransition(from: BrTourFloor, to: BrTourFloor) {
+function listenFloorTransition(from: BrTowerFloor, to: BrTowerFloor) {
     WA.room.area.onEnter(`${from}-${to}`).subscribe(() => {
         WA.nav.goToRoom(`#from-${from}-${to}`)
-        WA.room.hideLayer(`tour/${from}`)
-        placeTileBrTourFloor(from)
-        WA.room.showLayer(`tour/${to}`)
-        removeTileBrTourFloor(to)
-    })
-}
-
-function listenDoor(room: string) {
-    WA.room.area.onEnter(`${room}Door`).subscribe(() => {
-        if (isRoofVisible === true) {
-            isRoofVisible = false
-            WA.room.hideLayer(`roofs/${room}1`)
-            WA.room.hideLayer(`roofs/${room}2`)
-        } else {
-            isRoofVisible = true
-            WA.room.showLayer(`roofs/${room}1`)
-            WA.room.showLayer(`roofs/${room}2`)
-        }
+        WA.room.hideLayer(`tower/${from}`)
+        placeTileBrTowerFloor(from)
+        WA.room.showLayer(`tower/${to}`)
+        removeTileBrTowerFloor(to)
     })
 }
 
@@ -154,7 +136,7 @@ function moveCameraToRooftop(xCoord: number, yCoord: number, cameraDuration: num
     console.log("moveCameraToRooftop()")
 
     // Move camera frop airport to rooftop during 20 secondes
-    // TODO: Use that line instead when the Scripting API will be updated in production
+    // FIXME: Use that line instead when the Scripting API will be updated in production
     //WA.camera.set(area.x, area.y, 1000, 1000, false, true, 20000);
     window.parent.postMessage(
         {

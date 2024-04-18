@@ -143,32 +143,32 @@ export function canEnterAirportGates(playerCheckpointIds: string[]): boolean {
    return playerCheckpointIds.includes("22");
 }
 
-export function canEnterBRTour(playerCheckpointIds: string[]): boolean {
+export function canEnterBRTower(playerCheckpointIds: string[]): boolean {
    return playerCheckpointIds.includes("24");
 }
 
-export function isCheckpointInBrTour(checkpointId: string): boolean {
+export function isCheckpointInBrTower(checkpointId: string): boolean {
    const checkpointIdNumber = parseInt(checkpointId, 10);
    return 25 <= checkpointIdNumber && checkpointIdNumber <= 29;
 }
 
-export function canEnterBRTourFloor3(playerCheckpointIds: string[]): boolean {
+export function canEnterBRTowerFloor3(playerCheckpointIds: string[]): boolean {
    return playerCheckpointIds.includes("25");
 }
 
-export function canEnterBRTourFloor2(playerCheckpointIds: string[]): boolean {
+export function canEnterBRTowerFloor2(playerCheckpointIds: string[]): boolean {
    return playerCheckpointIds.includes("26");
 }
 
-export function canEnterBRTourFloor1(playerCheckpointIds: string[]): boolean {
+export function canEnterBRTowerFloor1(playerCheckpointIds: string[]): boolean {
    return playerCheckpointIds.includes("27");
 }
 
-export function canEnterBRTourFloor0(playerCheckpointIds: string[]): boolean {
+export function canEnterBRTowerFloor0(playerCheckpointIds: string[]): boolean {
    return playerCheckpointIds.includes("28");
 }
 
-export function canLeaveBRTour(playerCheckpointIds: string[]): boolean {
+export function canLeaveBRTower(playerCheckpointIds: string[]): boolean {
    return playerCheckpointIds.includes("29");
 }
 

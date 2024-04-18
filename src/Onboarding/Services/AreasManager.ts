@@ -154,16 +154,14 @@ function filterCheckpointsByMilestone(checkpoint: CheckpointDescriptor, playerCh
     }
 
     if (isCheckpointAfterFirstJonas(checkpointId)) {
-        // Guests can not meet Jonas so we allow them to see the last checkpoints not restricted by tags
-        if (!hasPlayerMetJonas(playerCheckpointIds) && !playerTags.includes("guest")) {
+        if (!hasPlayerMetJonas(playerCheckpointIds)) {
             console.log(`Ignoring checkpoint ${checkpointId} (milestone meet Jonas)`)
             return false
         }
     }
 
     if (isCheckpointAfterOnboarding(checkpointId)) {
-        // Guests can not complete the onboarding so we allow them to see the last checkpoints not restricted by tags
-        if (!isOnboardingDone(playerCheckpointIds) && !playerTags.includes("guest")) {
+        if (!isOnboardingDone(playerCheckpointIds)) {
             console.log(`Ignoring checkpoint ${checkpointId} (milestone onboarding)`)
             return false
         }
