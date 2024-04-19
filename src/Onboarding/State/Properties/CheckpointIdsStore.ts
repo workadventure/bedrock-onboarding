@@ -46,7 +46,7 @@ class CheckpointIdsStore implements StateManager<string[]> {
         // When a player arrives in the game, we have two option:
             // 1. It's a new player and he has no data yet, no checkpoints. So we give him the checkpoint "0" in order to identify (if he reloads the page) that that player has not began the game but he connected at least one time already.
             // 2. It's an existing player (rather because he has just "0" as the list of checkpoints, or more checkpoints)
-        if (checkpointIds.length <= 1) {
+        if (!checkpointIds || checkpointIds.length <= 1) {
             console.log("New player")
             checkpointIds = ["0"];
         }
