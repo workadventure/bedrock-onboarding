@@ -33,8 +33,8 @@ export async function openDialogueBox(checkpointId: string) {
     })
 }
 
-export function closeDialogueBox() {
-    dialogueBox?.close()
+export async function closeDialogueBox() {
+    await dialogueBox?.close()
 }
 
 export async function openWebsite(url: string) {
@@ -43,8 +43,8 @@ export async function openWebsite(url: string) {
     coWebsite = await WA.nav.openCoWebSite(finalUrl)
 }
 
-export function closeWebsite() {
-    coWebsite?.close()
+export async function closeWebsite() {
+    await coWebsite?.close()
 }
 
 export function openCheckpointBanner(nextCheckpointId: string) {
@@ -137,6 +137,6 @@ export async function displayHelicopterGIF() {
     })
 }
 
-export function removeHelicopterGIF() {
-    helicopter?.close()
+export async function removeHelicopterGIF() {
+    await helicopter?.close()
 }

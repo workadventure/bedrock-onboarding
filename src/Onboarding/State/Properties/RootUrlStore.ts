@@ -7,7 +7,9 @@ class RootUrlStore implements StateManager<string> {
     private static instance: RootUrlStore;
     
     // Private constructor to prevent external instantiation
-    private constructor() {}
+    private constructor() {
+        // This constructor is intentionally left empty
+    }
 
     static getInstance(): RootUrlStore {
         if (!RootUrlStore.instance) {

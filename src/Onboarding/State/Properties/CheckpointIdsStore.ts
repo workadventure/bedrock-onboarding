@@ -9,7 +9,9 @@ class CheckpointIdsStore implements StateManager<string[]> {
     private static instance: CheckpointIdsStore;
 
     // Private constructor to prevent external instantiation
-    private constructor() { }
+    private constructor() {
+        // This constructor is intentionally left empty
+    }
 
     static getInstance(): CheckpointIdsStore {
         if (!CheckpointIdsStore.instance) {

@@ -72,7 +72,7 @@ export function removeNPCTile(checkpoint: CheckpointDescriptor) {
     ])
 }
 
-export function removeContentTile(checkpoint: CheckpointDescriptor) {
+export async function removeContentTile(checkpoint: CheckpointDescriptor) {
     WA.room.setTiles([
         {
             x: checkpoint.coordinates.x,
@@ -84,7 +84,7 @@ export function removeContentTile(checkpoint: CheckpointDescriptor) {
 
     if (checkpointIdsStore.isCheckpointJonasPhone(checkpoint.id)) {
         // remove smartphone
-        WA.room.area.delete(checkpoint.id)
+        await WA.room.area.delete(checkpoint.id)
         WA.room.setTiles([
             {
                 x: checkpoint.coordinates.x,
@@ -222,7 +222,7 @@ export function placeRooftopHelicopter() {
 // Hide the NPCs or content of BR Tower floors by
 // placing a building tile above them when the floor is hidden
 export function placeTileBrTowerFloor(floor: BrTowerFloor) {
-    let tiles: TileDescriptor[] = [];
+    const tiles: TileDescriptor[] = [];
 
     const contentCoord = floorToContentCoordMap[floor];
     if (contentCoord !== null) {
@@ -254,7 +254,7 @@ export function placeTileBrTowerFloor(floor: BrTowerFloor) {
 // Show the NPCs or content of BR Tower floors by
 // removing a building tile above them when the floor is hidden
 export function removeTileBrTowerFloor(floor: BrTowerFloor) {
-    let tiles: TileDescriptor[] = [];
+    const tiles: TileDescriptor[] = [];
 
     const contentCoord = floorToContentCoordMap[floor];
     if (contentCoord !== null) {

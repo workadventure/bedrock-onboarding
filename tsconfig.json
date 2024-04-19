@@ -30,6 +30,6 @@
     "skipLibCheck": true
   },
   "include": [
-    "src"
+    "src/**/*.ts"
   ]
 }

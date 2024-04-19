@@ -8,7 +8,7 @@ import { displayHelicopterGIF, removeHelicopterGIF } from "../Services/UIManager
 import type { BrTowerFloor } from "../Types/Maps";
 import { placeRooftopHelicopter, placeTileBrTowerFloor, removeHelicopterTiles, removeTileBrTowerFloor } from "../Services/TilesManager";
 
-export async function initWorld() {
+export function initWorld() {
     console.log('World script started successfully');
 
     if (!checkpointIdsStore.canEnterCaveWorld() && !playerTagsStore.isEmployee) {
@@ -69,7 +69,7 @@ export async function travelFromAirportToRooftop() {
     // We need to remove the woka from the current viewport
     // But we can't teleport him at the rooftop yet, so we teleport him at the map entry
     console.log("player.teleport")
-    WA.player.teleport(50 * 32, 180 * 32);
+    await WA.player.teleport(50 * 32, 180 * 32);
     await pause(100)
 
     console.log("removeAirportHelicopter")
@@ -86,12 +86,12 @@ export async function travelFromAirportToRooftop() {
     await pause(100)
 
     console.log("removeHelicopterGIF")
-    removeHelicopterGIF()
+    await removeHelicopterGIF()
     await pause(100)
 
     // Teleport the player onto the rooftop
     console.log("player.teleport")
-    WA.player.teleport(27 * 32, 116 * 32);
+    await WA.player.teleport(27 * 32, 116 * 32);
     await pause(100)
 
     console.log("restorePlayerControls")

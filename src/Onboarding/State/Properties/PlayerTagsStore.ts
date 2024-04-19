@@ -9,7 +9,9 @@ class PlayerTagsStore implements StateManager<Tag[]> {
     private static instance: PlayerTagsStore;
     
     // Private constructor to prevent external instantiation
-    private constructor() {}
+    private constructor() {
+        // This constructor is intentionally left empty
+    }
 
     static getInstance(): PlayerTagsStore {
         if (!PlayerTagsStore.instance) {

@@ -1,4 +1,5 @@
 /// <reference types="@workadventure/iframe-api-typings" />
+
 console.log('Main script started successfully');
 
 import { bootstrapExtra } from "@workadventure/scripting-api-extra";
@@ -15,7 +16,7 @@ import { playerTagsStore } from "./Onboarding/State/Properties/PlayerTagsStore";
 import { rootUrlStore } from "./Onboarding/State/Properties/RootUrlStore";
 import { checkpointIdsStore } from "./Onboarding/State/Properties/CheckpointIdsStore";
 
-WA.onInit().then(async () => {
+WA.onInit().then(() => {
     console.log('Scripting API ready');
 
     currentMapStore.initState();
@@ -38,13 +39,13 @@ WA.onInit().then(async () => {
             // WA.controls.disableWheelZoom();
             // WA.controls.disableScreenSharing();
 
-            await initDoors()
+            initDoors()
 
             // Do the onboarding only for players with at least one newbie tag
             if (playerTagsStore.isNewbie()) {
                 displayChecklistButton()
 
-                processAreas()
+                await processAreas()
     
                 // Load specific map scripts
                 if (currentMapStore.isTown()) {
@@ -62,7 +63,7 @@ WA.onInit().then(async () => {
                 WA.nav.goToRoom(townMapUrl)
             }
 
-            await initDoors()
+            initDoors()
         }
 
         // TODO: Remove this after (add button to change progress just for debug)

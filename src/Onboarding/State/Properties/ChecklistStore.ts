@@ -8,7 +8,9 @@ class ChecklistStore implements StateManager<Checklist[]> {
     private static instance: ChecklistStore;
 
     // Private constructor to prevent external instantiation
-    private constructor() { }
+    private constructor() {
+        // This constructor is intentionally left empty
+    }
 
     static getInstance(): ChecklistStore {
         if (!ChecklistStore.instance) {
@@ -58,13 +60,13 @@ class ChecklistStore implements StateManager<Checklist[]> {
     */
 
     async markCheckpointAsDone(checkpointId: string) {
-        let checklist = await this.getAsyncState()
+        const checklist = await this.getAsyncState()
 
         // mark the checkpoint as done
         const checkpointIdx = checklist.findIndex(checkpoint => checkpoint.id === checkpointId)
         checklist[checkpointIdx].done = checkpointIdx !== -1;
 
-        this.setAsyncState(checklist)
+        await this.setAsyncState(checklist)
     }
 }
 

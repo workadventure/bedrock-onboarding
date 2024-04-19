@@ -2,18 +2,18 @@
 
 import { checkpoints, checkpointIdsAfterOnboarding } from "../Constants/Checkpoints";
 import { Checklist, CheckpointDescriptor, type NPC } from "../Types/Checkpoints";
-import { passCheckpoint, placeCheckpoint } from "./CheckpointsManager";
-import { removeContentTile, removeDirectionTile } from "./TilesManager";
-import { closeDialogueBox, closeWebsite, openCheckpointBanner, openDialogueBox, openWebsite } from "./UIManager";
 import { currentMapStore } from "../State/Properties/CurrentMapStore";
 import { playerTagsStore } from "../State/Properties/PlayerTagsStore";
 import { checkpointIdsStore } from "../State/Properties/CheckpointIdsStore";
 import { checklistStore } from "../State/Properties/ChecklistStore";
+import { closeDialogueBox, closeWebsite, openCheckpointBanner, openDialogueBox, openWebsite } from "./UIManager";
+import { removeContentTile, removeDirectionTile } from "./TilesManager";
+import { passCheckpoint, placeCheckpoint } from "./CheckpointsManager";
 
 let isNextJonasPlaced = false
 
 export async function processAreas() {
-    let checklist: Checklist[] = [];
+    const checklist: Checklist[] = [];
 
     console.log("Processing areas...")
     checkpoints.forEach(checkpoint => {
@@ -41,7 +41,7 @@ export async function processAreas() {
 
 export function processAreasAfterOnboarding() {
     console.log("Processing areas after on boarding...")
-    console.log("checkpointIdsAfterOnboarding",checkpointIdsAfterOnboarding)
+    console.log("checkpointIdsAfterOnboarding", checkpointIdsAfterOnboarding)
     // we only need to filter by tag (for the Wikitek content) since we don't have restrictions at this point
     checkpointIdsAfterOnboarding.forEach((checkpointId) => {
         const checkpoint = checkpoints.find(c => c.id === checkpointId)
@@ -75,33 +75,35 @@ export function placeArea(checkpoint: CheckpointDescriptor) {
         height: areaSize,
     });
 
-    WA.room.area.onEnter(checkpoint.id).subscribe(() => {
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+    WA.room.area.onEnter(checkpoint.id).subscribe(async () => {
         console.log("Entered checkpoint area", checkpoint.id)
         if (checkpoint.type === "NPC" && checkpoint.message) {
-            openDialogueBox(checkpoint.id)
+            await openDialogueBox(checkpoint.id)
         } else if (checkpoint.type === "content" && checkpoint.url) {
-            openWebsite(checkpoint.url)
+            await openWebsite(checkpoint.url)
         } else if (checkpoint.type === "direction" && checkpoint.message) {
-            openDialogueBox(checkpoint.id)
+            await openDialogueBox(checkpoint.id)
         }
     });
-
-    WA.room.area.onLeave(checkpoint.id).subscribe(() => {
+    
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+    WA.room.area.onLeave(checkpoint.id).subscribe(async () => {
         console.log("Leaved checkpoint area", checkpoint.id)
         if (checkpoint.type === "NPC") {
-            closeDialogueBox()
+            await closeDialogueBox()
         } else if (checkpoint.type === "content") {
-            closeWebsite()
-            removeContentTile(checkpoint)
-            passCheckpoint(checkpoint.id)
+            await closeWebsite()
+            await removeContentTile(checkpoint)
+            await passCheckpoint(checkpoint.id)
         } else if (checkpoint.type === "direction") {
             // If the game talks with the player, only consider the checkpoint done if the player has read the dialogue
             if (checkpoint.message) {
-                closeDialogueBox()
+                await closeDialogueBox()
             } else {
-                WA.room.area.delete(checkpoint.id)
+                await WA.room.area.delete(checkpoint.id)
                 removeDirectionTile(checkpoint)
-                passCheckpoint(checkpoint.id)
+                await passCheckpoint(checkpoint.id)
             }
         }
     });
@@ -123,7 +125,7 @@ function filterCheckpointsByTag(checkpoint: CheckpointDescriptor): boolean {
     const checkpointId = checkpoint.id
     const checkpointTags = checkpoint.tags
 
-    console.log("Filter checkpoint: ",checkpoint.title)
+    console.log("Filter checkpoint: ", checkpoint.title)
     if (checkpointTags && !playerTagsStore.hasMandatoryTagsIn(checkpointTags)) {
         // At least one tag of the checkpoint matches any of the player's tags
         console.log(`Ignoring checkpoint ${checkpointId} (not the right tags)`)

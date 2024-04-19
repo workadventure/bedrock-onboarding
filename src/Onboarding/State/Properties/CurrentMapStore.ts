@@ -8,7 +8,9 @@ class CurrentMapStore implements StateManager<Map> {
     private static instance: CurrentMapStore;
     
     // Private constructor to prevent external instantiation
-    private constructor() {}
+    private constructor() {
+        // This constructor is intentionally left empty
+    }
 
     static getInstance(): CurrentMapStore {
         if (!CurrentMapStore.instance) {

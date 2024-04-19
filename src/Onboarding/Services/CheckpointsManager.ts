@@ -1,21 +1,21 @@
 import { checkpoints } from "../Constants/Checkpoints"
 import { travelFromAirportToRooftop } from "../Maps/World"
 import { CheckpointDescriptor } from "../Types/Checkpoints"
-import { placeArea, processAreas, processAreasAfterOnboarding } from "./AreasManager"
-import { getCaveDoorToOpen, unlockAirportGate, unlockBrTowerFloorAccess, unlockTownBuildingDoor, unlockTownCaveDoor, unlockWorldBarrier, unlockWorldBuildingDoor } from "./DoorsManager"
-import { placeTile, removeDirectionTile, removeNPCTile, teleportJonas } from "./TilesManager"
-import { DOOR_LOCKED, closeBanner, openCheckpointBanner, openErrorBanner, openWebsite } from "./UIManager"
 import { pause } from "../Utils/Utils";
 import { checkpointIdsStore } from "../State/Properties/CheckpointIdsStore"
 import { checklistStore } from "../State/Properties/ChecklistStore"
 import { townMapUrl } from "../Constants/Maps"
+import { placeArea, processAreas, processAreasAfterOnboarding } from "./AreasManager"
+import { getCaveDoorToOpen, unlockAirportGate, unlockBrTowerFloorAccess, unlockTownBuildingDoor, unlockTownCaveDoor, unlockWorldBarrier, unlockWorldBuildingDoor } from "./DoorsManager"
+import { placeTile, removeDirectionTile, removeNPCTile, teleportJonas } from "./TilesManager"
+import { DOOR_LOCKED, closeBanner, openCheckpointBanner, openErrorBanner, openWebsite } from "./UIManager"
 
 export function placeCheckpoint(checkpoint: CheckpointDescriptor) {
     placeArea(checkpoint)
     placeTile(checkpoint)
 }
 
-async function placeNextJonasCheckpoint() {
+function placeNextJonasCheckpoint() {
     const checkpoint = checkpoints.find(c => c.id === checkpointIdsStore.getNextJonasCheckpointId())
     if (checkpoint) {
         placeCheckpoint(checkpoint)
@@ -42,6 +42,7 @@ export async function passCheckpoint(checkpointId: string) {
 
 // When the dialogue box is closed, this event is fired
 export function registerCloseDialogueBoxListener() {
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     WA.player.state.onVariableChange('closeDialogueBoxEvent').subscribe(async (value) => {
         const checkpoint = value as CheckpointDescriptor|null
         if (checkpoint) {
@@ -49,12 +50,12 @@ export function registerCloseDialogueBoxListener() {
             // If the NPC has a content to show after the dialogue box is closed, open the content
             if (checkpoint.url) {
                 console.log("Open URL",checkpoint.url)
-                openWebsite(checkpoint.url)
+                await openWebsite(checkpoint.url)
             }
         
             // If it's Jonas, remove its area and teleport him
             if (checkpoint.npcName === "Jonas") {
-                WA.room.area.delete(checkpoint.id)
+                await WA.room.area.delete(checkpoint.id)
         
                // Don't teleport Jonas and don't remove it if it's the one at its Pickup or the one at the stadium stage
                 if (checkpoint.id === "32" || checkpoint.id === "36") {
@@ -69,7 +70,7 @@ export function registerCloseDialogueBoxListener() {
                 }
             } else if (checkpoint.type === "direction") {
                 console.log("Remove direction area and tile")
-                WA.room.area.delete(checkpoint.id)
+                await WA.room.area.delete(checkpoint.id)
                 removeDirectionTile(checkpoint)
             }
         
@@ -84,27 +85,30 @@ async function triggerCheckpointAction(checkpointId: string) {
         // Requirement: Meet Jonas for the first time
         case "2":
             // Action: Place rest of checkpoints
-            processAreas()
-            break;
-        // Requirement: Read the cave PC dialogue
-        case "4":
-            // Action: Unlock Town cave door
-            const door = getCaveDoorToOpen()
-            if (door) {
-                unlockTownCaveDoor(door)
-            } else {
-                openErrorBanner(DOOR_LOCKED)
-            }
+            await processAreas()
             break;
 
+        // Requirement: Read the cave PC dialogue
+        case "4": {
+            // Action: Unlock Town cave door
+            const door = getCaveDoorToOpen();
+            if (door) {
+                unlockTownCaveDoor(door);
+            } else {
+                openErrorBanner(DOOR_LOCKED);
+            }
+            break;
+        }
+
         // Requirement: Talk with Jonas in the cave
-        case "6":
+        case "6": {
             // Action: Place Jonas' phone
             const checkpoint6 = checkpoints.find(c => c.id === "7")
             if (checkpoint6) {
                 placeCheckpoint(checkpoint6)
             }
             break;
+        }
 
         // Requirement: Watch Jonas' phone video
         case "7":

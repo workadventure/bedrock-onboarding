@@ -4,26 +4,26 @@ import { ActionMessage, TileDescriptor } from "@workadventure/iframe-api-typings
 
 import type { AirportGateAccess, BrTowerFloorAccess, BrTowerFloorName, HRMeetingDoorAccess, HrMeetingDoorName, TownBuildingAccess, TownBuildingName, TownCaveDoorAccess, WorldBarrierAccess, WorldBarrierName, WorldBuildingAccess, WorldBuildingName } from "../Types/Doors";
 import type { NewbieTag } from "../Types/Tags";
-import { DOOR_LOCKED, closeBanner, openErrorBanner } from "./UIManager";
 import { getTilesByRectangleCorners } from "../Utils/Tiles";
 import { travelFromAirportToRooftop } from "../Maps/World"
 import { currentMapStore } from "../State/Properties/CurrentMapStore";
 import { playerTagsStore } from "../State/Properties/PlayerTagsStore";
 import { checkpointIdsStore } from "../State/Properties/CheckpointIdsStore";
 import { townMapUrl } from "../Constants/Maps";
+import { DOOR_LOCKED, closeBanner, openErrorBanner } from "./UIManager";
 
-export async function initDoors() {
+export function initDoors() {
     if (currentMapStore.isTown()) {
-        await initTownDoors()
+        initTownDoors()
     } else if (currentMapStore.isWorld()) {
-        await initWorldDoors()
+        initWorldDoors()
     }
 }
 /*
 ********************************************* TOWN *********************************************
 */
 // Define buildings and their minimal access restrictions.
-let townBuildings: TownBuildingAccess = {
+const townBuildings: TownBuildingAccess = {
     hr: { access: true, blockingTiles: [[80, 74], [83, 74]] },
     arcade: { access: false, blockingTiles: [[16, 116], [19, 116]] },
     stadium: { access: false, blockingTiles: [[18, 77], [20, 77]] },
@@ -34,21 +34,21 @@ let townBuildings: TownBuildingAccess = {
     service: { access: false, blockingTiles: [[10, 39], [12, 41]] },
 };
 
-let townCaveProfileDoors: TownCaveDoorAccess = {
+const townCaveProfileDoors: TownCaveDoorAccess = {
     alt: { access: false, leftWall: [[41, 4], [41, 5]], rightWall: [[44, 4], [44, 5]], pillar: [[42, 5], [43, 6]] },
     fr: { access: false, leftWall: [[45, 2], [45, 3]], rightWall: [[48, 2], [48, 3]], pillar: [[46, 3], [47, 4]] },
     ext:  { access: false, leftWall: [[50, 2], [50, 3]], rightWall: [[53, 2], [53, 3]], pillar: [[51, 3], [52, 4]] },
     pt:  { access: false, leftWall: [[54, 4], [54, 5]], rightWall: [[57, 4], [57, 5]], pillar: [[55, 5], [56, 6]] },
 }
 
-let hrMeetingDoors: HRMeetingDoorAccess = {
+const hrMeetingDoors: HRMeetingDoorAccess = {
     "hrMeetingDoor1": { access: false, tilesNamePattern: "hr-meeting-door", tilesCoordinates: [[71, 62], [72, 63]] },
     "hrMeetingDoor2": { access: false, tilesNamePattern: "hr-meeting-door", tilesCoordinates: [[76, 62], [77, 63]] },
     "hrMeetingDoor3": { access: false, tilesNamePattern: "hr-meeting-door", tilesCoordinates: [[88, 62], [89, 63]] },
     "hrMeetingDoor4": { access: false, tilesNamePattern: "hr-meeting-door", tilesCoordinates: [[93, 62], [94, 63]] },
 }
 
-async function initTownDoors() {
+function initTownDoors() {
     // Apply access restrictions based on player tags and checkpoint
     if (playerTagsStore.isGuest()) {
         // Guests can only access hr and arcade.
@@ -101,7 +101,7 @@ async function initTownDoors() {
 
 function listenTownDoor(building: TownBuildingName) {
     let isRoofVisible = true
-    if (townBuildings[building as TownBuildingName].access) {
+    if (townBuildings[building ].access) {
         // we have to create a dedicated condition here because the backstage roof is shared between to entries: serviceDoor and backstageDoor
         // backstageDoor shows/hides the backstage roof like normal
         // but serviceDoor must also show/hide the backstage1 roof + the stadium1 roof
@@ -159,17 +159,20 @@ function listenHrDoors(meetingDoor: HrMeetingDoorName) {
             // that will depend on the current door state
             actionMessage = WA.ui.displayActionMessage({
                 message: `Press SPACE to ${!hrMeetingDoors[meetingDoor].access ? 'open' : 'close'} the door`,
-                callback: () => {
+                // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                callback: async () => {
                     // FIXME: use map variable instead
-                    WA.event.broadcast(meetingDoor, !hrMeetingDoors[meetingDoor].access);
+                    await WA.event.broadcast(meetingDoor, !hrMeetingDoors[meetingDoor].access);
                 }
             })
         })
 
         // remove the action message after leaving the area
-        WA.room.area.onLeave(meetingDoor).subscribe(() => {
-            actionMessage?.remove()
-            actionMessage = null
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+        WA.room.area.onLeave(meetingDoor).subscribe(async () => {
+            await actionMessage?.remove().then(() => {
+                actionMessage = null
+            })
         })
     }
 
@@ -285,13 +288,13 @@ export function getCaveDoorToOpen(): NewbieTag|null {
 */
 
 // Define buildings and their minimal access restrictions.
-let worldBuildings: WorldBuildingAccess = {
+const worldBuildings: WorldBuildingAccess = {
     cave: { access: false, blockingTiles: [[29, 181], [29, 182]] },
     airport: { access: false, blockingTiles: [[51, 22],[53, 22]] },
 };
 
 // Define buildings and their minimal access restrictions.
-let worldBarriers: WorldBarrierAccess = {
+const worldBarriers: WorldBarrierAccess = {
     achievements: { access: true, blockingTiles: [[84, 168], [87, 168]] },
     values: { access: true, blockingTiles: [[61, 159], [61, 163]] },
     legal: { access: true, blockingTiles: [[37, 107], [37, 111]] },
@@ -302,10 +305,10 @@ let worldBarriers: WorldBarrierAccess = {
     netherlands: { access: true, blockingTiles: [[70, 30], [70, 34]] },
 };
 
-let airportGate: AirportGateAccess = 
+const airportGate: AirportGateAccess = 
     { access: false, turnstile: [[52, 11], [52, 12]], lightsY: [[52, 6], [52, 10]], lightsX: [[48, 5], [52, 5]] }
 
-let brTowerFloors: BrTowerFloorAccess = {
+const brTowerFloors: BrTowerFloorAccess = {
     floor4: { access: false, tilesNamePattern: "rooftop-to-floor4", tilesCoordinates: [[23, 117], [23, 117]] },
     floor3: { access: false, tilesNamePattern: "floor4-to-floor3", tilesCoordinates: [[22, 126], [25, 126]] },
     floor2: { access: false, tilesNamePattern: "floor3-to-floor2", tilesCoordinates: [[22, 133], [25, 133]] },
@@ -376,7 +379,7 @@ function listenWorldDoor(building: WorldBuildingName) {
     // (player starts inside the cave)
     let isRoofVisible = building !== "cave"
 
-    if (worldBuildings[building as WorldBuildingName].access) {
+    if (worldBuildings[building ].access) {
         WA.room.area.onEnter(`${building}Door`).subscribe(() => {
             console.log("listenWorldDoor() onEnter")
             unlockWorldBuildingDoor(building)
@@ -409,15 +412,18 @@ function listenHelicopterDoor() {
         WA.room.area.onEnter("helicopterDoor").subscribe(() => {
             actionMessage = WA.ui.displayActionMessage({
                 message: "Press SPACE to fly to the BR Tower rooftop!",
-                callback: () => {
-                    travelFromAirportToRooftop()
+                // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                callback: async () => {
+                    await travelFromAirportToRooftop()
                 }
             })
         })
     
-        WA.room.area.onLeave("helicopterDoor").subscribe(() => {
-            actionMessage?.remove()
-            actionMessage = null
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+        WA.room.area.onLeave("helicopterDoor").subscribe(async () => {
+            await actionMessage?.remove().then(() => {
+                actionMessage = null
+            })
         })
 
         WA.room.area.onEnter("pickupDoor").subscribe(() => {
@@ -429,9 +435,11 @@ function listenHelicopterDoor() {
             })
         })
     
-        WA.room.area.onLeave("pickupDoor").subscribe(() => {
-            actionMessage?.remove()
-            actionMessage = null
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+        WA.room.area.onLeave("pickupDoor").subscribe(async () => {
+            await actionMessage?.remove().then(() => {
+                actionMessage = null
+            })
         })
     }
 }
@@ -464,7 +472,7 @@ export function unlockWorldBuildingDoor(building: WorldBuildingName) {
 
 function unlockWorldBarriers() {
     console.log("unlockWorldBarriers()")
-    let tiles: TileDescriptor[] = [];
+    const tiles: TileDescriptor[] = [];
 
     // Iterate over each barrier in the worldBarriers object
     Object.entries(worldBarriers).forEach(([_barrierName, barrierData]) => {
@@ -539,7 +547,7 @@ export function unlockAirportGate() {
 
 export function unlockBrTowerFloorAccess(floor: BrTowerFloorName) {
     console.log("unlockBrTowerFloorAccess()")
-    let tiles: TileDescriptor[] = [];
+    const tiles: TileDescriptor[] = [];
     const floorData = brTowerFloors[floor];
     const floorToLayerNameMap: { [key in BrTowerFloorName]: string } = {
         "floor4": "walls/walls2",
