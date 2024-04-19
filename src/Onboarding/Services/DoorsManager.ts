@@ -162,7 +162,7 @@ function listenHrDoors(meetingDoor: HrMeetingDoorName) {
                 // eslint-disable-next-line @typescript-eslint/no-misused-promises
                 callback: async () => {
                     // FIXME: use map variable instead
-                    await WA.event.broadcast(meetingDoor, !hrMeetingDoors[meetingDoor].access);
+                    await WA.state.saveVariable(`${meetingDoor}Variable`, !hrMeetingDoors[meetingDoor].access);
                 }
             })
         })
@@ -176,14 +176,16 @@ function listenHrDoors(meetingDoor: HrMeetingDoorName) {
         })
     }
 
-    // listen to the event sent by HRs
-    WA.event.on(meetingDoor).subscribe((event) => {
-        hrMeetingDoors[meetingDoor].access = event.data as boolean
+    // Each HR door has a dedicated variable, when HR wants to toggle the state of door
+    // we intercept the value here and we toggle it
+    WA.state.onVariableChange(`${meetingDoor}Variable`).subscribe((value) => {
+        hrMeetingDoors[meetingDoor].access = value as boolean
         toggleHrMeetingDoor(meetingDoor)
     });
 }
 
 function toggleHrMeetingDoor(meetingDoor: HrMeetingDoorName) {
+    console.log("TOGGLE",meetingDoor)
     const meetingDoorData = hrMeetingDoors[meetingDoor];
     const tilesCoordinates = getTilesByRectangleCorners(meetingDoorData.tilesCoordinates[0], meetingDoorData.tilesCoordinates[1])
 

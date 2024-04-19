@@ -1788,6 +1788,98 @@
                  "width":480,
                  "x":384,
                  "y":1664
+                }, 
+                {
+                 "height":0,
+                 "id":64,
+                 "name":"hrMeetingDoor1Variable",
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"default",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"persist",
+                         "type":"bool",
+                         "value":true
+                        }],
+                 "rotation":0,
+                 "type":"variable",
+                 "visible":true,
+                 "width":0,
+                 "x":2304,
+                 "y":2112
+                }, 
+                {
+                 "height":0,
+                 "id":65,
+                 "name":"hrMeetingDoor2Variable",
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"default",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"persist",
+                         "type":"bool",
+                         "value":true
+                        }],
+                 "rotation":0,
+                 "type":"variable",
+                 "visible":true,
+                 "width":0,
+                 "x":2464,
+                 "y":2112
+                }, 
+                {
+                 "height":0,
+                 "id":66,
+                 "name":"hrMeetingDoor3Variable",
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"default",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"persist",
+                         "type":"bool",
+                         "value":true
+                        }],
+                 "rotation":0,
+                 "type":"variable",
+                 "visible":true,
+                 "width":0,
+                 "x":2848,
+                 "y":2112
+                }, 
+                {
+                 "height":0,
+                 "id":67,
+                 "name":"hrMeetingDoor4Variable",
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"default",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"persist",
+                         "type":"bool",
+                         "value":true
+                        }],
+                 "rotation":0,
+                 "type":"variable",
+                 "visible":true,
+                 "width":0,
+                 "x":3008,
+                 "y":2112
                 }],
          "opacity":0.7,
          "type":"objectgroup",
@@ -4072,7 +4164,7 @@
          "y":0
         }],
  "nextlayerid":83,
- "nextobjectid":64,
+ "nextobjectid":68,
  "orientation":"orthogonal",
  "properties":[
         {
