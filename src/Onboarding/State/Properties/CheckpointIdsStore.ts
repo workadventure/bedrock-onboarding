@@ -94,6 +94,13 @@ class CheckpointIdsStore implements StateManager<string[]> {
             .map(checkpoint => checkpoint.id);
     }
 
+    getCheckpointXP(checkpointId: string): number {
+        const checkpoint = checkpoints.find(cp => cp.id === checkpointId);
+        
+        if (!checkpoint) return 0; 
+        return checkpoint.xp;
+    }
+
     getNextJonasCheckpointId(): string {
         console.log("this.getJonasCheckpointIds()",this.getJonasCheckpointIds())
         // Convert string elements to numbers in order to do some Math

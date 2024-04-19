@@ -1,3 +1,5 @@
+/// <reference types="@workadventure/iframe-api-typings" />
+
 import { AvatarComponent } from './AvatarComponent';
 import { MessageComponent } from './MessageComponent';
 import { CheckpointDescriptor } from '../../../src/Onboarding/Types/Checkpoints';

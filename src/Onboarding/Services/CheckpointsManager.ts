@@ -1,3 +1,4 @@
+import { levelUp } from "@workadventure/quests";
 import { checkpoints } from "../Constants/Checkpoints"
 import { travelFromAirportToRooftop } from "../Maps/World"
 import { CheckpointDescriptor } from "../Types/Checkpoints"
@@ -9,6 +10,8 @@ import { placeArea, processAreas, processAreasAfterOnboarding } from "./AreasMan
 import { getCaveDoorToOpen, unlockAirportGate, unlockBrTowerFloorAccess, unlockTownBuildingDoor, unlockTownCaveDoor, unlockWorldBarrier, unlockWorldBuildingDoor } from "./DoorsManager"
 import { placeTile, removeDirectionTile, removeNPCTile, teleportJonas } from "./TilesManager"
 import { DOOR_LOCKED, closeBanner, openCheckpointBanner, openErrorBanner, openWebsite } from "./UIManager"
+
+const QUEST_KEY = "bedrock-journey";
 
 export function placeCheckpoint(checkpoint: CheckpointDescriptor) {
     placeArea(checkpoint)
@@ -34,10 +37,20 @@ export async function passCheckpoint(checkpointId: string) {
 
         checkpointIdsStore.addCheckpointId(checkpointId);
 
+        await grantQuestXP(checkpointIdsStore.getCheckpointXP(checkpointId))
         await checklistStore.markCheckpointAsDone(checkpointId);
         await triggerCheckpointAction(checkpointId);
         const checklist = await checklistStore.getAsyncState();
         openCheckpointBanner(checkpointIdsStore.getNextCheckpointId(checklist))
+    }
+}
+
+async function grantQuestXP(xp: number) {
+    console.log("grantQuestXP",xp)
+    try {
+        await levelUp(QUEST_KEY, xp)
+    } catch (e) {
+        console.error("Error while granting XP", e)
     }
 }
 
