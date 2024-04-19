@@ -6,6 +6,7 @@ window.onload = async () => {
     try {
         WA.onInit().then(async () => {
             const checklist = await WA.player.state.checklist as Checklist[];
+            console.log("checklist",checklist)
             renderTodoList(checklist);
         })
     } catch (error) {

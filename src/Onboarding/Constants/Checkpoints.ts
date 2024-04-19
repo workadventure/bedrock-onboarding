@@ -85,8 +85,8 @@ export const checkpoints: CheckpointDescriptor[] = [
         title: "Talk with Jonas Again",
         description: "Speak with Jonas to receive further guidance as you prepare to leave the cave.",
         coordinates: {
-            x: 24,
-            y: 179
+            x: 17,
+            y: 183
         },
         type: "NPC",
         npcName: "Jonas",
@@ -102,8 +102,8 @@ export const checkpoints: CheckpointDescriptor[] = [
         title: "Look! A smartphone!",
         description: "Pick up Jonas' phone and watch a video showcasing the innovative products and services offered by Bedrock.",
         coordinates: {
-            x: 24,
-            y: 178
+            x: 19,
+            y: 179
         },
         type: "content",
         url: "https://www.youtube.com/embed/_ilLJY_JdCw",
@@ -822,12 +822,6 @@ export const checkpoints: CheckpointDescriptor[] = [
         xp: 10,
     },
 ]
-
-/**
- * All checkpoints where Jonas appears
- * @constant
- */
-export const jonasCheckpointIds = ["2", "6", "13", "23", "24", "31", "32", "33", "36"]
 
 /**
  * All checkpoints after the last onboarding checkpoint (except Jonas checkpoint)

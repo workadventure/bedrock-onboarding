@@ -71,50 +71,57 @@ WA.onInit().then(() => {
             WA.ui.actionBar.addButton({
                 id: 'start',
                 label: 'Start',
-                callback: () => {
-                    checkpointIdsStore.setState([])
+                // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                callback: async () => {
+                    await checkpointIdsStore.setAsyncState([])
                 }
             });
             WA.ui.actionBar.addButton({
                 id: 'world',
                 label: 'World',
-                callback: () => {
-                    checkpointIdsStore.setState(Array.from({ length: 4 }, (_, index) => (index + 1).toString()))
+                // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                callback: async () => {
+                    await checkpointIdsStore.setAsyncState(Array.from({ length: 4 }, (_, index) => (index + 1).toString()))
                 }
             });
             WA.ui.actionBar.addButton({
                 id: 'bridge',
                 label: 'Bridge',
-                callback: () => {
-                    checkpointIdsStore.setState(Array.from({ length: 13 }, (_, index) => (index + 1).toString()))
+                // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                callback: async () => {
+                    await checkpointIdsStore.setAsyncState(Array.from({ length: 13 }, (_, index) => (index + 1).toString()))
                 }
             });
             WA.ui.actionBar.addButton({
                 id: 'airport',
                 label: 'Airport',
-                callback: () => {
-                    checkpointIdsStore.setState(Array.from({ length: 22 }, (_, index) => (index + 1).toString()))
+                // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                callback: async () => {
+                    await checkpointIdsStore.setAsyncState(Array.from({ length: 22 }, (_, index) => (index + 1).toString()))
                 }
             });
             WA.ui.actionBar.addButton({
                 id: 'town',
                 label: 'Town',
-                callback: () => {
-                    checkpointIdsStore.setState(Array.from({ length: 32 }, (_, index) => (index + 1).toString()))
+                // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                callback: async () => {
+                    await checkpointIdsStore.setAsyncState(Array.from({ length: 32 }, (_, index) => (index + 1).toString()))
                 }
             });
             WA.ui.actionBar.addButton({
                 id: 'onboarding',
                 label: 'Onboarding',
-                callback: () => {
-                    checkpointIdsStore.setState(Array.from({ length: 34 }, (_, index) => (index + 1).toString()))
+                // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                callback: async () => {
+                    await checkpointIdsStore.setAsyncState(Array.from({ length: 34 }, (_, index) => (index + 1).toString()))
                 }
             });
             WA.ui.actionBar.addButton({
                 id: 'finish',
                 label: 'Finish',
-                callback: () => {
-                    checkpointIdsStore.setState(Array.from({ length: 45 }, (_, index) => (index + 1).toString()))
+                // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                callback: async () => {
+                    await checkpointIdsStore.setAsyncState(Array.from({ length: 45 }, (_, index) => (index + 1).toString()))
                 }
             });
         }

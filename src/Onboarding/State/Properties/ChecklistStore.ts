@@ -41,10 +41,12 @@ class ChecklistStore implements StateManager<Checklist[]> {
    
     async getAsyncState(): Promise<Checklist[]> {
         // If the value has already been set, return it instead of calling the API
+        console.log("getAsyncState", this.getState() ? this.getState() : await WA.player.state.checklist as Checklist[])
         return this.getState() ? this.getState() : await WA.player.state.checklist as Checklist[];
     }
 
     async setAsyncState(checklist: Checklist[]): Promise<void> {
+        console.log("setAsyncState", checklist)
         this.setState(checklist);
 
         await WA.player.state.saveVariable("checklist", checklist, {

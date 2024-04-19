@@ -8,7 +8,7 @@ import { rootUrlStore } from "../State/Properties/RootUrlStore"
 export const DOOR_LOCKED = "The door is locked. You are not qualified to enter here."
 
 let dialogueBox: UIWebsite|null
-let helicopter: UIWebsite|null
+let helicopterGIF: UIWebsite|null
 let coWebsite: CoWebsite|null
 
 export async function openDialogueBox(checkpointId: string) {
@@ -34,17 +34,31 @@ export async function openDialogueBox(checkpointId: string) {
 }
 
 export async function closeDialogueBox() {
-    await dialogueBox?.close()
+    if (dialogueBox) {
+        await dialogueBox.close()
+    }
 }
 
-export async function openWebsite(url: string) {
+export async function openWebsite(url: string, closable = false) {
     const root = rootUrlStore.getState();
     const finalUrl = isURL(url) ? url : `${root}/content/${url}`
-    coWebsite = await WA.nav.openCoWebSite(finalUrl)
+    coWebsite = await WA.nav.openCoWebSite(
+        finalUrl,
+        false,
+        "accelerometer; autoplay; camera; encrypted-media; gyroscope; picture-in-picture",
+        70,
+        1,
+        closable,
+        false
+    )
 }
 
 export async function closeWebsite() {
-    await coWebsite?.close()
+    console.log("coWebsite")
+    if (coWebsite) {
+        console.log("coWebsite",coWebsite)
+        await coWebsite.close()
+    }
 }
 
 export function openCheckpointBanner(nextCheckpointId: string) {
@@ -121,7 +135,7 @@ export function displayChecklistButton() {
 export async function displayHelicopterGIF() {
     const root = rootUrlStore.getState();
     
-    helicopter = await WA.ui.website.open({
+    helicopterGIF = await WA.ui.website.open({
         url: `${root}/helicopter.gif`,
         visible: true,
         allowApi: false,
@@ -138,5 +152,7 @@ export async function displayHelicopterGIF() {
 }
 
 export async function removeHelicopterGIF() {
-    await helicopter?.close()
+    if (helicopterGIF) {
+        await helicopterGIF.close()
+    }
 }

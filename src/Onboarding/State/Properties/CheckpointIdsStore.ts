@@ -2,7 +2,7 @@
 
 import { StateManager } from "../../Types/State";
 import { store } from "../Store";
-import { jonasCheckpointIds } from "../../Constants/Checkpoints";
+import { checkpoints } from "../../Constants/Checkpoints";
 import { Checklist } from "../../Types/Checkpoints";
 
 class CheckpointIdsStore implements StateManager<string[]> {
@@ -51,7 +51,7 @@ class CheckpointIdsStore implements StateManager<string[]> {
             checkpointIds = ["0"];
         }
 
-        console.log("checkpointIds",checkpointIds)
+        console.log("initAsyncState checkpointIds",checkpointIds)
         await this.setAsyncState(checkpointIds);
     }
    
@@ -88,10 +88,17 @@ class CheckpointIdsStore implements StateManager<string[]> {
         return nextCheckpoint ? nextCheckpoint.id : "-1";
     }
 
+    getJonasCheckpointIds(): string[] {
+        return checkpoints
+            .filter(checkpoint => checkpoint?.npcName === "Jonas")
+            .map(checkpoint => checkpoint.id);
+    }
+
     getNextJonasCheckpointId(): string {
-        // Convert string elements to numbers for both this.getState() and jonasCheckpointIds
+        console.log("this.getJonasCheckpointIds()",this.getJonasCheckpointIds())
+        // Convert string elements to numbers in order to do some Math
         const numericPlayerCheckpointIds: number[] = this.getState().map(Number);
-        const numericJonasCheckpoints: number[] = jonasCheckpointIds.map(Number);
+        const numericJonasCheckpoints: number[] = this.getJonasCheckpointIds().map(Number);
 
         // Find the highest checkpoint ID the player has reached
         const maxPlayerCheckpointId = Math.max(...numericPlayerCheckpointIds);
@@ -99,6 +106,7 @@ class CheckpointIdsStore implements StateManager<string[]> {
         // Find the next Jonas checkpoint ID
         const nextJonasCheckpointId = numericJonasCheckpoints.find(id => id > maxPlayerCheckpointId);
 
+        console.log("next jonas",nextJonasCheckpointId !== undefined ? nextJonasCheckpointId.toString() : "-1")
         // If there is a next Jonas checkpoint, return its ID as a string; otherwise, return "-1"
         return nextJonasCheckpointId !== undefined ? nextJonasCheckpointId.toString() : "-1";
     }

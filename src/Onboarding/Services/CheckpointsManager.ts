@@ -16,7 +16,8 @@ export function placeCheckpoint(checkpoint: CheckpointDescriptor) {
 }
 
 function placeNextJonasCheckpoint() {
-    const checkpoint = checkpoints.find(c => c.id === checkpointIdsStore.getNextJonasCheckpointId())
+    const nextJonasCheckpointId = checkpointIdsStore.getNextJonasCheckpointId()
+    const checkpoint = checkpoints.find(c => c.id === nextJonasCheckpointId)
     if (checkpoint) {
         placeCheckpoint(checkpoint)
     }
@@ -50,7 +51,7 @@ export function registerCloseDialogueBoxListener() {
             // If the NPC has a content to show after the dialogue box is closed, open the content
             if (checkpoint.url) {
                 console.log("Open URL",checkpoint.url)
-                await openWebsite(checkpoint.url)
+                await openWebsite(checkpoint.url, checkpoint.npcName === "Jonas")
             }
         
             // If it's Jonas, remove its area and teleport him

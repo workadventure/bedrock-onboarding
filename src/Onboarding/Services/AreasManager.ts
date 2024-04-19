@@ -92,6 +92,9 @@ export function placeArea(checkpoint: CheckpointDescriptor) {
         console.log("Leaved checkpoint area", checkpoint.id)
         if (checkpoint.type === "NPC") {
             await closeDialogueBox()
+            if (checkpoint.url) {
+                await closeWebsite()
+            }
         } else if (checkpoint.type === "content") {
             await closeWebsite()
             await removeContentTile(checkpoint)
