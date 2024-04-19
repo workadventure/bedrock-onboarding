@@ -1,4 +1,4 @@
-import type { Tag } from "../Type/Tags";
+import type { Tag } from "../Types/Tags";
 
 /**
  * All possible tags a player could have

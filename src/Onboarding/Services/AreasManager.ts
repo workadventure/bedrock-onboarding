@@ -1,59 +1,54 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-import { checkpoints, checkpointIdsAfterOnboarding } from "../Data/Checkpoints";
-import { canLeaveCaveWorld, getNextCheckpointId, hasPlayerMetJonas, hasPlayerTalkedWithJonasInTheCave, isCheckpointAfterFirstJonas, isCheckpointAfterOnboarding, isCheckpointJonasPhone, isCheckpointPassed, isOnboardingDone, setChecklist } from "../Helpers/Checkpoints";
-import { getMapName } from "../Helpers/Maps";
-import { getPlayerTags } from "../Helpers/Tags";
-import { Checklist, CheckpointDescriptor, type NPC } from "../Type/Checkpoints";
-import type { Map } from "../Type/Maps";
-import type { Tag } from "../Type/Tags";
+import { checkpoints, checkpointIdsAfterOnboarding } from "../Constants/Checkpoints";
+import { Checklist, CheckpointDescriptor, type NPC } from "../Types/Checkpoints";
 import { passCheckpoint, placeCheckpoint } from "./CheckpointsManager";
 import { removeContentTile, removeDirectionTile } from "./TilesManager";
 import { closeDialogueBox, closeWebsite, openCheckpointBanner, openDialogueBox, openWebsite } from "./UIManager";
+import { currentMapStore } from "../State/Properties/CurrentMapStore";
+import { playerTagsStore } from "../State/Properties/PlayerTagsStore";
+import { checkpointIdsStore } from "../State/Properties/CheckpointIdsStore";
+import { checklistStore } from "../State/Properties/ChecklistStore";
 
 let isNextJonasPlaced = false
 
-export function processAreas(playerCheckpointIds: string[]) {
+export async function processAreas() {
     let checklist: Checklist[] = [];
-    const playerTags = getPlayerTags()
-    const mapName = getMapName()
 
     console.log("Processing areas...")
     checkpoints.forEach(checkpoint => {
         // checkpoints of the player across maps
-        if (filterCheckpointsByTag(checkpoint, playerTags)) {
-            const isPassed = playerCheckpointIds.includes(checkpoint.id);
+        if (filterCheckpointsByTag(checkpoint)) {
             checklist.push({
                 id: checkpoint.id,
                 title: checkpoint.title,
-                done: isPassed,
+                done: checkpointIdsStore.isCheckpointPassed(checkpoint.id),
             });
 
             // checkpoints to place on the current map + additional filtering
-            if (filterCheckpointsByMap(checkpoint, mapName) &&
-                filterCheckpointsByMilestone(checkpoint, playerCheckpointIds, playerTags) &&
-                filterCheckpointsNPCs(checkpoint, playerCheckpointIds)) {
+            if (filterCheckpointsByMap(checkpoint) &&
+                filterCheckpointsByMilestone(checkpoint) &&
+                filterCheckpointsNPCs(checkpoint)) {
                 placeCheckpoint(checkpoint)
             }
         }
     });
 
-    setChecklist(checklist)
-    openCheckpointBanner(getNextCheckpointId(checklist))
+    await checklistStore.setAsyncState(checklist)
+    const nextCheckpointId = checkpointIdsStore.getNextCheckpointId(checklist)
+    openCheckpointBanner(nextCheckpointId)
 }
 
-export function processAreasAfterOnboarding(playerCheckpointIds: string[]) {
-    const playerTags = getPlayerTags()
-
+export function processAreasAfterOnboarding() {
     console.log("Processing areas after on boarding...")
     console.log("checkpointIdsAfterOnboarding",checkpointIdsAfterOnboarding)
     // we only need to filter by tag (for the Wikitek content) since we don't have restrictions at this point
     checkpointIdsAfterOnboarding.forEach((checkpointId) => {
         const checkpoint = checkpoints.find(c => c.id === checkpointId)
         if (checkpoint) {
-            if (filterCheckpointsByTag(checkpoint, playerTags)) {
+            if (filterCheckpointsByTag(checkpoint)) {
                 // Ignore if checkpoint is not already done
-                if (!isCheckpointPassed(playerCheckpointIds, checkpointId)) {
+                if (!checkpointIdsStore.isCheckpointPassed(checkpointId)) {
                     placeCheckpoint(checkpoint)
                 }
             }
@@ -112,10 +107,10 @@ export function placeArea(checkpoint: CheckpointDescriptor) {
     });
 }
 
-function filterCheckpointsByMap(checkpoint: CheckpointDescriptor, mapName: Map): boolean {
+function filterCheckpointsByMap(checkpoint: CheckpointDescriptor): boolean {
     const checkpointId = checkpoint.id
 
-    if (mapName !== checkpoint.map) {
+    if (currentMapStore.getState() !== checkpoint.map) {
         console.log(`Ignoring checkpoint ${checkpointId} (not the right map)`)
         return false
     }
@@ -124,15 +119,12 @@ function filterCheckpointsByMap(checkpoint: CheckpointDescriptor, mapName: Map):
     return true
 }
 
-function filterCheckpointsByTag(checkpoint: CheckpointDescriptor, playerTags: Tag[]): boolean {
+function filterCheckpointsByTag(checkpoint: CheckpointDescriptor): boolean {
     const checkpointId = checkpoint.id
     const checkpointTags = checkpoint.tags
 
-    console.log("*********",checkpoint.title)
-    console.log("playerTags",playerTags)
-    console.log("checkpointTags",checkpointTags)
-    console.log("playerTags.some(tag => checkpointTags.includes(tag)",playerTags.some(tag => checkpointTags?.includes(tag)))
-    if (checkpointTags && !playerTags.some(tag => checkpointTags.includes(tag))) {
+    console.log("Filter checkpoint: ",checkpoint.title)
+    if (checkpointTags && !playerTagsStore.hasMandatoryTagsIn(checkpointTags)) {
         // At least one tag of the checkpoint matches any of the player's tags
         console.log(`Ignoring checkpoint ${checkpointId} (not the right tags)`)
         return false
@@ -142,26 +134,26 @@ function filterCheckpointsByTag(checkpoint: CheckpointDescriptor, playerTags: Ta
     return true
 }
 
-function filterCheckpointsByMilestone(checkpoint: CheckpointDescriptor, playerCheckpointIds: string[], playerTags: Tag[]): boolean {
+function filterCheckpointsByMilestone(checkpoint: CheckpointDescriptor): boolean {
     const checkpointId = checkpoint.id
 
-    if (isCheckpointJonasPhone(checkpointId)) {
+    if (checkpointIdsStore.isCheckpointJonasPhone(checkpointId)) {
         // If player did not speak with Jonas yet in the World cave
-        if (!hasPlayerTalkedWithJonasInTheCave(playerCheckpointIds) || canLeaveCaveWorld(playerCheckpointIds)) {
+        if (!checkpointIdsStore.hasPlayerTalkedWithJonasInTheCave() || checkpointIdsStore.canLeaveCaveWorld()) {
             console.log(`Ignoring checkpoint ${checkpointId} (milestone Jonas phone)`)
             return false
         }
     }
 
-    if (isCheckpointAfterFirstJonas(checkpointId)) {
-        if (!hasPlayerMetJonas(playerCheckpointIds)) {
+    if (checkpointIdsStore.isCheckpointAfterFirstJonas(checkpointId)) {
+        if (!checkpointIdsStore.hasPlayerMetJonas()) {
             console.log(`Ignoring checkpoint ${checkpointId} (milestone meet Jonas)`)
             return false
         }
     }
 
-    if (isCheckpointAfterOnboarding(checkpointId)) {
-        if (!isOnboardingDone(playerCheckpointIds)) {
+    if (checkpointIdsStore.isCheckpointAfterOnboarding(checkpointId)) {
+        if (!checkpointIdsStore.isWorldMapDone()) {
             console.log(`Ignoring checkpoint ${checkpointId} (milestone onboarding)`)
             return false
         }
@@ -171,10 +163,10 @@ function filterCheckpointsByMilestone(checkpoint: CheckpointDescriptor, playerCh
     return true
 }
 
-function filterCheckpointsNPCs(checkpoint: CheckpointDescriptor, playerCheckpointIds: string[]): boolean {
+function filterCheckpointsNPCs(checkpoint: CheckpointDescriptor): boolean {
     const checkpointId = checkpoint.id
 
-    if (playerCheckpointIds.includes(checkpoint.id)) {
+    if (checkpointIdsStore.isCheckpointPassed(checkpointId)) {
         // player already passed this checkpoint
 
         // Don't display passed Jonas NPCs

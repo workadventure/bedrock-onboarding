@@ -1,18 +1,22 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
 import { ActionMessage, TileDescriptor } from "@workadventure/iframe-api-typings";
-import { employees, everyoneButGuests } from "../Data/Tags";
-import { canAccessAchievements, canAccessBelgium, canAccessBridge, canAccessFrance, canAccessHungary, canAccessLegal, canAccessNetherlands, canAccessValues, canEnterAirport, canEnterAirportGates, canEnterBRTower, canEnterBRTowerFloor0, canEnterBRTowerFloor1, canEnterBRTowerFloor2, canEnterBRTowerFloor3, canEnterCaveWorld, canLeaveBRTower, canLeaveCaveWorld, isWorldMapDone, isOnboardingDone } from "../Helpers/Checkpoints";
-import type { AirportGateAccess, BrTowerFloorAccess, BrTowerFloorName, HRMeetingDoorAccess, HrMeetingDoorName, TownBuildingAccess, TownBuildingName, TownCaveDoorAccess, WorldBarrierAccess, WorldBarrierName, WorldBuildingAccess, WorldBuildingName } from "../Type/Doors";
-import type { NewbieTag, Tag } from "../Type/Tags";
-import { DOOR_LOCKED, closeBanner, openErrorBanner } from "./UIManager";
-import { getTilesByRectangleCorners } from "../Helpers/Tiles";
 
-export function initDoors(map: string, playerTags: Tag[], playerCheckpointIds: string[]) {
-    if (map === "town") {
-        initTownDoors(playerTags, playerCheckpointIds)
-    } else if (map === "world") {
-        initWorldDoors(playerTags, playerCheckpointIds)
+import type { AirportGateAccess, BrTowerFloorAccess, BrTowerFloorName, HRMeetingDoorAccess, HrMeetingDoorName, TownBuildingAccess, TownBuildingName, TownCaveDoorAccess, WorldBarrierAccess, WorldBarrierName, WorldBuildingAccess, WorldBuildingName } from "../Types/Doors";
+import type { NewbieTag } from "../Types/Tags";
+import { DOOR_LOCKED, closeBanner, openErrorBanner } from "./UIManager";
+import { getTilesByRectangleCorners } from "../Utils/Tiles";
+import { travelFromAirportToRooftop } from "../Maps/World"
+import { currentMapStore } from "../State/Properties/CurrentMapStore";
+import { playerTagsStore } from "../State/Properties/PlayerTagsStore";
+import { checkpointIdsStore } from "../State/Properties/CheckpointIdsStore";
+import { townMapUrl } from "../Constants/Maps";
+
+export async function initDoors() {
+    if (currentMapStore.isTown()) {
+        await initTownDoors()
+    } else if (currentMapStore.isWorld()) {
+        await initWorldDoors()
     }
 }
 /*
@@ -44,37 +48,38 @@ let hrMeetingDoors: HRMeetingDoorAccess = {
     "hrMeetingDoor4": { access: false, tilesNamePattern: "hr-meeting-door", tilesCoordinates: [[93, 62], [94, 63]] },
 }
 
-function initTownDoors(playerTags: Tag[], playerCheckpointIds: string[]) {
+async function initTownDoors() {
     // Apply access restrictions based on player tags and checkpoint
-    if (playerTags.includes("guest")) {
+    if (playerTagsStore.isGuest()) {
         // Guests can only access hr and arcade.
         Object.keys(townBuildings).forEach(building => {
             townBuildings[building as TownBuildingName].access = building === "hr" || building === "arcade";
         });
-    } else if (playerTags.some(tag => everyoneButGuests.includes(tag))) {
-        const hasAccessToAll = isOnboardingDone(playerCheckpointIds)
+    } else if (playerTagsStore.isOtherThanGuest()) {
+        const isOnboardingDone = checkpointIdsStore.isOnboardingDone()
         townBuildings.stadium.access = true;
         townBuildings.cave.access = true;
         townBuildings.hr.access = true;
-        townBuildings.service.access = isWorldMapDone(playerCheckpointIds);
-        townBuildings.arcade.access = hasAccessToAll;
-        townBuildings.streaming.access = hasAccessToAll;
-        townBuildings.wikitek.access = hasAccessToAll;
-        townBuildings.backstage.access = hasAccessToAll;
+        townBuildings.service.access = checkpointIdsStore.isWorldMapDone();
+        townBuildings.arcade.access = isOnboardingDone;
+        townBuildings.streaming.access = isOnboardingDone;
+        townBuildings.wikitek.access = isOnboardingDone;
+        townBuildings.backstage.access = isOnboardingDone;
 
-        if (canEnterCaveWorld(playerCheckpointIds)) {
-            townCaveProfileDoors.alt.access = playerTags.includes("alt");
-            townCaveProfileDoors.fr.access = playerTags.includes("fr");
-            townCaveProfileDoors.ext.access = playerTags.includes("ext");
-            townCaveProfileDoors.pt.access = playerTags.includes("pt");
+        if (checkpointIdsStore.canEnterCaveWorld()) {
+            townCaveProfileDoors.fr.access = playerTagsStore.hasFrProfile()
+            townCaveProfileDoors.pt.access = playerTagsStore.hasPtProfile()
+            townCaveProfileDoors.alt.access = playerTagsStore.hasAltProfile()
+            townCaveProfileDoors.ext.access = playerTagsStore.hasExtProfile()  
         }
 
-        // unlock all doors if employee
-        if (playerTags.some(tag => employees.includes(tag))) {
+        // unlock all doors for employees
+        if (playerTagsStore.isEmployee()) {
             console.log("Open all town doors")
             Object.keys(townBuildings).forEach(building => {
                 townBuildings[building as TownBuildingName].access = true;
             });
+            // Also open the FR profile door (otherwise just employees could not pass the cave)
             townCaveProfileDoors.fr.access = true;
         }
     }
@@ -84,7 +89,7 @@ function initTownDoors(playerTags: Tag[], playerCheckpointIds: string[]) {
     }
 
     for (const key in hrMeetingDoors) {
-        listenHrDoors(key as HrMeetingDoorName, playerTags);
+        listenHrDoors(key as HrMeetingDoorName);
     }
 
     initTownCaveDoors()
@@ -141,21 +146,21 @@ function listenTownDoor(building: TownBuildingName) {
     }
 }
 
-function listenHrDoors(meetingDoor: HrMeetingDoorName, playerTags: Tag[]) {
+function listenHrDoors(meetingDoor: HrMeetingDoorName) {
     let actionMessage: ActionMessage|null
 
     // initialize the default door state
     toggleHrMeetingDoor(meetingDoor)
 
     // only HRs or admins can open/close the doors
-    if (playerTags.some(tag => ["admin", "hr"].includes(tag))) {
+    if (playerTagsStore.isHr()) {
         WA.room.area.onEnter(meetingDoor).subscribe(() => {
             // display an action message to open or close
             // that will depend on the current door state
             actionMessage = WA.ui.displayActionMessage({
                 message: `Press SPACE to ${!hrMeetingDoors[meetingDoor].access ? 'open' : 'close'} the door`,
                 callback: () => {
-                    // send the event
+                    // FIXME: use map variable instead
                     WA.event.broadcast(meetingDoor, !hrMeetingDoors[meetingDoor].access);
                 }
             })
@@ -258,17 +263,17 @@ export function unlockTownCaveDoor(door: NewbieTag) {
     WA.room.setTiles(combinedTiles);
 }
 
-export function getCaveDoorToOpen(playerTags: Tag[]): NewbieTag|null {
-    // get the cave door to open depending on the player tags (for external use)
+export function getCaveDoorToOpen(): NewbieTag|null {
+    // get the cave door to open depending on the player tags
     let door: NewbieTag | null = null
     
-    if (playerTags.includes("fr")) {
+    if (playerTagsStore.hasFrProfile()) {
         door = "fr"
-    } else if (playerTags.includes("alt")) {
+    } else if (playerTagsStore.hasAltProfile()) {
         door = "alt"
-    } else if (playerTags.includes("ext")) {
+    } else if (playerTagsStore.hasExtProfile()) {
         door = "ext"
-    } else if (playerTags.includes("pt")) {
+    } else if (playerTagsStore.hasPtProfile()) {
         door = "pt"
     }
 
@@ -309,31 +314,31 @@ let brTowerFloors: BrTowerFloorAccess = {
     exit: { access: false, tilesNamePattern: "floor0-to-exit", tilesCoordinates: [[22, 154], [25, 154]] },
 };
 
-function initWorldDoors(playerTags: Tag[], playerCheckpointIds: string[]) {
+function initWorldDoors() {
     // Apply access restrictions based on player checkpoint
-    worldBuildings.cave.access = canLeaveCaveWorld(playerCheckpointIds);
-    worldBuildings.airport.access = canEnterAirport(playerCheckpointIds);
+    worldBuildings.cave.access = checkpointIdsStore.canLeaveCaveWorld();
+    worldBuildings.airport.access = checkpointIdsStore.canEnterAirport();
 
-    worldBarriers.achievements.access = canAccessAchievements(playerCheckpointIds);
-    worldBarriers.values.access = canAccessValues(playerCheckpointIds);
-    worldBarriers.legal.access = canAccessLegal(playerCheckpointIds);
-    worldBarriers.bridge.access = canAccessBridge(playerCheckpointIds);
-    worldBarriers.france.access = canAccessFrance(playerCheckpointIds);
-    worldBarriers.hungary.access = canAccessHungary(playerCheckpointIds);
-    worldBarriers.belgium.access = canAccessBelgium(playerCheckpointIds);
-    worldBarriers.netherlands.access = canAccessNetherlands(playerCheckpointIds);
+    worldBarriers.achievements.access = checkpointIdsStore.canAccessAchievements();
+    worldBarriers.values.access = checkpointIdsStore.canAccessValues();
+    worldBarriers.legal.access = checkpointIdsStore.canAccessLegal();
+    worldBarriers.bridge.access = checkpointIdsStore.canAccessBridge();
+    worldBarriers.france.access = checkpointIdsStore.canAccessFrance();
+    worldBarriers.hungary.access = checkpointIdsStore.canAccessHungary();
+    worldBarriers.belgium.access = checkpointIdsStore.canAccessBelgium();
+    worldBarriers.netherlands.access = checkpointIdsStore.canAccessNetherlands();
 
-    airportGate.access = canEnterAirportGates(playerCheckpointIds);
+    airportGate.access = checkpointIdsStore.canEnterAirportGates();
 
-    brTowerFloors.floor4.access = canEnterBRTower(playerCheckpointIds)
-    brTowerFloors.floor3.access = canEnterBRTowerFloor3(playerCheckpointIds)
-    brTowerFloors.floor2.access = canEnterBRTowerFloor2(playerCheckpointIds)
-    brTowerFloors.floor1.access = canEnterBRTowerFloor1(playerCheckpointIds)
-    brTowerFloors.floor0.access = canEnterBRTowerFloor0(playerCheckpointIds)
-    brTowerFloors.exit.access = canLeaveBRTower(playerCheckpointIds)
+    brTowerFloors.floor4.access = checkpointIdsStore.canEnterBRTower()
+    brTowerFloors.floor3.access = checkpointIdsStore.canEnterBRTowerFloor3()
+    brTowerFloors.floor2.access = checkpointIdsStore.canEnterBRTowerFloor2()
+    brTowerFloors.floor1.access = checkpointIdsStore.canEnterBRTowerFloor1()
+    brTowerFloors.floor0.access = checkpointIdsStore.canEnterBRTowerFloor0()
+    brTowerFloors.exit.access = checkpointIdsStore.canLeaveBRTower()
 
     // unlock all doors if employee
-    if (playerTags.some(tag => employees.includes(tag))) {
+    if (playerTagsStore.isEmployee()) {
         console.log("Open all world doors")
         Object.keys(worldBuildings).forEach(building => {
             worldBuildings[building as WorldBuildingName].access = true;
@@ -351,6 +356,7 @@ function initWorldDoors(playerTags: Tag[], playerCheckpointIds: string[]) {
 
     listenWorldDoor('cave')
     listenWorldDoor('airport')
+    listenHelicopterDoor()
 
     unlockWorldBarriers()
     if (airportGate.access) {
@@ -390,6 +396,42 @@ function listenWorldDoor(building: WorldBuildingName) {
         })
         WA.room.area.onLeave(`${building}Door`).subscribe(() => {
             closeBanner()
+        })
+    }
+}
+
+function listenHelicopterDoor() {
+    // Give access to the helicopter and the pickup only for employees
+    // (even if they didn't talk with Jonas previously, they still need to go to the BR Tower)
+    if (playerTagsStore.isEmployee()) {
+        let actionMessage: ActionMessage|null
+
+        WA.room.area.onEnter("helicopterDoor").subscribe(() => {
+            actionMessage = WA.ui.displayActionMessage({
+                message: "Press SPACE to fly to the BR Tower rooftop!",
+                callback: () => {
+                    travelFromAirportToRooftop()
+                }
+            })
+        })
+    
+        WA.room.area.onLeave("helicopterDoor").subscribe(() => {
+            actionMessage?.remove()
+            actionMessage = null
+        })
+
+        WA.room.area.onEnter("pickupDoor").subscribe(() => {
+            actionMessage = WA.ui.displayActionMessage({
+                message: "Press SPACE to drive back to the BR Stadium!",
+                callback: () => {
+                    WA.nav.goToRoom(`${townMapUrl}#from-tower`)
+                }
+            })
+        })
+    
+        WA.room.area.onLeave("pickupDoor").subscribe(() => {
+            actionMessage?.remove()
+            actionMessage = null
         })
     }
 }

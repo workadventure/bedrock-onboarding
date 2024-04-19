@@ -1,15 +1,16 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
 import { TileDescriptor } from "@workadventure/iframe-api-typings";
-import { floorToCollisionsCoordMap, floorToContentCoordMap } from "../Data/Maps";
-import { isCheckpointInBrTower, isCheckpointJonasPhone } from "../Helpers/Checkpoints"
-import { CheckpointDescriptor } from "../Type/Checkpoints"
-import type { BrTowerFloor } from "../Type/Maps";
+import { floorToCollisionsCoordMap, floorToContentCoordMap } from "../Constants/Maps";
+import { getTilesByRectangleCorners } from "../Utils/Tiles";
+import { CheckpointDescriptor } from "../Types/Checkpoints"
+import type { BrTowerFloor } from "../Types/Maps";
+import { checkpointIdsStore } from "../State/Properties/CheckpointIdsStore"
 
 export function placeTile(checkpoint: CheckpointDescriptor) {
     if (checkpoint.type === "NPC") {
         placeNPCTile(checkpoint)
-    }  else if (checkpoint.type === "content") {
+    } else if (checkpoint.type === "content") {
         placeContentTile(checkpoint)
     } else if (checkpoint.type === "direction") {
         placeDirectionTile(checkpoint)
@@ -28,7 +29,7 @@ export function placeNPCTile(checkpoint: CheckpointDescriptor) {
                 x: checkpoint.coordinates.x,
                 y: checkpoint.coordinates.y,
                 tile: `npc-${lowercaseName}-${checkpoint.npcSprite}`,
-                layer: isCheckpointInBrTower(checkpoint.id) ? "tower/content" : "furniture/furniture3"
+                layer: checkpointIdsStore.isCheckpointInBrTower(checkpoint.id) ? "tower/content" : "furniture/furniture3"
             },
         ])
     }
@@ -42,12 +43,12 @@ export function placeContentTile(checkpoint: CheckpointDescriptor) {
             x: checkpoint.coordinates.x,
             y: checkpoint.coordinates.y,
             tile: 'content',
-            layer: isCheckpointInBrTower(checkpoint.id) ? "tower/content" : "furniture/furniture1"
+            layer: checkpointIdsStore.isCheckpointInBrTower(checkpoint.id) ? "tower/content" : "furniture/furniture1"
         },
     ])
 
 
-    if (isCheckpointJonasPhone(checkpoint.id)) {
+    if (checkpointIdsStore.isCheckpointJonasPhone(checkpoint.id)) {
         // place smartphone above content tile
         WA.room.setTiles([
             {
@@ -66,7 +67,7 @@ export function removeNPCTile(checkpoint: CheckpointDescriptor) {
             x: checkpoint.coordinates.x,
             y: checkpoint.coordinates.y,
             tile: null,
-            layer:  isCheckpointInBrTower(checkpoint.id) ? "tower/content" : "furniture/furniture3"
+            layer: checkpointIdsStore.isCheckpointInBrTower(checkpoint.id) ? "tower/content" : "furniture/furniture3"
         },
     ])
 }
@@ -77,11 +78,11 @@ export function removeContentTile(checkpoint: CheckpointDescriptor) {
             x: checkpoint.coordinates.x,
             y: checkpoint.coordinates.y,
             tile: null,
-            layer:  isCheckpointInBrTower(checkpoint.id) ? "tower/content" : "furniture/furniture1"
+            layer: checkpointIdsStore.isCheckpointInBrTower(checkpoint.id) ? "tower/content" : "furniture/furniture1"
         },
     ])
 
-    if (isCheckpointJonasPhone(checkpoint.id)) {
+    if (checkpointIdsStore.isCheckpointJonasPhone(checkpoint.id)) {
         // remove smartphone
         WA.room.area.delete(checkpoint.id)
         WA.room.setTiles([
@@ -187,6 +188,37 @@ function animateTeleportHalo(xCoord: number, yCoord: number) {
     }, animationDuration)
 }
 
+export function removeHelicopterTiles() {
+    const tilesCoordinates = getTilesByRectangleCorners([34, 10], [40, 14])
+    const tilesFurniture = tilesCoordinates.map(([xCoord, yCoord]) => ({
+        x: xCoord,
+        y: yCoord,
+        tile: null,
+        layer: "furniture/furniture1"
+    }));
+    const tilesAbove = tilesCoordinates.map(([xCoord, yCoord]) => ({
+        x: xCoord,
+        y: yCoord,
+        tile: null,
+        layer: "above/above1"
+    }));
+
+    WA.room.setTiles([...tilesFurniture, ...tilesAbove]);
+}
+
+export function placeRooftopHelicopter() {
+    console.log("placeRooftopHelicopter()")
+    const tilesCoordinates = getTilesByRectangleCorners([26, 114], [32, 118])
+    const tiles = tilesCoordinates.map(([xCoord, yCoord], index) => ({
+        x: xCoord,
+        y: yCoord,
+        tile: `helicopter-landed-${index + 1}`,
+        layer: "above/above1"
+    }));
+
+    WA.room.setTiles(tiles);
+}
+
 // Hide the NPCs or content of BR Tower floors by
 // placing a building tile above them when the floor is hidden
 export function placeTileBrTowerFloor(floor: BrTowerFloor) {
@@ -194,18 +226,18 @@ export function placeTileBrTowerFloor(floor: BrTowerFloor) {
 
     const contentCoord = floorToContentCoordMap[floor];
     if (contentCoord !== null) {
-        console.log("place content tile on coordinates",contentCoord)
+        console.log("place content tile on coordinates", contentCoord)
         tiles.push({
             x: contentCoord.x,
             y: contentCoord.y,
             tile: `hide-checkpoint-floor-${floor}`,
-                layer: "above/above2"
+            layer: "above/above2"
         });
     }
 
     const collisionsCoord = floorToCollisionsCoordMap[floor];
     if (collisionsCoord !== null) {
-        console.log("remove collision tiles on coordinates",collisionsCoord)
+        console.log("remove collision tiles on coordinates", collisionsCoord)
         collisionsCoord.forEach(([xCoord, yCoord]) => {
             tiles.push({
                 x: xCoord,
@@ -226,7 +258,7 @@ export function removeTileBrTowerFloor(floor: BrTowerFloor) {
 
     const contentCoord = floorToContentCoordMap[floor];
     if (contentCoord !== null) {
-        console.log("remove content tile on coordinates",contentCoord)
+        console.log("remove content tile on coordinates", contentCoord)
         tiles.push({
             x: contentCoord.x,
             y: contentCoord.y,
@@ -237,7 +269,7 @@ export function removeTileBrTowerFloor(floor: BrTowerFloor) {
 
     const collisionsCoord = floorToCollisionsCoordMap[floor];
     if (collisionsCoord !== null) {
-        console.log("add collision tiles on coordinates",collisionsCoord)
+        console.log("add collision tiles on coordinates", collisionsCoord)
         collisionsCoord.forEach(([xCoord, yCoord]) => {
             tiles.push({
                 x: xCoord,

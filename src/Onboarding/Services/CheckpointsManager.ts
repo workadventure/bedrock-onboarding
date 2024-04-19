@@ -1,27 +1,14 @@
-import { checkpoints } from "../Data/Checkpoints"
-import { canAccessBelgium, canAccessHungary, canAccessNetherlands, canEnterAirport, canLeaveBackstage, getChecklist, getCheckpointIds, getNextCheckpointId, getNextJonasCheckpointId, isCheckpointPassed, setChecklist, setCheckpointIds } from "../Helpers/Checkpoints"
-import { getPlayerTags } from "../Helpers/Tags"
+import { checkpoints } from "../Constants/Checkpoints"
 import { travelFromAirportToRooftop } from "../Maps/World"
-import { CheckpointDescriptor } from "../Type/Checkpoints"
+import { CheckpointDescriptor } from "../Types/Checkpoints"
 import { placeArea, processAreas, processAreasAfterOnboarding } from "./AreasManager"
 import { getCaveDoorToOpen, unlockAirportGate, unlockBrTowerFloorAccess, unlockTownBuildingDoor, unlockTownCaveDoor, unlockWorldBarrier, unlockWorldBuildingDoor } from "./DoorsManager"
 import { placeTile, removeDirectionTile, removeNPCTile, teleportJonas } from "./TilesManager"
 import { DOOR_LOCKED, closeBanner, openCheckpointBanner, openErrorBanner, openWebsite } from "./UIManager"
-import { pause } from "../Helpers/Utils";
-
-export async function initCheckpoints(playerCheckpointIds: string[]): Promise<string[]> {
-    if (playerCheckpointIds.length > 1) {
-        // Existing player
-        console.log("Existing player. Checkpoint IDs: ", playerCheckpointIds)
-    } else {
-        // New player
-        console.log("New player.")
-        setCheckpointIds(["0"])
-        return ["0"]
-    }
-
-    return playerCheckpointIds
-}
+import { pause } from "../Utils/Utils";
+import { checkpointIdsStore } from "../State/Properties/CheckpointIdsStore"
+import { checklistStore } from "../State/Properties/ChecklistStore"
+import { townMapUrl } from "../Constants/Maps"
 
 export function placeCheckpoint(checkpoint: CheckpointDescriptor) {
     placeArea(checkpoint)
@@ -29,8 +16,7 @@ export function placeCheckpoint(checkpoint: CheckpointDescriptor) {
 }
 
 async function placeNextJonasCheckpoint() {
-    const playerCheckpointIds = await getCheckpointIds()
-    const checkpoint = checkpoints.find(c => c.id === getNextJonasCheckpointId(playerCheckpointIds))
+    const checkpoint = checkpoints.find(c => c.id === checkpointIdsStore.getNextJonasCheckpointId())
     if (checkpoint) {
         placeCheckpoint(checkpoint)
     }
@@ -39,32 +25,19 @@ async function placeNextJonasCheckpoint() {
 export async function passCheckpoint(checkpointId: string) {
     closeBanner()
 
-    const playerCheckpointIds = await getCheckpointIds()
-    const checklist = await getChecklist()
-
     // Affect checkpoint only if it has not been passed already
-    if (isCheckpointPassed(playerCheckpointIds, checkpointId)) {
+    if (checkpointIdsStore.isCheckpointPassed(checkpointId)) {
         console.log("(State: unchanged) Old checkpoint passed", checkpointId)
     } else {
         console.log("(State: update) New checkpoint passed", checkpointId);
 
-        playerCheckpointIds.push(checkpointId)
-        setCheckpointIds(playerCheckpointIds)
+        checkpointIdsStore.addCheckpointId(checkpointId);
 
-        await markCheckpointAsDone(checkpointId)
+        await checklistStore.markCheckpointAsDone(checkpointId);
         await triggerCheckpointAction(checkpointId);
-        openCheckpointBanner(getNextCheckpointId(checklist))
+        const checklist = await checklistStore.getAsyncState();
+        openCheckpointBanner(checkpointIdsStore.getNextCheckpointId(checklist))
     }
-}
-
-async function markCheckpointAsDone(checkpointId: string) {
-    let checklist = await getChecklist()
-
-    // mark the checkpoint as done
-    const checkpointIdx = checklist.findIndex(checkpoint => checkpoint.id === checkpointId)
-    checklist[checkpointIdx].done = checkpointIdx !== -1;
-
-    setChecklist(checklist)
 }
 
 // When the dialogue box is closed, this event is fired
@@ -111,14 +84,12 @@ async function triggerCheckpointAction(checkpointId: string) {
         // Requirement: Meet Jonas for the first time
         case "2":
             // Action: Place rest of checkpoints
-            const playerCheckpointIds2 = await getCheckpointIds()
-            processAreas(playerCheckpointIds2)
+            processAreas()
             break;
         // Requirement: Read the cave PC dialogue
         case "4":
             // Action: Unlock Town cave door
-            const playerTags = getPlayerTags()
-            const door = getCaveDoorToOpen(playerTags)
+            const door = getCaveDoorToOpen()
             if (door) {
                 unlockTownCaveDoor(door)
             } else {
@@ -177,8 +148,7 @@ async function triggerCheckpointAction(checkpointId: string) {
         case "14":
         case "15":
             // Action: Unlock access to Hungary if either 14 or 15 is done
-            const playerCheckpointIds1415 = await getCheckpointIds()
-            if (canAccessHungary(playerCheckpointIds1415)) {
+            if (checkpointIdsStore.canAccessHungary()) {
                 unlockWorldBarrier("hungary")
             }
             break;
@@ -187,8 +157,7 @@ async function triggerCheckpointAction(checkpointId: string) {
         case "16":
         case "17":
             // Action: Unlock access to Belgium if either 16 or 17 is done
-            const playerCheckpointIds1617 = await getCheckpointIds()
-            if (canAccessBelgium(playerCheckpointIds1617)) {
+            if (checkpointIdsStore.canAccessBelgium()) {
                 unlockWorldBarrier("belgium")
             }
             break;
@@ -197,8 +166,7 @@ async function triggerCheckpointAction(checkpointId: string) {
         case "18":
         case "19":
             // Action: Unlock access to Netherlands if either 18 or 19 is done
-            const playerCheckpointIds1819 = await getCheckpointIds()
-            if (canAccessNetherlands(playerCheckpointIds1819)) {
+            if (checkpointIdsStore.canAccessNetherlands()) {
                 unlockWorldBarrier("netherlands")
             }
 
@@ -208,8 +176,7 @@ async function triggerCheckpointAction(checkpointId: string) {
         case "20":
         case "21":
             // Action: Unlock access to airport if either 20 or 21 is done
-            const playerCheckpointIds2021 = await getCheckpointIds()
-            if (canEnterAirport(playerCheckpointIds2021)) {
+            if (checkpointIdsStore.canEnterAirport()) {
                 unlockWorldBuildingDoor("airport")
             }
             break;
@@ -275,17 +242,16 @@ async function triggerCheckpointAction(checkpointId: string) {
         // Requirement: Enter Jonas' Pickup
         case "32":
             // Action: Go to room Town before backstage
-            WA.nav.goToRoom("/@/bedrock-1710774685/onboardingbr/town#from-tower")
+            WA.nav.goToRoom(`${townMapUrl}#from-tower`)
             break;
 
         // Requirement: Talk to Jonas in the backstage or check backstage content
         case "33":
         case "34":
             // Action: Unlock backstage door to stage if checked content + place rest of content
-            const playerCheckpointIds3334 = await getCheckpointIds()
-            if (canLeaveBackstage(playerCheckpointIds3334)) {
+            if (checkpointIdsStore.canLeaveBackstage()) {
                 unlockTownBuildingDoor("backstage")
-                processAreasAfterOnboarding(playerCheckpointIds3334)
+                processAreasAfterOnboarding()
             }
             break;
             

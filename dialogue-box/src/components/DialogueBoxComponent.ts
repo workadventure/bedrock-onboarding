@@ -1,6 +1,6 @@
 import { AvatarComponent } from './AvatarComponent';
 import { MessageComponent } from './MessageComponent';
-import { CheckpointDescriptor } from '../../../src/Onboarding/Type/Checkpoints';
+import { CheckpointDescriptor } from '../../../src/Onboarding/Types/Checkpoints';
 
 interface DialogueBoxProps {
     checkpoint: CheckpointDescriptor;

@@ -1,8 +1,9 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
 import { CoWebsite, UIWebsite } from "@workadventure/iframe-api-typings";
-import { checkpoints } from "../Data/Checkpoints";
-import { isURL } from "../Helpers/UI";
+import { checkpoints } from "../Constants/Checkpoints";
+import { isURL } from "../Utils/UI";
+import { rootUrlStore } from "../State/Properties/RootUrlStore"
 
 export const DOOR_LOCKED = "The door is locked. You are not qualified to enter here."
 
@@ -10,21 +11,9 @@ let dialogueBox: UIWebsite|null
 let helicopter: UIWebsite|null
 let coWebsite: CoWebsite|null
 
-let root: string
-
-export async function initRootURL() {
-    console.log("initRootURL", root)
-    await WA.onInit().then(() => {
-        console.log("onInit", root)
-        const mapUrl = WA.room.mapURL
-        console.log("mapUrl", mapUrl)
-        root = mapUrl.substring(0, mapUrl.lastIndexOf("/"))
-        console.log("root", root)
-    })
-}
-
 export async function openDialogueBox(checkpointId: string) {
     console.log("openDialogueBox")
+    const root = rootUrlStore.getState();
     dialogueBox = await WA.ui.website.open({
         url:  root + `/dialogue-box/index.html?id=${checkpointId}`,
         visible: true,
@@ -49,6 +38,7 @@ export function closeDialogueBox() {
 }
 
 export async function openWebsite(url: string) {
+    const root = rootUrlStore.getState();
     const finalUrl = isURL(url) ? url : `${root}/content/${url}`
     coWebsite = await WA.nav.openCoWebSite(finalUrl)
 }
@@ -109,7 +99,8 @@ export function closeBanner() {
 }
 
 export function displayChecklistButton() {
-    console.log("displayChecklistButton", root)
+    const root = rootUrlStore.getState();
+
     WA.ui.actionBar.addButton({
         id: 'checklist-btn',
         type: 'action',
@@ -128,6 +119,8 @@ export function displayChecklistButton() {
 }
 
 export async function displayHelicopterGIF() {
+    const root = rootUrlStore.getState();
+    
     helicopter = await WA.ui.website.open({
         url: `${root}/helicopter.gif`,
         visible: true,

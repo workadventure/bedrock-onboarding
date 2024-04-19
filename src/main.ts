@@ -3,36 +3,34 @@ console.log('Main script started successfully');
 
 import { bootstrapExtra } from "@workadventure/scripting-api-extra";
 
-import type { Tag } from "./Onboarding/Type/Tags"
-import type { Map } from "./Onboarding/Type/Maps"
-import { everyone, newbies } from "./Onboarding/Data/Tags"
-import { initCheckpoints, registerCloseDialogueBoxListener } from "./Onboarding/Services/CheckpointsManager"
-import { displayChecklistButton, initRootURL } from "./Onboarding/Services/UIManager";
+import { registerCloseDialogueBoxListener } from "./Onboarding/Services/CheckpointsManager"
+import { displayChecklistButton } from "./Onboarding/Services/UIManager";
+import { townMapUrl } from "./Onboarding/Constants/Maps";
 import { initDoors } from "./Onboarding/Services/DoorsManager";
 import { initTown } from "./Onboarding/Maps/Town";
 import { initWorld } from "./Onboarding/Maps/World";
 import { processAreas } from "./Onboarding/Services/AreasManager";
-import { getCheckpointIds, setCheckpointIds } from "./Onboarding/Helpers/Checkpoints";
-import { initTags } from "./Onboarding/Helpers/Tags";
+import { currentMapStore } from "./Onboarding/State/Properties/CurrentMapStore";
+import { playerTagsStore } from "./Onboarding/State/Properties/PlayerTagsStore";
+import { rootUrlStore } from "./Onboarding/State/Properties/RootUrlStore";
+import { checkpointIdsStore } from "./Onboarding/State/Properties/CheckpointIdsStore";
 
 WA.onInit().then(async () => {
     console.log('Scripting API ready');
-    
-    const playerTags = WA.player.tags as Tag[]
-    console.log('Player tags: ', playerTags)
 
-    const hasMatchingTag = playerTags.some(tag => everyone.includes(tag));
+    currentMapStore.initState();
+    playerTagsStore.initState();
+    rootUrlStore.initState();
 
     bootstrapExtra().then(async () => {
         console.log('Scripting API Extra ready');
-        const map = WA.state.map as Map
-        await initTags()
-        await initRootURL()
-        const playerCheckpointIds = await getCheckpointIds()
+
+        await checkpointIdsStore.initAsyncState();
+        // checklistStore is initialized when looping through the checkpoints in AreasManager.ts
   
         registerCloseDialogueBoxListener()
 
-        if (hasMatchingTag) {
+        if (playerTagsStore.hasMandatoryTags()) {
             // FIXME: wait for the new controls API to be released
             // WA.controls.disableInviteButton();
             // WA.controls.disableMapEditor();
@@ -40,32 +38,31 @@ WA.onInit().then(async () => {
             // WA.controls.disableWheelZoom();
             // WA.controls.disableScreenSharing();
 
-            initDoors(map, playerTags, playerCheckpointIds)
+            await initDoors()
 
             // Do the onboarding only for players with at least one newbie tag
-            if (playerTags.some(tag => newbies.includes(tag))) {
+            if (playerTagsStore.isNewbie()) {
                 displayChecklistButton()
 
-                const playerCheckpointIdsInit = await initCheckpoints(playerCheckpointIds)
-                processAreas(playerCheckpointIdsInit)
+                processAreas()
     
                 // Load specific map scripts
-                if (map === "town") {
+                if (currentMapStore.isTown()) {
                     initTown()
-                } else if (map === "world") {
-                    initWorld(playerTags, playerCheckpointIds)
+                } else if (currentMapStore.isWorld()) {
+                    initWorld()
                 }
             }
        
         } else {
             console.log("No player tag recognized.")
             // redirect unknown user to Town if he arrives in World
-            if (map === "world") {
+            if (currentMapStore.isWorld()) {
                 console.log("Player can't access this room.")
-                WA.nav.goToRoom("/@/bedrock-1710774685/onboardingbr/town")
+                WA.nav.goToRoom(townMapUrl)
             }
 
-            initDoors(map, playerTags, playerCheckpointIds)
+            await initDoors()
         }
 
         // TODO: Remove this after (add button to change progress just for debug)
@@ -74,49 +71,49 @@ WA.onInit().then(async () => {
                 id: 'start',
                 label: 'Start',
                 callback: () => {
-                    setCheckpointIds([])
+                    checkpointIdsStore.setState([])
                 }
             });
             WA.ui.actionBar.addButton({
                 id: 'world',
                 label: 'World',
                 callback: () => {
-                    setCheckpointIds(Array.from({ length: 4 }, (_, index) => (index + 1).toString()))
+                    checkpointIdsStore.setState(Array.from({ length: 4 }, (_, index) => (index + 1).toString()))
                 }
             });
             WA.ui.actionBar.addButton({
                 id: 'bridge',
                 label: 'Bridge',
                 callback: () => {
-                    setCheckpointIds(Array.from({ length: 13 }, (_, index) => (index + 1).toString()))
+                    checkpointIdsStore.setState(Array.from({ length: 13 }, (_, index) => (index + 1).toString()))
                 }
             });
             WA.ui.actionBar.addButton({
                 id: 'airport',
                 label: 'Airport',
                 callback: () => {
-                    setCheckpointIds(Array.from({ length: 22 }, (_, index) => (index + 1).toString()))
+                    checkpointIdsStore.setState(Array.from({ length: 22 }, (_, index) => (index + 1).toString()))
                 }
             });
             WA.ui.actionBar.addButton({
                 id: 'town',
                 label: 'Town',
                 callback: () => {
-                    setCheckpointIds(Array.from({ length: 32 }, (_, index) => (index + 1).toString()))
+                    checkpointIdsStore.setState(Array.from({ length: 32 }, (_, index) => (index + 1).toString()))
                 }
             });
             WA.ui.actionBar.addButton({
                 id: 'onboarding',
                 label: 'Onboarding',
                 callback: () => {
-                    setCheckpointIds(Array.from({ length: 34 }, (_, index) => (index + 1).toString()))
+                    checkpointIdsStore.setState(Array.from({ length: 34 }, (_, index) => (index + 1).toString()))
                 }
             });
             WA.ui.actionBar.addButton({
                 id: 'finish',
                 label: 'Finish',
                 callback: () => {
-                    setCheckpointIds(Array.from({ length: 45 }, (_, index) => (index + 1).toString()))
+                    checkpointIdsStore.setState(Array.from({ length: 45 }, (_, index) => (index + 1).toString()))
                 }
             });
         }

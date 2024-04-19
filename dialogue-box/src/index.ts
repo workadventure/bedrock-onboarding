@@ -1,6 +1,6 @@
 import { DialogueBoxComponent } from './components/DialogueBoxComponent';
-import { CheckpointDescriptor } from '../../src/Onboarding/Type/Checkpoints';
-import { checkpoints } from '../../src/Onboarding/Data/Checkpoints';
+import { CheckpointDescriptor } from '../../src/Onboarding/Types/Checkpoints';
+import { checkpoints } from '../../src/Onboarding/Constants/Checkpoints';
 
 console.info('"Dialogue Box" script started successfully')
 

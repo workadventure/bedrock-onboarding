@@ -1,21 +1,20 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-import { employees } from "../Data/Tags";
-import { brTowerFloors } from "../Data/Maps";
-import { canEnterCaveWorld } from "../Helpers/Checkpoints";
-import { getTilesByRectangleCorners } from "../Helpers/Tiles";
-import { pause } from "../Helpers/Utils";
+import { brTowerFloors, townMapUrl } from "../Constants/Maps";
+import { checkpointIdsStore } from "../State/Properties/CheckpointIdsStore";
+import { playerTagsStore } from "../State/Properties/PlayerTagsStore";
+import { pause } from "../Utils/Utils";
 import { displayHelicopterGIF, removeHelicopterGIF } from "../Services/UIManager";
-import type { Tag } from "../Type/Tags";
-import type { BrTowerFloor } from "../Type/Maps";
-import { placeTileBrTowerFloor, removeTileBrTowerFloor } from "../Services/TilesManager";
+import type { BrTowerFloor } from "../Types/Maps";
+import { placeRooftopHelicopter, placeTileBrTowerFloor, removeHelicopterTiles, removeTileBrTowerFloor } from "../Services/TilesManager";
 
-export async function initWorld(playerTags: Tag[], playerCheckpointIds: string[]) {
+export async function initWorld() {
     console.log('World script started successfully');
 
-    if (!canEnterCaveWorld(playerCheckpointIds) && !playerTags.some(tag => employees.includes(tag))) {
+    if (!checkpointIdsStore.canEnterCaveWorld() && !playerTagsStore.isEmployee) {
         console.log("Player can't access this room yet.")
-        //WA.nav.goToRoom("/@/bedrock-1710774685/onboardingbr/town")
+        WA.nav.goToRoom(townMapUrl);
+        return;
     }
 
     generateTowerFloorsTransition();
@@ -50,7 +49,8 @@ function listenFloorTransition(from: BrTowerFloor, to: BrTowerFloor) {
 }
 
 export async function travelFromAirportToRooftop() {
-    const cameraDuration = 20 * 1000
+    // FIXME: real duration is 20 seconds, but only after new camera API is released
+    const cameraDuration = 2 * 1000
 
     console.log("disablePlayerControls")
     WA.controls.disablePlayerControls()
@@ -99,37 +99,6 @@ export async function travelFromAirportToRooftop() {
     await pause(100)
 
     WA.camera.followPlayer(true)
-}
-
-function removeHelicopterTiles() {
-    const tilesCoordinates = getTilesByRectangleCorners([34, 10], [40, 14])
-    const tilesFurniture = tilesCoordinates.map(([xCoord, yCoord]) => ({
-        x: xCoord,
-        y: yCoord,
-        tile: null,
-        layer: "furniture/furniture1"
-    }));
-    const tilesAbove = tilesCoordinates.map(([xCoord, yCoord]) => ({
-        x: xCoord,
-        y: yCoord,
-        tile: null,
-        layer: "above/above1"
-    }));
-
-    WA.room.setTiles([...tilesFurniture, ...tilesAbove]);
-}
-
-function placeRooftopHelicopter() {
-    console.log("placeRooftopHelicopter()")
-    const tilesCoordinates = getTilesByRectangleCorners([26, 114],  [32, 118])
-    const tiles = tilesCoordinates.map(([xCoord, yCoord], index) => ({
-        x: xCoord,
-        y: yCoord,
-        tile: `helicopter-landed-${index+1}`,
-        layer: "above/above1"
-    }));
-
-    WA.room.setTiles(tiles);
 }
 
 function moveCameraToRooftop(xCoord: number, yCoord: number, cameraDuration: number) {

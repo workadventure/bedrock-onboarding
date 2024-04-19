@@ -1,4 +1,4 @@
-import { CheckpointDescriptor } from "../Type/Checkpoints"
+import { CheckpointDescriptor } from "../Types/Checkpoints"
 import { everyone, everyoneButGuests } from "./Tags"
 
 /**

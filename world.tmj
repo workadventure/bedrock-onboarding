@@ -3652,8 +3652,30 @@
                  "type":"area",
                  "visible":true,
                  "width":32,
-                 "x":736,
-                 "y":5152
+                 "x":746.742424242424,
+                 "y":5240.07575757576
+                }, 
+                {
+                 "height":20,
+                 "id":88,
+                 "name":"helicopterDoor",
+                 "rotation":0,
+                 "type":"area",
+                 "visible":true,
+                 "width":54,
+                 "x":1139.09090909091,
+                 "y":396
+                }, 
+                {
+                 "height":20,
+                 "id":89,
+                 "name":"pickupDoor",
+                 "rotation":0,
+                 "type":"area",
+                 "visible":true,
+                 "width":54,
+                 "x":717.25,
+                 "y":5408
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -4737,7 +4759,7 @@
          "y":0
         }],
  "nextlayerid":84,
- "nextobjectid":88,
+ "nextobjectid":90,
  "orientation":"orthogonal",
  "properties":[
         {

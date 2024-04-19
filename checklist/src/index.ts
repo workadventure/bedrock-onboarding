@@ -1,11 +1,13 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-import { Checklist } from "../../src/Onboarding/Type/Checkpoints";
+import { Checklist } from "../../src/Onboarding/Types/Checkpoints";
 
 window.onload = async () => {
     try {
-        const checklist = await WA.player.state.checklist as Checklist[];
-        renderTodoList(checklist);
+        WA.onInit().then(async () => {
+            const checklist = await WA.player.state.checklist as Checklist[];
+            renderTodoList(checklist);
+        })
     } catch (error) {
         console.error("Error fetching todos from WA API:", error);
     }
