@@ -1880,6 +1880,114 @@
                  "width":0,
                  "x":3008,
                  "y":2112
+                }, 
+                {
+                 "height":64,
+                 "id":68,
+                 "name":"6play",
+                 "properties":[
+                        {
+                         "name":"openTab",
+                         "type":"string",
+                         "value":"https:\/\/www.6play.fr\/"
+                        }, 
+                        {
+                         "name":"openWebsiteTrigger",
+                         "type":"string",
+                         "value":"onaction"
+                        }, 
+                        {
+                         "name":"openWebsiteTriggerMessage",
+                         "type":"string",
+                         "value":"Press SPACE to open 6 Play"
+                        }],
+                 "rotation":0,
+                 "type":"area",
+                 "visible":true,
+                 "width":121.666666666666,
+                 "x":1938.66666666667,
+                 "y":896
+                }, 
+                {
+                 "height":64,
+                 "id":69,
+                 "name":"rtlplay",
+                 "properties":[
+                        {
+                         "name":"openTab",
+                         "type":"string",
+                         "value":"https:\/\/www.rtlplay.be\/"
+                        }, 
+                        {
+                         "name":"openWebsiteTrigger",
+                         "type":"string",
+                         "value":"onaction"
+                        }, 
+                        {
+                         "name":"openWebsiteTriggerMessage",
+                         "type":"string",
+                         "value":"Press SPACE to open RTL Play"
+                        }],
+                 "rotation":0,
+                 "type":"area",
+                 "visible":true,
+                 "width":121.667,
+                 "x":2323.1665,
+                 "y":896.5
+                }, 
+                {
+                 "height":64,
+                 "id":70,
+                 "name":"rtlplusz",
+                 "properties":[
+                        {
+                         "name":"openTab",
+                         "type":"string",
+                         "value":"https:\/\/www.rtlplusz.hu\/"
+                        }, 
+                        {
+                         "name":"openWebsiteTrigger",
+                         "type":"string",
+                         "value":"onaction"
+                        }, 
+                        {
+                         "name":"openWebsiteTriggerMessage",
+                         "type":"string",
+                         "value":"Press SPACE to open RTL+"
+                        }],
+                 "rotation":0,
+                 "type":"area",
+                 "visible":true,
+                 "width":121.667,
+                 "x":2131.6665,
+                 "y":896.5
+                }, 
+                {
+                 "height":64,
+                 "id":71,
+                 "name":"videoland",
+                 "properties":[
+                        {
+                         "name":"openTab",
+                         "type":"string",
+                         "value":"https:\/\/www.videoland.com\/"
+                        }, 
+                        {
+                         "name":"openWebsiteTrigger",
+                         "type":"string",
+                         "value":"onaction"
+                        }, 
+                        {
+                         "name":"openWebsiteTriggerMessage",
+                         "type":"string",
+                         "value":"Press SPACE to open Videoland"
+                        }],
+                 "rotation":0,
+                 "type":"area",
+                 "visible":true,
+                 "width":121.667,
+                 "x":2483.4165,
+                 "y":896
                 }],
          "opacity":0.7,
          "type":"objectgroup",
@@ -4164,7 +4272,7 @@
          "y":0
         }],
  "nextlayerid":83,
- "nextobjectid":68,
+ "nextobjectid":72,
  "orientation":"orthogonal",
  "properties":[
         {
