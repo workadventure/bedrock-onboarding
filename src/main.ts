@@ -43,7 +43,7 @@ WA.onInit().then(() => {
             initDoors()
 
             // Do the onboarding only for players with at least one newbie tag
-            if (playerTagsStore.isNewbie()) {
+            if (playerTagsStore.isOtherThanGuest()) {
                 displayChecklistButton()
 
                 await processAreas()
