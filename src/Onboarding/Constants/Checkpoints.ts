@@ -818,7 +818,7 @@ export const checkpoints: CheckpointDescriptor[] = [
             y: 93
         },
         type: "content",
-        url: "https://tech.bedrockstreaming.com/",
+        url: "https://bedrockstreaming.com/news-events/news/",
         xp: 10,
     },
 ]
