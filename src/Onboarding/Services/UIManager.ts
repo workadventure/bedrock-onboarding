@@ -2,7 +2,7 @@
 
 import { CoWebsite, UIWebsite } from "@workadventure/iframe-api-typings";
 import { checkpoints } from "../Constants/Checkpoints";
-import { isURL } from "../Utils/UI";
+import { isURL, mustOpenInNewTab } from "../Utils/UI";
 import { rootUrlStore } from "../State/Properties/RootUrlStore"
 
 export const DOOR_LOCKED = "The door is locked. You are not qualified to enter here."
@@ -42,15 +42,19 @@ export async function closeDialogueBox() {
 export async function openWebsite(url: string, closable = false) {
     const root = rootUrlStore.getState();
     const finalUrl = isURL(url) ? url : `${root}/content/${url}`
-    coWebsite = await WA.nav.openCoWebSite(
-        finalUrl,
-        false,
-        "accelerometer; autoplay; camera; encrypted-media; gyroscope; picture-in-picture",
-        70,
-        1,
-        closable,
-        false
-    )
+    if (isURL(url) && mustOpenInNewTab(url)) {
+        WA.nav.openTab(finalUrl)
+    } else {
+        coWebsite = await WA.nav.openCoWebSite(
+            finalUrl,
+            false,
+            "accelerometer; autoplay; camera; encrypted-media; gyroscope; picture-in-picture",
+            70,
+            1,
+            closable,
+            false
+        )
+    }
 }
 
 export async function closeWebsite() {
