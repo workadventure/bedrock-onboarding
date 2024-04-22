@@ -4,13 +4,15 @@ import type { BrTowerFloor } from "../Types/Maps";
  * The production Town map URL as it is set in the admin
  * @constant
  */
-export const townMapUrl = "/@/bedrock-1710774685/onboardingbr/town"
+export const townMapUrl = "/@/tcm/workadventure/br-town"
+//export const townMapUrl = "/@/bedrock-1710774685/onboardingbr/town"
 
 /**
  * The production E-Learning map URL as it is set in the admin
  * @constant
  */
-export const worldMapUrl = "/@/bedrock-1710774685/onboardingbr/e-learning"
+export const worldMapUrl = "/@/tcm/workadventure/br-e-learning"
+//export const worldMapUrl = "/@/bedrock-1710774685/onboardingbr/e-learning"
 
 /**
  * All floors of the BR Tower
