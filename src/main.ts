@@ -17,6 +17,7 @@ import { rootUrlStore } from "./Onboarding/State/Properties/RootUrlStore";
 import { checkpointIdsStore } from "./Onboarding/State/Properties/CheckpointIdsStore";
 
 WA.onInit().then(() => {
+    console.log('*******************');
     console.log('Scripting API ready');
 
     currentMapStore.initState();

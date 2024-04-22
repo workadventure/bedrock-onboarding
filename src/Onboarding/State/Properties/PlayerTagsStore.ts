@@ -41,6 +41,7 @@ class PlayerTagsStore implements StateManager<Tag[]> {
     */
 
     initState(): void {
+        console.log("Player tags",WA.player.tags);
         this.setState(WA.player.tags as Tag[]);
     }
 
