@@ -1905,8 +1905,8 @@
                  "type":"area",
                  "visible":true,
                  "width":121.666666666666,
-                 "x":1938.66666666667,
-                 "y":896
+                 "x":2003.66666666667,
+                 "y":896.5
                 }, 
                 {
                  "height":64,
@@ -1932,8 +1932,8 @@
                  "type":"area",
                  "visible":true,
                  "width":121.667,
-                 "x":2323.1665,
-                 "y":896.5
+                 "x":2388.1665,
+                 "y":897
                 }, 
                 {
                  "height":64,
@@ -1959,8 +1959,8 @@
                  "type":"area",
                  "visible":true,
                  "width":121.667,
-                 "x":2131.6665,
-                 "y":896.5
+                 "x":2196.6665,
+                 "y":897
                 }, 
                 {
                  "height":64,
@@ -1986,8 +1986,8 @@
                  "type":"area",
                  "visible":true,
                  "width":121.667,
-                 "x":2483.4165,
-                 "y":896
+                 "x":2577.6665,
+                 "y":896.75
                 }],
          "opacity":0.7,
          "type":"objectgroup",
@@ -3985,7 +3985,7 @@
          "name":"roofs",
          "opacity":1,
          "type":"group",
-         "visible":true,
+         "visible":false,
          "x":0,
          "y":0
         }, 
