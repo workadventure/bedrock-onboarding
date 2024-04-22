@@ -50,7 +50,7 @@ async function grantQuestXP(xp: number) {
     try {
         await levelUp(QUEST_KEY, xp)
     } catch (e) {
-        console.error("Error while granting XP", e)
+        console.warn("Error while granting XP", e)
     }
 }
 
