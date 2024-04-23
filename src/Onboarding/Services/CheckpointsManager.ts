@@ -1,4 +1,4 @@
-import { levelUp } from "@workadventure/quests";
+import { levelUp, setQuestBaseUrl } from "@workadventure/quests";
 import { checkpoints } from "../Constants/Checkpoints"
 import { travelFromAirportToRooftop } from "../Maps/World"
 import { CheckpointDescriptor } from "../Types/Checkpoints"
@@ -47,6 +47,8 @@ export async function passCheckpoint(checkpointId: string) {
 async function grantQuestXP(xp: number) {
     console.log("grantQuestXP",xp)
     try {
+        // TODO: Remove this line after go live
+        setQuestBaseUrl("https://admin.staging.workadventu.re");
         await levelUp(QUEST_KEY, xp)
     } catch (e) {
         console.warn("Error while granting XP", e)
