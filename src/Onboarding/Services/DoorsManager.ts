@@ -148,8 +148,11 @@ function listenTownDoor(building: TownBuildingName) {
 }
 
 function initHrDoors(meetingDoor: HrMeetingDoorName) {
+    console.log("Init HR door",meetingDoor)
+
     const currentValue = WA.state.loadVariable(`${meetingDoor}Variable`) as boolean
     hrMeetingDoors[meetingDoor].access = currentValue
+    console.log("currentValue",currentValue)
 
     // initialize the default door state
     toggleHrMeetingDoor(meetingDoor)
@@ -165,10 +168,10 @@ function listenHrDoors(meetingDoor: HrMeetingDoorName) {
             // display an action message to open or close
             // that will depend on the current door state
             actionMessage = WA.ui.displayActionMessage({
-                message: `Press SPACE to ${!hrMeetingDoors[meetingDoor].access ? 'open' : 'close'} the door`,
+                message: `Press SPACE to ${hrMeetingDoors[meetingDoor].access ? 'close' : 'open'} the door`,
                 // eslint-disable-next-line @typescript-eslint/no-misused-promises
                 callback: async () => {
-                    console.log(`${meetingDoor}Variable`,!hrMeetingDoors[meetingDoor].access)
+                    console.log(`${meetingDoor}Variable before`,hrMeetingDoors[meetingDoor].access)
                     await WA.state.saveVariable(`${meetingDoor}Variable`, !hrMeetingDoors[meetingDoor].access);
                 }
             })
@@ -186,10 +189,8 @@ function listenHrDoors(meetingDoor: HrMeetingDoorName) {
     // Each HR door has a dedicated variable, when HR wants to toggle the state of door
     // we intercept the value here and we toggle it
     WA.state.onVariableChange(`${meetingDoor}Variable`).subscribe((value) => {
-        console.log("onVariableChange",`${meetingDoor}Variable`)
-        console.log("hrMeetingDoors[meetingDoor].access before",hrMeetingDoors[meetingDoor].access)
         hrMeetingDoors[meetingDoor].access = value as boolean
-        console.log("hrMeetingDoors[meetingDoor].access after",hrMeetingDoors[meetingDoor].access)
+        console.log(`${meetingDoor}Variable after`,hrMeetingDoors[meetingDoor].access)
         toggleHrMeetingDoor(meetingDoor)
     });
 }
