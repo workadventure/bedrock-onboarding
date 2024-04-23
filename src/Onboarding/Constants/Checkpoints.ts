@@ -85,12 +85,12 @@ export const checkpoints: CheckpointDescriptor[] = [
         title: "Talk with Jonas Again",
         description: "Speak with Jonas to receive further guidance as you prepare to leave the cave.",
         coordinates: {
-            x: 17,
-            y: 183
+            x: 16,
+            y: 180
         },
         type: "NPC",
         npcName: "Jonas",
-        npcSprite: "front",
+        npcSprite: "left",
         message: `Ah, there you are! Ready to venture further into the world of Bedrock? Let me provide you with some additional guidance as you prepare to explore beyond the cave.`,
         url: "https://www.youtube.com/embed/Ld2Xg1L7Dng",
         tags: everyoneButGuests,
@@ -102,7 +102,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         title: "Look! A smartphone!",
         description: "Pick up Jonas' phone and watch a video showcasing the innovative products and services offered by Bedrock.",
         coordinates: {
-            x: 19,
+            x: 20,
             y: 179
         },
         type: "content",
