@@ -163,6 +163,8 @@ function listenHrDoors(meetingDoor: HrMeetingDoorName) {
                 // eslint-disable-next-line @typescript-eslint/no-misused-promises
                 callback: async () => {
                     console.log(`${meetingDoor}Variable`,!hrMeetingDoors[meetingDoor].access)
+                    const currentValue = WA.state.loadVariable(`${meetingDoor}Variable`)
+                    console.log("currentValue",currentValue)
                     await WA.state.saveVariable(`${meetingDoor}Variable`, !hrMeetingDoors[meetingDoor].access);
                 }
             })
