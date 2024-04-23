@@ -161,7 +161,7 @@ function listenHrDoors(meetingDoor: HrMeetingDoorName) {
                 message: `Press SPACE to ${!hrMeetingDoors[meetingDoor].access ? 'open' : 'close'} the door`,
                 // eslint-disable-next-line @typescript-eslint/no-misused-promises
                 callback: async () => {
-                    // FIXME: use map variable instead
+                    console.log(`${meetingDoor}Variable`,!hrMeetingDoors[meetingDoor].access)
                     await WA.state.saveVariable(`${meetingDoor}Variable`, !hrMeetingDoors[meetingDoor].access);
                 }
             })
