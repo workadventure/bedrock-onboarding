@@ -108,7 +108,6 @@ function listenTownDoor(building: TownBuildingName) {
         // but serviceDoor must also show/hide the backstage1 roof + the stadium1 roof
         if (building === "service") {
             WA.room.area.onEnter(`${building}Door`).subscribe(() => {
-                console.log("listenTownDoor() onEnter")
                 unlockTownBuildingDoor(building)
                 if (isRoofVisible === true) {
                     isRoofVisible = false
@@ -122,7 +121,6 @@ function listenTownDoor(building: TownBuildingName) {
             })
         } else {
             WA.room.area.onEnter(`${building}Door`).subscribe(() => {
-                console.log("listenTownDoor() onEnter")
                 unlockTownBuildingDoor(building)
                 if (isRoofVisible === true) {
                     isRoofVisible = false
@@ -171,7 +169,6 @@ function listenHrDoors(meetingDoor: HrMeetingDoorName) {
                 message: `Press SPACE to ${hrMeetingDoors[meetingDoor].access ? 'close' : 'open'} the door`,
                 // eslint-disable-next-line @typescript-eslint/no-misused-promises
                 callback: async () => {
-                    console.log(`${meetingDoor}Variable before`,hrMeetingDoors[meetingDoor].access)
                     await WA.state.saveVariable(`${meetingDoor}Variable`, !hrMeetingDoors[meetingDoor].access);
                 }
             })
@@ -190,13 +187,11 @@ function listenHrDoors(meetingDoor: HrMeetingDoorName) {
     // we intercept the value here and we toggle it
     WA.state.onVariableChange(`${meetingDoor}Variable`).subscribe((value) => {
         hrMeetingDoors[meetingDoor].access = value as boolean
-        console.log(`${meetingDoor}Variable after`,hrMeetingDoors[meetingDoor].access)
         toggleHrMeetingDoor(meetingDoor)
     });
 }
 
 function toggleHrMeetingDoor(meetingDoor: HrMeetingDoorName) {
-    console.log("TOGGLE",hrMeetingDoors[meetingDoor].access)
     const meetingDoorData = hrMeetingDoors[meetingDoor];
     const tilesCoordinates = getTilesByRectangleCorners(meetingDoorData.tilesCoordinates[0], meetingDoorData.tilesCoordinates[1])
 
@@ -355,7 +350,7 @@ function initWorldDoors() {
 
     // unlock all doors if employee
     if (playerTagsStore.isEmployee()) {
-        console.log("Open all world doors")
+        console.log("Open all world doors (except HR)")
         Object.keys(worldBuildings).forEach(building => {
             worldBuildings[building as WorldBuildingName].access = true;
         });
