@@ -150,14 +150,14 @@ function listenTownDoor(building: TownBuildingName) {
 function initHrDoors(meetingDoor: HrMeetingDoorName) {
     const currentValue = WA.state.loadVariable(`${meetingDoor}Variable`) as boolean
     hrMeetingDoors[meetingDoor].access = currentValue
+
+    // initialize the default door state
+    toggleHrMeetingDoor(meetingDoor)
 }
 
 function listenHrDoors(meetingDoor: HrMeetingDoorName) {
     console.log("listenHrDoors",meetingDoor)
     let actionMessage: ActionMessage|null
-
-    // initialize the default door state
-    toggleHrMeetingDoor(meetingDoor)
 
     // only HRs or admins can open/close the doors
     if (playerTagsStore.isHr()) {
