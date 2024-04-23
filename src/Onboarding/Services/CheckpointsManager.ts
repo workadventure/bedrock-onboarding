@@ -35,8 +35,7 @@ export async function passCheckpoint(checkpointId: string) {
     } else {
         console.log("(State: update) New checkpoint passed", checkpointId);
 
-        checkpointIdsStore.addCheckpointId(checkpointId);
-
+        await checkpointIdsStore.addCheckpointId(checkpointId);
         await grantQuestXP(checkpointIdsStore.getCheckpointXP(checkpointId))
         await checklistStore.markCheckpointAsDone(checkpointId);
         await triggerCheckpointAction(checkpointId);
