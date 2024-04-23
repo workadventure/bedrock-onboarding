@@ -77,7 +77,7 @@ class CheckpointIdsStore implements StateManager<string[]> {
     async addCheckpointId(checkpointId: string): Promise<void> {
         const checkpointIds = this.getState();
         checkpointIds.push(checkpointId);
-        this.setAsyncState(checkpointIds);
+        await this.setAsyncState(checkpointIds);
     }
 
     getNextCheckpointId(checklist: Checklist[]): string {
