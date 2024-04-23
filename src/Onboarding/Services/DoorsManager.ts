@@ -85,7 +85,7 @@ function initTownDoors() {
     }
 
     for (const key in townBuildings) {
-        listenTownDoor(key as TownBuildingName)
+        listenTownDoor(key as TownBuildingName);
     }
 
     for (const key in hrMeetingDoors) {
@@ -147,6 +147,7 @@ function listenTownDoor(building: TownBuildingName) {
 }
 
 function listenHrDoors(meetingDoor: HrMeetingDoorName) {
+    console.log("listenHrDoors",meetingDoor)
     let actionMessage: ActionMessage|null
 
     // initialize the default door state
@@ -179,13 +180,16 @@ function listenHrDoors(meetingDoor: HrMeetingDoorName) {
     // Each HR door has a dedicated variable, when HR wants to toggle the state of door
     // we intercept the value here and we toggle it
     WA.state.onVariableChange(`${meetingDoor}Variable`).subscribe((value) => {
+        console.log("onVariableChange",`${meetingDoor}Variable`)
+        console.log("hrMeetingDoors[meetingDoor].access before",hrMeetingDoors[meetingDoor].access)
         hrMeetingDoors[meetingDoor].access = value as boolean
+        console.log("hrMeetingDoors[meetingDoor].access after",hrMeetingDoors[meetingDoor].access)
         toggleHrMeetingDoor(meetingDoor)
     });
 }
 
 function toggleHrMeetingDoor(meetingDoor: HrMeetingDoorName) {
-    console.log("TOGGLE",meetingDoor)
+    console.log("TOGGLE",hrMeetingDoors[meetingDoor].access)
     const meetingDoorData = hrMeetingDoors[meetingDoor];
     const tilesCoordinates = getTilesByRectangleCorners(meetingDoorData.tilesCoordinates[0], meetingDoorData.tilesCoordinates[1])
 
