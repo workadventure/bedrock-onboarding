@@ -10,7 +10,7 @@ import { currentMapStore } from "../State/Properties/CurrentMapStore";
 import { playerTagsStore } from "../State/Properties/PlayerTagsStore";
 import { checkpointIdsStore } from "../State/Properties/CheckpointIdsStore";
 import { townMapUrl } from "../Constants/Maps";
-import { DOOR_LOCKED, closeBanner, openErrorBanner } from "./UIManager";
+import { closeBanner, openErrorBanner } from "./UIManager";
 
 export function initDoors() {
     if (currentMapStore.isTown()) {
@@ -101,33 +101,45 @@ function initTownDoors() {
 }
 
 function listenTownDoor(building: TownBuildingName) {
+    console.log("> listenTownDoor()")
     let isRoofVisible = true
-    if (townBuildings[building ].access) {
+    if (townBuildings[building].access) {
         // we have to create a dedicated condition here because the backstage roof is shared between to entries: serviceDoor and backstageDoor
         // backstageDoor shows/hides the backstage roof like normal
         // but serviceDoor must also show/hide the backstage1 roof + the stadium1 roof
         if (building === "service") {
+            console.log("service door")
             WA.room.area.onEnter(`${building}Door`).subscribe(() => {
+                console.log("open",building)
                 unlockTownBuildingDoor(building)
                 if (isRoofVisible === true) {
+                    console.log(`was visible before`)
                     isRoofVisible = false
+                    console.log(`hide layer`)
                     WA.room.hideLayer(`roofs/backstage1`)
                     WA.room.hideLayer(`roofs/stadium1`)
                 } else {
+                    console.log(`was hidden before`)
                     isRoofVisible = true
+                    console.log(`hide layer`)
                     WA.room.showLayer(`roofs/backstage1`)
                     WA.room.showLayer(`roofs/stadium1`)
                 }
             })
         } else {
             WA.room.area.onEnter(`${building}Door`).subscribe(() => {
+                console.log(`open ${building}Door`)
                 unlockTownBuildingDoor(building)
                 if (isRoofVisible === true) {
+                    console.log(`was visible before`)
                     isRoofVisible = false
+                    console.log(`hide layer`)
                     WA.room.hideLayer(`roofs/${building}1`)
                     WA.room.hideLayer(`roofs/${building}2`)
                 } else {
+                    console.log(`was hidden before`)
                     isRoofVisible = true
+                    console.log(`hide layer`)
                     WA.room.showLayer(`roofs/${building}1`)
                     WA.room.showLayer(`roofs/${building}2`)
                 }
@@ -137,7 +149,8 @@ function listenTownDoor(building: TownBuildingName) {
         lockTownBuildingDoor(building)
         // Display a message saying that access is denied.
         WA.room.area.onEnter(`${building}Door`).subscribe(() => {
-            openErrorBanner(DOOR_LOCKED)
+            console.log("error banner for",building)
+            openErrorBanner()
         })
         WA.room.area.onLeave(`${building}Door`).subscribe(() => {
             closeBanner()
@@ -146,18 +159,14 @@ function listenTownDoor(building: TownBuildingName) {
 }
 
 function initHrDoors(meetingDoor: HrMeetingDoorName) {
-    console.log("Init HR door",meetingDoor)
-
     const currentValue = WA.state.loadVariable(`${meetingDoor}Variable`) as boolean
     hrMeetingDoors[meetingDoor].access = currentValue
-    console.log("currentValue",currentValue)
 
     // initialize the default door state
     toggleHrMeetingDoor(meetingDoor)
 }
 
 function listenHrDoors(meetingDoor: HrMeetingDoorName) {
-    console.log("listenHrDoors",meetingDoor)
     let actionMessage: ActionMessage|null
 
     // only HRs or admins can open/close the doors
@@ -383,18 +392,26 @@ function initWorldDoors() {
 }
 
 function listenWorldDoor(building: WorldBuildingName) {
+    console.log("> listenWorldDoor()")
     // The roof is not vivisble by default for the cave
     // (player starts inside the cave)
     let isRoofVisible = building !== "cave"
+    console.log("isRoofVisible",isRoofVisible)
 
-    if (worldBuildings[building ].access) {
+    if (worldBuildings[building].access) {
+        console.log("worldBuildings[building].access",worldBuildings[building].access)
         WA.room.area.onEnter(`${building}Door`).subscribe(() => {
+            console.log(`open ${building}Door`)
             unlockWorldBuildingDoor(building)
             if (isRoofVisible === true) {
+                console.log(`was visible before`)
                 isRoofVisible = false
+                console.log(`hide layer`)
                 WA.room.hideLayer(`roofs/${building}1`)
             } else {
+                console.log(`was hidden before`)
                 isRoofVisible = true
+                console.log(`hide layer`)
                 WA.room.showLayer(`roofs/${building}1`)
             }
         })
@@ -402,7 +419,8 @@ function listenWorldDoor(building: WorldBuildingName) {
         lockWorldBuildingDoor(building)
         // Display a message saying that access is denied.
         WA.room.area.onEnter(`${building}Door`).subscribe(() => {
-            openErrorBanner(DOOR_LOCKED)
+            console.log("error banner for",building)
+            openErrorBanner()
         })
         WA.room.area.onLeave(`${building}Door`).subscribe(() => {
             closeBanner()
@@ -452,6 +470,7 @@ function listenHelicopterDoor() {
 }
 
 function lockWorldBuildingDoor(building: WorldBuildingName) {
+    console.log("lockWorldBuildingDoor",building)
     const buildingData = worldBuildings[building];
     const tilesCoordinates = getTilesByRectangleCorners(buildingData.blockingTiles[0], buildingData.blockingTiles[1])
     const tiles = tilesCoordinates.map(([xCoord, yCoord]) => ({
@@ -465,6 +484,7 @@ function lockWorldBuildingDoor(building: WorldBuildingName) {
 }
 
 export function unlockWorldBuildingDoor(building: WorldBuildingName) {
+    console.log("unlockWorldBuildingDoor",building)
     const buildingData = worldBuildings[building];
     const tilesCoordinates = getTilesByRectangleCorners(buildingData.blockingTiles[0], buildingData.blockingTiles[1])
     const tiles = tilesCoordinates.map(([xCoord, yCoord]) => ({

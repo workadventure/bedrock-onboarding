@@ -110,7 +110,8 @@ export function openCheckpointBanner(nextCheckpointId: string) {
     }
 }
 
-export function openErrorBanner(message: string) {
+export function openErrorBanner(message: string = DOOR_LOCKED) {
+    console.log("Open error banner with message",message)
     WA.ui.banner.openBanner({
         id: "onboarding-banner",
         text: message,

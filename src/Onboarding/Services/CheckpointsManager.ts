@@ -9,7 +9,7 @@ import { townMapUrl } from "../Constants/Maps"
 import { placeArea, processAreas, processAreasAfterOnboarding } from "./AreasManager"
 import { getCaveDoorToOpen, unlockAirportGate, unlockBrTowerFloorAccess, unlockTownBuildingDoor, unlockTownCaveDoor, unlockWorldBarrier, unlockWorldBuildingDoor } from "./DoorsManager"
 import { placeTile, removeDirectionTile, removeNPCTile, teleportJonas } from "./TilesManager"
-import { DOOR_LOCKED, closeBanner, openCheckpointBanner, openErrorBanner, openWebsite } from "./UIManager"
+import { closeBanner, openCheckpointBanner, openErrorBanner, openWebsite } from "./UIManager"
 
 const QUEST_KEY = "bedrock-journey";
 
@@ -117,7 +117,7 @@ async function triggerCheckpointAction(checkpointId: string) {
             if (door) {
                 unlockTownCaveDoor(door);
             } else {
-                openErrorBanner(DOOR_LOCKED);
+                openErrorBanner();
             }
             break;
         }
