@@ -1,6 +1,6 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-import { checkpoints, checkpointIdsAfterOnboarding } from "../Constants/Checkpoints";
+import { checkpoints } from "../Constants/Checkpoints";
 import { Checklist, CheckpointDescriptor, type NPC } from "../Types/Checkpoints";
 import { currentMapStore } from "../State/Properties/CurrentMapStore";
 import { playerTagsStore } from "../State/Properties/PlayerTagsStore";
