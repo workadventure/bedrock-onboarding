@@ -789,7 +789,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         title: "Check out the Streaming Wall",
         description: "Visit the Streaming Wall building and watch videos showcasing Bedrock's customers and their experiences.",
         coordinates: {
-            x: 70,
+            x: 73,
             y: 35
         },
         type: "direction",

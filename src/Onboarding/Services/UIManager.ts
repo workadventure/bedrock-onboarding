@@ -36,10 +36,11 @@ export async function openDialogueBox(checkpointId: string) {
 export async function closeDialogueBox() {
     if (dialogueBox) {
         await dialogueBox.close()
+        dialogueBox = null
     }
 }
 
-export async function openWebsite(url: string, closable = false) {
+export async function openWebsite(url: string) {
     const root = rootUrlStore.getState();
     const finalUrl = isURL(url) ? url : `${root}/content/${url}`
     if (isURL(url) && mustOpenInNewTab(url)) {
@@ -51,17 +52,17 @@ export async function openWebsite(url: string, closable = false) {
             "accelerometer; autoplay; camera; encrypted-media; gyroscope; picture-in-picture",
             70,
             1,
-            closable,
+            true,
             false
         )
     }
 }
 
 export async function closeWebsite() {
-    console.log("coWebsite")
     if (coWebsite) {
         console.log("coWebsite",coWebsite)
         await coWebsite.close()
+        coWebsite = null
     }
 }
 
@@ -107,7 +108,7 @@ export function openErrorBanner(message: string) {
         text: message,
         bgColor: "#FD4D26",
         textColor: "#FFFFFF",
-        closable: true,
+        closable: false,
         timeToClose: 3000
     });
 }

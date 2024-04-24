@@ -1565,15 +1565,15 @@
                  "y":384
                 }, 
                 {
-                 "height":190.666666666667,
+                 "height":101.583333333333,
                  "id":43,
                  "name":"backstageDoor",
                  "rotation":0,
                  "type":"area",
                  "visible":true,
-                 "width":128,
-                 "x":896,
-                 "y":1505.33333333333
+                 "width":78,
+                 "x":921,
+                 "y":1579.75
                 }, 
                 {
                  "height":0,
@@ -1773,7 +1773,7 @@
                  "y":1200.66666666667
                 }, 
                 {
-                 "height":576,
+                 "height":560.333333333333,
                  "id":63,
                  "name":"jitsiConference",
                  "properties":[
@@ -1785,8 +1785,8 @@
                  "rotation":0,
                  "type":"area",
                  "visible":true,
-                 "width":480,
-                 "x":384,
+                 "width":446.666666666667,
+                 "x":401.333333333333,
                  "y":1664
                 }, 
                 {
@@ -2152,7 +2152,7 @@
                  "y":3194.75
                 }, 
                 {
-                 "height":106.75,
+                 "height":107.583333333333,
                  "id":80,
                  "name":"bike-trial-xtreme-forest",
                  "properties":[
@@ -2174,7 +2174,7 @@
                  "rotation":0,
                  "type":"area",
                  "visible":true,
-                 "width":127.583666666667,
+                 "width":126.583666666667,
                  "x":670.958166666667,
                  "y":3249.58333333334
                 }, 
