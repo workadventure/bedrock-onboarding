@@ -1,7 +1,7 @@
 import type { Map } from "./Maps";
 import type { Tag } from "./Tags";
 
-export type NPC = "Aria" | "Baptiste" | "Charlie" | "Christine" | "Diana" | "Emilie" | "Emma" | "Eva" | "Gabor" | "Hans" | "Ingrid" | "Jonas" | "Julia" | "Julie" | "Luc" | "Murielle" | "Nicolas" | "Pierre" | "Shiby" | "Vianey";
+export type NPC = "Aria" | "Baptiste" | "Charlie" | "Caroline" | "Diana" | "Emilie" | "Emma" | "Eva" | "Gabor" | "Hans" | "Ingrid" | "Jonas" | "Julia" | "Julie" | "Luc" | "Murielle" | "Nicolas" | "Pierre" | "Shiby" | "Vianey";
 
 export interface CheckpointDescriptor {
     id: string;

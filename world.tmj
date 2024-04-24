@@ -37015,11 +37015,11 @@
         {
          "columns":3,
          "firstgid":99450,
-         "image":"tilesets\/Pipoya\/NPC_Christine.png",
+         "image":"tilesets\/Pipoya\/NPC_Caroline.png",
          "imageheight":128,
          "imagewidth":96,
          "margin":0,
-         "name":"NPC_Christine",
+         "name":"NPC_Caroline",
          "spacing":0,
          "tilecount":12,
          "tileheight":32,
@@ -37044,7 +37044,7 @@
                         {
                          "name":"name",
                          "type":"string",
-                         "value":"npc-christine-front"
+                         "value":"npc-caroline-front"
                         }]
                 }, 
                 {
@@ -37076,7 +37076,7 @@
                         {
                          "name":"name",
                          "type":"string",
-                         "value":"npc-christine-left"
+                         "value":"npc-caroline-left"
                         }]
                 }, 
                 {
@@ -37108,7 +37108,7 @@
                         {
                          "name":"name",
                          "type":"string",
-                         "value":"npc-christine-right"
+                         "value":"npc-caroline-right"
                         }]
                 }, 
                 {
@@ -37140,7 +37140,7 @@
                         {
                          "name":"name",
                          "type":"string",
-                         "value":"npc-christine-back"
+                         "value":"npc-caroline-back"
                         }]
                 }, 
                 {
