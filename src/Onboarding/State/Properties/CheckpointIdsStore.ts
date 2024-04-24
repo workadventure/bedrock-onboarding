@@ -221,12 +221,8 @@ class CheckpointIdsStore implements StateManager<string[]> {
         return this.getState().includes("32");
     }
 
-    canLeaveBackstage(): boolean {
-        return ["33", "34"].every(id => this.getState().includes(id));
-    }
-
     isOnboardingDone(): boolean {
-        return this.getState().includes("34");
+        return ["33", "34"].every(id => this.getState().includes(id));
     }
 
     isLockedCheckpointAfterOnboarding(checkpointId: string): boolean {

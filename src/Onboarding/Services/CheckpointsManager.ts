@@ -275,7 +275,7 @@ async function triggerCheckpointAction(checkpointId: string) {
         case "33":
         case "34":
             // Action: Unlock rest of the buildings if checked content + place rest of content
-            if (checkpointIdsStore.canLeaveBackstage()) {
+            if (checkpointIdsStore.isOnboardingDone()) {
                 unlockTownBuildingDoor("backstage")
                 unlockTownBuildingDoor("arcade")
                 unlockTownBuildingDoor("streaming")
