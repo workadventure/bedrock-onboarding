@@ -96,9 +96,12 @@ export function placeArea(checkpoint: CheckpointDescriptor) {
                 await closeWebsite()
             }
         } else if (checkpoint.type === "content") {
-            await closeWebsite()
             await removeContentTile(checkpoint)
             await passCheckpoint(checkpoint.id)
+            // Don't close smartphone checkpoint automatically in order to
+            // prevent passing on it without seeing its content (user MUST close the website manually)
+            if (checkpointIdsStore.isCheckpointJonasPhone(checkpoint.id)) return
+            await closeWebsite()
         } else if (checkpoint.type === "direction") {
             // If the game talks with the player, only consider the checkpoint done if the player has read the dialogue
             if (checkpoint.message) {
