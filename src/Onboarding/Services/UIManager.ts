@@ -34,9 +34,13 @@ export async function openDialogueBox(checkpointId: string) {
 }
 
 export async function closeDialogueBox() {
-    if (dialogueBox) {
-        await dialogueBox.close()
-        dialogueBox = null
+    const localDialogueBox = dialogueBox;
+    if (localDialogueBox) {
+        await localDialogueBox.close();
+        // Avoid race condition by using a reference instead of dialogueBox directly
+        if (dialogueBox === localDialogueBox) {
+            dialogueBox = null;
+        }
     }
 }
 
@@ -59,10 +63,14 @@ export async function openWebsite(url: string) {
 }
 
 export async function closeWebsite() {
-    if (coWebsite) {
+    const localCoWebsite = coWebsite;
+    if (localCoWebsite) {
         console.log("coWebsite",coWebsite)
-        await coWebsite.close()
-        coWebsite = null
+        await localCoWebsite.close();
+        // Avoid race condition by using a reference instead of coWebsite directly
+        if (coWebsite === localCoWebsite) {
+            coWebsite = null;
+        }
     }
 }
 
