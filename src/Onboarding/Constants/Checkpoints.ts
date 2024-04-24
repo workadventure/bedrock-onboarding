@@ -86,7 +86,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         description: "Speak with Jonas to receive further guidance as you prepare to leave the cave.",
         coordinates: {
             x: 16,
-            y: 180
+            y: 179
         },
         type: "NPC",
         npcName: "Jonas",
@@ -102,8 +102,8 @@ export const checkpoints: CheckpointDescriptor[] = [
         title: "Look! A smartphone!",
         description: "Pick up Jonas' phone and watch a video showcasing the innovative products and services offered by Bedrock.",
         coordinates: {
-            x: 20,
-            y: 179
+            x: 21,
+            y: 178
         },
         type: "content",
         url: "https://www.youtube.com/embed/_ilLJY_JdCw",
@@ -129,7 +129,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         title: "Learn about Bedrock's History",
         description: "Interact with Aria to learn about the rich history of Bedrock, detailing its journey from inception to present.",
         coordinates: {
-            x: 78,
+            x: 77,
             y: 183
         },
         type: "NPC",
@@ -181,7 +181,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         description: "Speak with Diana to access detailed information about Bedrock's legal structure and organizational setup, ensuring transparency and compliance.",
         coordinates: {
             x: 21,
-            y: 98
+            y: 97
         },
         type: "NPC",
         npcName: "Diana",
@@ -221,8 +221,8 @@ export const checkpoints: CheckpointDescriptor[] = [
         title: "Explore France Customer: 6play (Part 1)",
         description: "In the city of Paris, interact with Pierre to learn about Bedrock's partnership with France's 6play streaming service.",
         coordinates: {
-            x: 57,
-            y: 56
+            x: 45,
+            y: 59
         },
         type: "NPC",
         npcName: "Pierre",
@@ -238,8 +238,8 @@ export const checkpoints: CheckpointDescriptor[] = [
         title: "Discover France Customer: 6play (Part 2)",
         description: "Continue your exploration of Bedrock's partnership with France's 6play streaming service by engaging with Emilie.",
         coordinates: {
-            x: 73,
-            y: 70
+            x: 63,
+            y: 59
         },
         type: "NPC",
         npcName: "Emilie",
@@ -255,8 +255,8 @@ export const checkpoints: CheckpointDescriptor[] = [
         title: "Explore Hungary Customer: RTL+ (Part 1)",
         description: "Chat with Eva to uncover Bedrock's collaboration with Hungary's RTL+ streaming service.",
         coordinates: {
-            x: 88,
-            y: 47
+            x: 102,
+            y: 48
         },
         type: "NPC",
         npcName: "Eva",
@@ -272,8 +272,8 @@ export const checkpoints: CheckpointDescriptor[] = [
         title: "Uncover Hungary Customer: RTL+ (Part 2)",
         description: "Speak with Gabor to delve deeper into Bedrock's partnership with Hungary's RTL+ streaming service.",
         coordinates: {
-            x: 102,
-            y: 47
+            x: 89,
+            y: 36
         },
         type: "NPC",
         npcName: "Gabor",
@@ -289,8 +289,8 @@ export const checkpoints: CheckpointDescriptor[] = [
         title: "Learn about Belgium Customer: RTL Play (Part 1)",
         description: "In the city of Brussels, interact with Luc to explore Bedrock's collaboration with Belgium's RTL Play streaming service.",
         coordinates: {
-            x: 97,
-            y: 10
+            x: 93,
+            y: 9
         },
         type: "NPC",
         npcName: "Luc",
@@ -306,8 +306,8 @@ export const checkpoints: CheckpointDescriptor[] = [
         title: "Discover Belgium Customer: RTL Play (Part 2)",
         description: "Continue your exploration of Bedrock's partnership with Belgium's RTL Play streaming service by engaging with Emma.",
         coordinates: {
-            x: 83,
-            y: 10
+            x: 81,
+            y: 9
         },
         type: "NPC",
         npcName: "Emma",
@@ -323,8 +323,8 @@ export const checkpoints: CheckpointDescriptor[] = [
         title: "Explore Netherlands Customer: Videoland (Part 1)",
         description: "Chat with Hans to uncover Bedrock's collaboration with Netherlands' Videoland streaming service.",
         coordinates: {
-            x: 22,
-            y: 34
+            x: 43,
+            y: 41
         },
         type: "NPC",
         npcName: "Hans",
@@ -340,8 +340,8 @@ export const checkpoints: CheckpointDescriptor[] = [
         title: "Uncover Netherlands Customer: Videoland (Part 2)",
         description: "Speak with Ingrid to delve deeper into Bedrock's partnership with Netherlands' Videoland streaming service.",
         coordinates: {
-            x: 8,
-            y: 34
+            x: 26,
+            y: 41
         },
         type: "NPC",
         npcName: "Ingrid",

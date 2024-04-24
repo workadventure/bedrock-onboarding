@@ -75,7 +75,7 @@ function initTownDoors() {
 
         // unlock all doors for employees
         if (playerTagsStore.isEmployee()) {
-            console.log("Open all town doors")
+            console.log("Open all town buildings")
             Object.keys(townBuildings).forEach(building => {
                 townBuildings[building as TownBuildingName].access = true;
             });
@@ -303,14 +303,14 @@ const worldBuildings: WorldBuildingAccess = {
 
 // Define buildings and their minimal access restrictions.
 const worldBarriers: WorldBarrierAccess = {
-    achievements: { access: true, blockingTiles: [[84, 168], [87, 168]] },
-    values: { access: true, blockingTiles: [[61, 159], [61, 163]] },
-    legal: { access: true, blockingTiles: [[37, 107], [37, 111]] },
-    bridge: { access: true, blockingTiles: [[18, 83], [22, 83]] },
-    france: { access: true, blockingTiles: [[19, 67], [21, 67]] },
-    hungary: { access: true, blockingTiles: [[72, 48], [72, 52]] },
-    belgium: { access: true, blockingTiles: [[102, 23], [106, 23]] },
-    netherlands: { access: true, blockingTiles: [[70, 30], [70, 34]] },
+    achievements: { access: true, blockingTiles: [[84, 168], [86, 168]] },
+    values: { access: true, blockingTiles: [[61, 160], [61, 162]] },
+    legal: { access: true, blockingTiles: [[37, 109], [37, 110]] },
+    bridge: { access: true, blockingTiles: [[18, 83], [21, 83]] },
+    france: { access: true, blockingTiles: [[19, 66], [21, 68]] },
+    hungary: { access: true, blockingTiles: [[91, 59], [92, 59]] },
+    belgium: { access: true, blockingTiles: [[104, 27], [105, 27]] },
+    netherlands: { access: true, blockingTiles: [[77, 21], [74, 21]] },
 };
 
 const airportGate: AirportGateAccess = 
@@ -523,10 +523,6 @@ export function unlockWorldBarrier(barrier: WorldBarrierName) {
 export function unlockAirportGate() {
     console.log("unlockAirportGate()")
     const turnstileTilesCoordinates = getTilesByRectangleCorners(airportGate.turnstile[0], airportGate.turnstile[1])
-    // FIXME: Tiles are not all placed at the same time so better skip this anim for now
-    // TODO: remove if no fix is found
-    //const lightsYTilesCoordinates = getTilesByRectangleCorners(airportGate.lightsY[0], airportGate.lightsY[1])
-    //const lightsXTilesCoordinates = getTilesByRectangleCorners(airportGate.lightsX[0], airportGate.lightsX[1])
 
     const turnstileTiles = turnstileTilesCoordinates.map(([xCoord, yCoord], index) => ({
         x: xCoord,
@@ -534,21 +530,6 @@ export function unlockAirportGate() {
         tile: `airport-turnstile-open-${index+1}`,
         layer: "furniture/furniture3"
     }));
-    // const lightsYTiles = lightsYTilesCoordinates.map(([xCoord, yCoord], index) => ({
-    //     x: xCoord,
-    //     y: yCoord,
-    //     tile: `floor-light-y-${index + 1}`,
-    //     layer: "furniture/furniture1"
-    // }));
-    // const lightsXTiles = lightsXTilesCoordinates.map(([xCoord, yCoord], index) => ({
-    //     x: xCoord,
-    //     y: yCoord,
-    //     tile: `floor-light-x-${index + 1}`,
-    //     layer: "furniture/furniture1"
-    // }));
-    
-    // Combine turnstile, vertical and horizontal lights into one array in order to open the gate
-    //const combinedTiles = [...turnstileTiles, ...lightsYTiles, ...lightsXTiles];
     const combinedTiles = turnstileTiles
     WA.room.setTiles(combinedTiles);
 }

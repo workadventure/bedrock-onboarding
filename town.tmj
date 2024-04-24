@@ -1448,14 +1448,14 @@
          "name":"floorLayer",
          "objects":[
                 {
-                 "height":77.5,
+                 "height":64,
                  "id":33,
                  "name":"to-world-from-ext",
                  "properties":[
                         {
                          "name":"exitUrl",
                          "type":"string",
-                         "value":"/@/tcm/workadventure/br-e-learning#from-town"
+                         "value":"\/@\/tcm\/workadventure\/br-e-learning#from-town"
                         }],
                  "rotation":0,
                  "type":"area",
@@ -1599,14 +1599,14 @@
                  "y":3507
                 }, 
                 {
-                 "height":77.5,
+                 "height":64,
                  "id":46,
                  "name":"to-world-from-fr",
                  "properties":[
                         {
                          "name":"exitUrl",
                          "type":"string",
-                         "value":"/@/tcm/workadventure/br-e-learning#from-town"
+                         "value":"\/@\/tcm\/workadventure\/br-e-learning#from-town"
                         }],
                  "rotation":0,
                  "type":"area",
@@ -1616,14 +1616,14 @@
                  "y":64
                 }, 
                 {
-                 "height":77.3333333333333,
+                 "height":64,
                  "id":47,
                  "name":"to-world-from-alt",
                  "properties":[
                         {
                          "name":"exitUrl",
                          "type":"string",
-                         "value":"/@/tcm/workadventure/br-e-learning#from-town"
+                         "value":"\/@\/tcm\/workadventure\/br-e-learning#from-town"
                         }],
                  "rotation":0,
                  "type":"area",
@@ -1633,14 +1633,14 @@
                  "y":128
                 }, 
                 {
-                 "height":77,
+                 "height":64,
                  "id":48,
                  "name":"to-world-from-pt",
                  "properties":[
                         {
                          "name":"exitUrl",
                          "type":"string",
-                         "value":"/@/tcm/workadventure/br-e-learning#from-town"
+                         "value":"\/@\/tcm\/workadventure\/br-e-learning#from-town"
                         }],
                  "rotation":0,
                  "type":"area",
@@ -4677,7 +4677,7 @@
          "y":0
         }],
  "nextlayerid":83,
- "nextobjectid":90,
+ "nextobjectid":91,
  "orientation":"orthogonal",
  "properties":[
         {
