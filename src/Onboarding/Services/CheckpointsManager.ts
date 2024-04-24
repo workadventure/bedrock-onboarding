@@ -6,7 +6,7 @@ import { pause } from "../Utils/Utils";
 import { checkpointIdsStore } from "../State/Properties/CheckpointIdsStore"
 import { checklistStore } from "../State/Properties/ChecklistStore"
 import { townMapUrl } from "../Constants/Maps"
-import { placeArea, processAreas, processAreasAfterOnboarding } from "./AreasManager"
+import { placeArea, processAreas } from "./AreasManager"
 import { getCaveDoorToOpen, unlockAirportGate, unlockBrTowerFloorAccess, unlockTownBuildingDoor, unlockTownCaveDoor, unlockWorldBarrier, unlockWorldBuildingDoor } from "./DoorsManager"
 import { placeTile, removeDirectionTile, removeNPCTile, teleportJonas } from "./TilesManager"
 import { closeBanner, openCheckpointBanner, openErrorBanner, openWebsite } from "./UIManager"
@@ -280,7 +280,6 @@ async function triggerCheckpointAction(checkpointId: string) {
                 unlockTownBuildingDoor("arcade")
                 unlockTownBuildingDoor("streaming")
                 unlockTownBuildingDoor("wikitek")
-                processAreasAfterOnboarding()
             }
             break;
             

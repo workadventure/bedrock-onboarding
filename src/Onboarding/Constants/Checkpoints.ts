@@ -823,9 +823,3 @@ export const checkpoints: CheckpointDescriptor[] = [
     },
 ]
 
-/**
- * All checkpoints after the last onboarding checkpoint (except Jonas checkpoint)
- * @constant
- */
-// We start at index 40 and we add 14 = 53 (+1)
-export const checkpointIdsAfterOnboarding = Array.from({ length: 14 }, (_, index) => (index + 40).toString())

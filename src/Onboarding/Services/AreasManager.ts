@@ -39,23 +39,6 @@ export async function processAreas() {
     openCheckpointBanner(nextCheckpointId)
 }
 
-export function processAreasAfterOnboarding() {
-    console.log("Processing areas after on boarding...")
-    console.log("checkpointIdsAfterOnboarding", checkpointIdsAfterOnboarding)
-    // we only need to filter by tag (for the Wikitek content) since we don't have restrictions at this point
-    checkpointIdsAfterOnboarding.forEach((checkpointId) => {
-        const checkpoint = checkpoints.find(c => c.id === checkpointId)
-        if (checkpoint) {
-            if (filterCheckpointsByTag(checkpoint)) {
-                // Ignore if checkpoint is not already done
-                if (!checkpointIdsStore.isCheckpointPassed(checkpointId)) {
-                    placeCheckpoint(checkpoint)
-                }
-            }
-        }
-    })
-}
-
 export function placeArea(checkpoint: CheckpointDescriptor) {
     console.log(`Placing checkpoint ${checkpoint.id} (area)`)
     const tileSize = 32
