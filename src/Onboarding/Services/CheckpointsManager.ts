@@ -57,9 +57,16 @@ async function grantQuestXP(xp: number) {
 
 // When the dialogue box is closed, this event is fired
 export function registerCloseDialogueBoxListener() {
+    interface CloseDialogueBoxVariable {
+        forceChange: number;
+        checkpoint: CheckpointDescriptor|null;
+    }
+
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    WA.player.state.onVariableChange('closeDialogueBoxEvent').subscribe(async (value: any) => {
-        const checkpoint = value.checkpoint as CheckpointDescriptor|null;
+    WA.player.state.onVariableChange('closeDialogueBoxEvent').subscribe(async (value) => {
+        const checkpointData = value as CloseDialogueBoxVariable;
+        const checkpoint = checkpointData.checkpoint;
+
         if (checkpoint) {
             console.log('Variable "closeDialogueBoxEvent" changed. New value: ', checkpoint);
             // If the NPC has a content to show after the dialogue box is closed, open the content
