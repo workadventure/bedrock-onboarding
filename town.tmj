@@ -2044,7 +2044,7 @@
                  "y":3319.66666666667
                 }, 
                 {
-                 "height":90.5,
+                 "height":92.166666666667,
                  "id":75,
                  "name":"radius-raid",
                  "properties":[
@@ -2066,9 +2066,9 @@
                  "rotation":0,
                  "type":"area",
                  "visible":true,
-                 "width":100.167,
-                 "x":269.7915,
-                 "y":3391
+                 "width":109.167,
+                 "x":265.7915,
+                 "y":3389.33333333333
                 }, 
                 {
                  "height":58.780303030303,
@@ -2098,7 +2098,7 @@
                  "y":3297.05303030303
                 }, 
                 {
-                 "height":31.5,
+                 "height":39,
                  "id":78,
                  "name":"street-fighter-2",
                  "properties":[
@@ -2125,7 +2125,7 @@
                  "y":3193
                 }, 
                 {
-                 "height":32.0227272727275,
+                 "height":37.25,
                  "id":79,
                  "name":"alien-invasion",
                  "properties":[
@@ -2142,7 +2142,7 @@
                         {
                          "name":"openWebsiteTriggerMessage",
                          "type":"string",
-                         "value":"Press SPACE to play AlienInvasion"
+                         "value":"Press SPACE to play Alien Invasion"
                         }],
                  "rotation":0,
                  "type":"area",
@@ -2152,7 +2152,7 @@
                  "y":3194.75
                 }, 
                 {
-                 "height":105.166666666667,
+                 "height":106.75,
                  "id":80,
                  "name":"bike-trial-xtreme-forest",
                  "properties":[
@@ -2176,10 +2176,10 @@
                  "visible":true,
                  "width":127.583666666667,
                  "x":670.958166666667,
-                 "y":3249.16666666667
+                 "y":3249.58333333334
                 }, 
                 {
-                 "height":33.1477272727275,
+                 "height":40.1477272727302,
                  "id":81,
                  "name":"bubble-woods-4",
                  "properties":[
@@ -2206,7 +2206,7 @@
                  "y":3191.85227272727
                 }, 
                 {
-                 "height":33.0227272727266,
+                 "height":38.67045454545,
                  "id":82,
                  "name":"pacman",
                  "properties":[
@@ -2255,12 +2255,12 @@
                  "rotation":0,
                  "type":"area",
                  "visible":true,
-                 "width":91.9170000000001,
-                 "x":881.5415,
+                 "width":115.917,
+                 "x":869.7915,
                  "y":3263.83333333333
                 }, 
                 {
-                 "height":103.25,
+                 "height":110.583333333333,
                  "id":84,
                  "name":"3d-air-hockey",
                  "properties":[
@@ -2287,7 +2287,7 @@
                  "y":3373.33333333333
                 }, 
                 {
-                 "height":33.25,
+                 "height":39.25,
                  "id":85,
                  "name":"tetris",
                  "properties":[
@@ -2336,8 +2336,8 @@
                  "rotation":0,
                  "type":"area",
                  "visible":true,
-                 "width":74.7351818181818,
-                 "x":917.643772727273,
+                 "width":76.9851818181818,
+                 "x":915.393772727273,
                  "y":3327.25
                 }, 
                 {
@@ -2390,8 +2390,8 @@
                  "rotation":0,
                  "type":"area",
                  "visible":true,
-                 "width":86.167,
-                 "x":904.75,
+                 "width":93.5003333333334,
+                 "x":897.416666666667,
                  "y":3418
                 }],
          "opacity":0.7,

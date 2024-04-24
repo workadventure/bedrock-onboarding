@@ -28,7 +28,7 @@ const townBuildings: TownBuildingAccess = {
     arcade: { access: false, blockingTiles: [[16, 116], [19, 116]] },
     stadium: { access: false, blockingTiles: [[18, 77], [20, 77]] },
     wikitek: { access: false, blockingTiles: [[77, 110], [82, 110]] },
-    streaming: { access: false, blockingTiles: [[69, 40], [72, 40]] },
+    streaming: { access: false, blockingTiles: [[71, 40], [75, 40]] },
     cave: { access: false, blockingTiles: [[49, 11], [50, 11]] },
     backstage: { access: false, blockingTiles: [[29, 49], [30, 51]] },
     service: { access: false, blockingTiles: [[10, 39], [12, 41]] },
