@@ -3213,7 +3213,7 @@
          "name":"floorLayer",
          "objects":[
                 {
-                 "height":22,
+                 "height":20,
                  "id":38,
                  "name":"to-town",
                  "properties":[
@@ -3227,7 +3227,7 @@
                  "visible":true,
                  "width":64,
                  "x":1344,
-                 "y":6378
+                 "y":6380
                 }, 
                 {
                  "height":32,
@@ -3594,15 +3594,15 @@
                  "y":5091.09090909091
                 }, 
                 {
-                 "height":15.6666666666661,
+                 "height":32,
                  "id":81,
                  "name":"caveDoor",
                  "rotation":0,
                  "type":"area",
                  "visible":true,
-                 "width":40,
-                 "x":925.25,
-                 "y":5856
+                 "width":32,
+                 "x":928.125,
+                 "y":5840
                 }, 
                 {
                  "height":0,
@@ -3628,15 +3628,15 @@
                  "y":6012.66666666667
                 }, 
                 {
-                 "height":20,
+                 "height":32,
                  "id":84,
                  "name":"airportDoor",
                  "rotation":0,
                  "type":"area",
                  "visible":true,
                  "width":96,
-                 "x":1632,
-                 "y":736
+                 "x":1632.18181818182,
+                 "y":719.818181818182
                 }, 
                 {
                  "height":20,
