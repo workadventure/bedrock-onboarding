@@ -41,7 +41,6 @@ class ChecklistStore implements StateManager<Checklist[]> {
    
     async getAsyncState(): Promise<Checklist[]> {
         // If the value has already been set, return it instead of calling the API
-        console.log("getAsyncState", this.getState() ? this.getState() : await WA.player.state.checklist as Checklist[])
         return this.getState() ? this.getState() : await WA.player.state.checklist as Checklist[];
     }
 
@@ -62,7 +61,7 @@ class ChecklistStore implements StateManager<Checklist[]> {
     */
 
     async markCheckpointAsDone(checkpointId: string) {
-        const checklist = await this.getAsyncState()
+        const checklist = this.getState()
 
         // mark the checkpoint as done
         const checkpointIdx = checklist.findIndex(checkpoint => checkpoint.id === checkpointId)
