@@ -39,7 +39,7 @@ export async function passCheckpoint(checkpointId: string) {
         await grantQuestXP(checkpointIdsStore.getCheckpointXP(checkpointId))
         await checklistStore.markCheckpointAsDone(checkpointId);
         await triggerCheckpointAction(checkpointId);
-        const checklist = await checklistStore.getAsyncState();
+        const checklist = checklistStore.getState();
         openCheckpointBanner(checkpointIdsStore.getNextCheckpointId(checklist))
     }
 }
@@ -58,14 +58,14 @@ async function grantQuestXP(xp: number) {
 // When the dialogue box is closed, this event is fired
 export function registerCloseDialogueBoxListener() {
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    WA.player.state.onVariableChange('closeDialogueBoxEvent').subscribe(async (value) => {
-        const checkpoint = value as CheckpointDescriptor|null
+    WA.player.state.onVariableChange('closeDialogueBoxEvent').subscribe(async (value: any) => {
+        const checkpoint = value.checkpoint as CheckpointDescriptor|null;
         if (checkpoint) {
             console.log('Variable "closeDialogueBoxEvent" changed. New value: ', checkpoint);
             // If the NPC has a content to show after the dialogue box is closed, open the content
             if (checkpoint.url) {
                 console.log("Open URL",checkpoint.url)
-                await openWebsite(checkpoint.url, checkpoint.npcName === "Jonas")
+                await openWebsite(checkpoint.url)
             }
         
             // If it's Jonas, remove its area and teleport him

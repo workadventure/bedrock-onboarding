@@ -31,7 +31,10 @@ export class DialogueBoxComponent implements DialogueBoxProps {
 
         // This event is triggered from the pagination logic (when the 'Close' button is clicked)
         document.addEventListener('destroy', async () => {
-            await WA.player.state.saveVariable("closeDialogueBoxEvent", this.checkpoint, {
+            await WA.player.state.saveVariable("closeDialogueBoxEvent", {
+                forceChange: new Date().getTime(),
+                checkpoint: this.checkpoint 
+            }, {
                 public: false,
                 persist: false,
                 scope: "room",
