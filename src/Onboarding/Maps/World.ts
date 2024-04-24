@@ -49,8 +49,7 @@ function listenFloorTransition(from: BrTowerFloor, to: BrTowerFloor) {
 }
 
 export async function travelFromAirportToRooftop() {
-    // FIXME: real duration is 20 seconds, but only after new camera API is released
-    const cameraDuration = 2 * 1000
+    const cameraDuration = 20 * 1000
 
     console.log("disablePlayerControls")
     WA.controls.disablePlayerControls()
