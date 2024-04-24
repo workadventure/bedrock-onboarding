@@ -310,7 +310,7 @@ const worldBarriers: WorldBarrierAccess = {
     france: { access: true, blockingTiles: [[19, 66], [21, 68]] },
     hungary: { access: true, blockingTiles: [[91, 59], [92, 59]] },
     belgium: { access: true, blockingTiles: [[104, 27], [105, 27]] },
-    netherlands: { access: true, blockingTiles: [[77, 21], [74, 21]] },
+    netherlands: { access: true, blockingTiles: [[71, 21], [74, 21]] },
 };
 
 const airportGate: AirportGateAccess = 
@@ -350,7 +350,7 @@ function initWorldDoors() {
 
     // unlock all doors if employee
     if (playerTagsStore.isEmployee()) {
-        console.log("Open all world doors (except HR)")
+        console.log("Open all world buildings")
         Object.keys(worldBuildings).forEach(building => {
             worldBuildings[building as WorldBuildingName].access = true;
         });
@@ -389,7 +389,6 @@ function listenWorldDoor(building: WorldBuildingName) {
 
     if (worldBuildings[building ].access) {
         WA.room.area.onEnter(`${building}Door`).subscribe(() => {
-            console.log("listenWorldDoor() onEnter")
             unlockWorldBuildingDoor(building)
             if (isRoofVisible === true) {
                 isRoofVisible = false
