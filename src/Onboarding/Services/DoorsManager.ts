@@ -231,6 +231,7 @@ function lockTownBuildingDoor(building: TownBuildingName) {
 }
 
 export function unlockTownBuildingDoor(building: TownBuildingName) {
+    townBuildings[building].access = true;
     const buildingData = townBuildings[building];
     const tilesCoordinates = getTilesByRectangleCorners(buildingData.blockingTiles[0], buildingData.blockingTiles[1])
     const tiles = tilesCoordinates.map(([xCoord, yCoord]) => ({
@@ -252,6 +253,7 @@ function initTownCaveDoors() {
 }
 
 export function unlockTownCaveDoor(door: NewbieTag) {
+    townCaveProfileDoors[door].access = true;
     const doorData = townCaveProfileDoors[door];
 
     const pillarTilesCoordinates = getTilesByRectangleCorners(doorData.pillar[0], doorData.pillar[1])
@@ -378,7 +380,8 @@ function initWorldDoors() {
     listenWorldDoor('airport')
     listenHelicopterDoor()
 
-    unlockWorldBarriers()
+    tryToUnlockWorldBarriers()
+
     if (airportGate.access) {
         unlockAirportGate()
     }
@@ -485,6 +488,7 @@ function lockWorldBuildingDoor(building: WorldBuildingName) {
 
 export function unlockWorldBuildingDoor(building: WorldBuildingName) {
     console.log("unlockWorldBuildingDoor",building)
+    worldBuildings[building].access = true;
     const buildingData = worldBuildings[building];
     const tilesCoordinates = getTilesByRectangleCorners(buildingData.blockingTiles[0], buildingData.blockingTiles[1])
     const tiles = tilesCoordinates.map(([xCoord, yCoord]) => ({
@@ -497,8 +501,8 @@ export function unlockWorldBuildingDoor(building: WorldBuildingName) {
     WA.room.setTiles(tiles);
 }
 
-function unlockWorldBarriers() {
-    console.log("unlockWorldBarriers()")
+function tryToUnlockWorldBarriers() {
+    console.log("tryToUnlockWorldBarriers()")
     const tiles: TileDescriptor[] = [];
 
     // Iterate over each barrier in the worldBarriers object
@@ -525,6 +529,7 @@ function unlockWorldBarriers() {
 }
 
 export function unlockWorldBarrier(barrier: WorldBarrierName) {
+    worldBarriers[barrier].access = true;
     const barrierData = worldBarriers[barrier];
     console.log("barrierData",barrierData)
     const tilesCoordinates = getTilesByRectangleCorners(barrierData.blockingTiles[0], barrierData.blockingTiles[1])
@@ -541,6 +546,7 @@ export function unlockWorldBarrier(barrier: WorldBarrierName) {
 
 export function unlockAirportGate() {
     console.log("unlockAirportGate()")
+    airportGate.access = true;
     const turnstileTilesCoordinates = getTilesByRectangleCorners(airportGate.turnstile[0], airportGate.turnstile[1])
 
     const turnstileTiles = turnstileTilesCoordinates.map(([xCoord, yCoord], index) => ({
@@ -555,6 +561,7 @@ export function unlockAirportGate() {
 
 export function unlockBrTowerFloorAccess(floor: BrTowerFloorName) {
     console.log("unlockBrTowerFloorAccess()")
+    brTowerFloors[floor].access = true;
     const tiles: TileDescriptor[] = [];
     const floorData = brTowerFloors[floor];
     const floorToLayerNameMap: { [key in BrTowerFloorName]: string } = {
