@@ -118,7 +118,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         type: "direction",
         coordinates: {
             x: 29,
-            y: 183
+            y: 184
         },
         tags: everyoneButGuests,
         xp: 30,
