@@ -2140,7 +2140,7 @@
                  "name":"0",
                  "opacity":1,
                  "type":"tilelayer",
-                 "visible":true,
+                 "visible":false,
                  "width":110,
                  "x":0,
                  "y":0
@@ -2351,7 +2351,7 @@
                  "name":"1",
                  "opacity":1,
                  "type":"tilelayer",
-                 "visible":true,
+                 "visible":false,
                  "width":110,
                  "x":0,
                  "y":0
@@ -2562,7 +2562,7 @@
                  "name":"2",
                  "opacity":1,
                  "type":"tilelayer",
-                 "visible":true,
+                 "visible":false,
                  "width":110,
                  "x":0,
                  "y":0
@@ -2773,7 +2773,7 @@
                  "name":"3",
                  "opacity":1,
                  "type":"tilelayer",
-                 "visible":true,
+                 "visible":false,
                  "width":110,
                  "x":0,
                  "y":0
@@ -2984,7 +2984,7 @@
                  "name":"4",
                  "opacity":1,
                  "type":"tilelayer",
-                 "visible":true,
+                 "visible":false,
                  "width":110,
                  "x":0,
                  "y":0
