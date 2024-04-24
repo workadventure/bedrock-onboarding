@@ -28,4 +28,4 @@ export const newbiesAndGuests: Tag[] = ["ext", "fr", "pt", "alt", "guest"];
  * All possible tags a newbie could have
  * @constant
  */
-export const newbies: Tag[] = ["ext", "fr", "pt", "alt", "admin"];
+export const newbies: Tag[] = ["ext", "fr", "pt", "alt"];

@@ -157,7 +157,7 @@ function filterCheckpointsByMilestone(checkpoint: CheckpointDescriptor): boolean
         }
     }
 
-    if (checkpointIdsStore.isCheckpointAfterOnboarding(checkpointId)) {
+    if (checkpointIdsStore.isLockedCheckpointAfterOnboarding(checkpointId)) {
         if (!checkpointIdsStore.isWorldMapDone()) {
             console.log(`Ignoring checkpoint ${checkpointId} (milestone onboarding)`)
             return false

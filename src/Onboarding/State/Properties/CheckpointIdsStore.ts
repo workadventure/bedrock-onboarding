@@ -229,10 +229,10 @@ class CheckpointIdsStore implements StateManager<string[]> {
         return this.getState().includes("34");
     }
 
-    isCheckpointAfterOnboarding(checkpointId: string): boolean {
-        // Don't display checkpoints after onboarding if it's not done yet
+    isLockedCheckpointAfterOnboarding(checkpointId: string): boolean {
+        // Don't display some checkpoints after onboarding if it's not done yet
         const checkpointIdNumber = parseInt(checkpointId, 10);
-        return checkpointIdNumber > 32;
+        return 33 <= checkpointIdNumber && checkpointIdNumber <= 39;
     }
 }
 

@@ -117,14 +117,6 @@ WA.onInit().then(() => {
                     await checkpointIdsStore.setAsyncState(Array.from({ length: 34 }, (_, index) => (index + 1).toString()))
                 }
             });
-            WA.ui.actionBar.addButton({
-                id: 'finish',
-                label: 'Finish',
-                // eslint-disable-next-line @typescript-eslint/no-misused-promises
-                callback: async () => {
-                    await checkpointIdsStore.setAsyncState(Array.from({ length: 45 }, (_, index) => (index + 1).toString()))
-                }
-            });
         }
     }).catch(e => console.error(e));
 }).catch(e => console.error(e));
