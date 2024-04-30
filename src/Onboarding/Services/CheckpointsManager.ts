@@ -274,8 +274,9 @@ async function triggerCheckpointAction(checkpointId: string) {
         // Requirement: Talk to Jonas in the backstage or check backstage content
         case "33":
         case "34":
-            // Action: Unlock rest of the buildings if checked content + place rest of content
+            // Action: Unlock rest of the buildings if checked content
             if (checkpointIdsStore.isOnboardingDone()) {
+                placeNextJonasCheckpoint()
                 unlockTownBuildingDoor("backstage")
                 unlockTownBuildingDoor("arcade")
                 unlockTownBuildingDoor("streaming")
