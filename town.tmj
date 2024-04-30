@@ -1448,7 +1448,7 @@
          "name":"floorLayer",
          "objects":[
                 {
-                 "height":80.25,
+                 "height":64,
                  "id":33,
                  "name":"to-world-from-ext",
                  "properties":[
@@ -1478,8 +1478,8 @@
                  "type":"area",
                  "visible":true,
                  "width":32,
-                 "x":1582.54545454545,
-                 "y":432.022727272727
+                 "x":1584.54545454545,
+                 "y":447.772727272727
                 }, 
                 {
                  "height":32,
@@ -1506,8 +1506,8 @@
                  "type":"area",
                  "visible":true,
                  "width":192,
-                 "x":2463.66666666667,
-                 "y":3535.33333333333
+                 "x":2464,
+                 "y":3552
                 }, 
                 {
                  "height":32,
@@ -1518,7 +1518,7 @@
                  "visible":true,
                  "width":128,
                  "x":512,
-                 "y":3727.75
+                 "y":3744
                 }, 
                 {
                  "height":32,
@@ -1528,8 +1528,8 @@
                  "type":"area",
                  "visible":true,
                  "width":96,
-                 "x":575.75,
-                 "y":2480
+                 "x":576,
+                 "y":2496
                 }, 
                 {
                  "height":32,
@@ -1540,17 +1540,17 @@
                  "visible":true,
                  "width":128,
                  "x":2560,
-                 "y":2383.33333333333
+                 "y":2400
                 }, 
                 {
-                 "height":16.7272727272727,
+                 "height":32,
                  "id":41,
                  "name":"streamingDoor",
                  "rotation":0,
                  "type":"area",
                  "visible":true,
-                 "width":172,
-                 "x":2265.25,
+                 "width":160,
+                 "x":2272,
                  "y":1312
                 }, 
                 {
@@ -1562,10 +1562,10 @@
                  "visible":true,
                  "width":64,
                  "x":1568,
-                 "y":368.181818181818
+                 "y":384
                 }, 
                 {
-                 "height":128,
+                 "height":160,
                  "id":43,
                  "name":"backstageDoor",
                  "rotation":0,
@@ -1573,7 +1573,7 @@
                  "visible":true,
                  "width":64,
                  "x":928,
-                 "y":1552.75
+                 "y":1536
                 }, 
                 {
                  "height":0,
@@ -1599,7 +1599,7 @@
                  "y":3507
                 }, 
                 {
-                 "height":80,
+                 "height":64,
                  "id":46,
                  "name":"to-world-from-fr",
                  "properties":[
@@ -1616,7 +1616,7 @@
                  "y":64
                 }, 
                 {
-                 "height":81.3333333333333,
+                 "height":64,
                  "id":47,
                  "name":"to-world-from-alt",
                  "properties":[
@@ -1633,7 +1633,7 @@
                  "y":128
                 }, 
                 {
-                 "height":80,
+                 "height":64,
                  "id":48,
                  "name":"to-world-from-pt",
                  "properties":[
@@ -1770,7 +1770,7 @@
                  "visible":true,
                  "width":96,
                  "x":320,
-                 "y":1216
+                 "y":1248
                 }, 
                 {
                  "height":560.333333333333,
