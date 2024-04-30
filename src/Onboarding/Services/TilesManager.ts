@@ -1,7 +1,7 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
 import { TileDescriptor } from "@workadventure/iframe-api-typings";
-import { floorToCollisionsCoordMap, floorToBuildingTileCoordMap } from "../Constants/Maps";
+import { floorToBuildingTileCoordMap } from "../Constants/Maps";
 import { getTilesByRectangleCorners } from "../Utils/Tiles";
 import { CheckpointDescriptor } from "../Types/Checkpoints"
 import type { BrTowerFloor } from "../Types/Maps";
@@ -236,19 +236,6 @@ export function placeTileBrTowerFloor(floor: BrTowerFloor) {
         });
     }
 
-    const collisionsCoord = floorToCollisionsCoordMap[floor];
-    if (collisionsCoord !== null) {
-        console.log("remove collision tiles on coordinates", collisionsCoord)
-        collisionsCoord.forEach(([xCoord, yCoord]) => {
-            tiles.push({
-                x: xCoord,
-                y: yCoord,
-                tile: null,
-                layer: "collisions"
-            });
-        })
-    }
-
     WA.room.setTiles(tiles);
 }
 
@@ -267,19 +254,6 @@ export function removeTileBrTowerFloor(floor: BrTowerFloor) {
             tile: null,
             layer: "above/above2"
         });
-    }
-
-    const collisionsCoord = floorToCollisionsCoordMap[floor];
-    if (collisionsCoord !== null) {
-        console.log("add collision tiles on coordinates", collisionsCoord)
-        collisionsCoord.forEach(([xCoord, yCoord]) => {
-            tiles.push({
-                x: xCoord,
-                y: yCoord,
-                tile: "collision",
-                layer: "collisions"
-            });
-        })
     }
 
     WA.room.setTiles(tiles);
