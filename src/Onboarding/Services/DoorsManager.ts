@@ -319,14 +319,14 @@ const worldBuildings: WorldBuildingAccess = {
 
 // Define buildings and their minimal access restrictions.
 const worldBarriers: WorldBarrierAccess = {
-    achievements: { access: true, blockingTiles: [[84, 168], [86, 168]] },
-    values: { access: true, blockingTiles: [[61, 160], [61, 162]] },
-    legal: { access: true, blockingTiles: [[37, 109], [37, 110]] },
-    bridge: { access: true, blockingTiles: [[18, 83], [21, 83]] },
-    france: { access: true, blockingTiles: [[19, 66], [21, 68]] },
-    hungary: { access: true, blockingTiles: [[91, 59], [92, 59]] },
-    belgium: { access: true, blockingTiles: [[104, 27], [105, 27]] },
-    netherlands: { access: true, blockingTiles: [[71, 21], [74, 21]] },
+    achievements: { access: false, blockingTiles: [[84, 168], [86, 168]] },
+    values: { access: false, blockingTiles: [[61, 160], [61, 162]] },
+    legal: { access: false, blockingTiles: [[37, 109], [37, 110]] },
+    bridge: { access: false, blockingTiles: [[18, 83], [21, 83]] },
+    france: { access: false, blockingTiles: [[19, 66], [21, 68]] },
+    hungary: { access: false, blockingTiles: [[91, 59], [92, 59]] },
+    belgium: { access: false, blockingTiles: [[104, 27], [105, 27]] },
+    netherlands: { access: false, blockingTiles: [[71, 21], [74, 21]] },
 };
 
 const airportGate: AirportGateAccess = 
@@ -582,7 +582,7 @@ export function unlockAirportGate() {
 
 export function unlockBrTowerFloorAccess(floor: BrTowerFloorName) {
     console.log("unlockBrTowerFloorAccess()")
-    brTowerFloors[floor].access = true;
+    
     const tiles: TileDescriptor[] = [];
     const floorData = brTowerFloors[floor];
     const floorToLayerNameMap: { [key in BrTowerFloorName]: string } = {
@@ -594,6 +594,7 @@ export function unlockBrTowerFloorAccess(floor: BrTowerFloorName) {
         "exit": "tower/0"
     };
     const tilesCoordinates = getTilesByRectangleCorners(floorData.tilesCoordinates[0], floorData.tilesCoordinates[1])
+
     // first we need to remove the wall
     tilesCoordinates.forEach(([xCoord, yCoord]) => {
         tiles.push({
@@ -603,7 +604,8 @@ export function unlockBrTowerFloorAccess(floor: BrTowerFloorName) {
             layer: floorToLayerNameMap[floor]
         });
     })
-    // then we need to place the exit tiles
+
+    // then place the open door
     tilesCoordinates.forEach(([xCoord, yCoord], index) => {
         tiles.push({
             x: xCoord,
