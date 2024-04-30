@@ -3594,7 +3594,7 @@
                  "y":5091.09090909091
                 }, 
                 {
-                 "height":32,
+                 "height":128,
                  "id":81,
                  "name":"caveDoor",
                  "rotation":0,
@@ -3602,7 +3602,7 @@
                  "visible":true,
                  "width":32,
                  "x":928,
-                 "y":5856
+                 "y":5760
                 }, 
                 {
                  "height":0,
