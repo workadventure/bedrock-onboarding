@@ -21,11 +21,11 @@ export const worldMapUrl = "/@/tcm/workadventure/br-e-learning"
 export const brTowerFloors: BrTowerFloor[] = ['ext', '0', '1', '2', '3', '4', 'roof'];
 
 /**
- * Coordinates of each BR Tower floor content location
+ * Coordinates of each BR Tower floor content/NPC location
  * This is used for showing or hiding content based on the floor transition 
  * @constant
  */
-export const floorToContentCoordMap: { [key in BrTowerFloor]: { x: number, y: number } | null } = {
+export const floorToBuildingTileCoordMap: { [key in BrTowerFloor]: { x: number, y: number } | null } = {
     "roof": null,
     "4": { x: 31, y: 124 },
     "3": { x: 29, y: 129 },

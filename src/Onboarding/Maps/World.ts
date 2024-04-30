@@ -40,6 +40,8 @@ function generateTowerFloorsTransition() {
 
 function listenFloorTransition(from: BrTowerFloor, to: BrTowerFloor) {
     WA.room.area.onEnter(`${from}-${to}`).subscribe(() => {
+        console.log("from",from)
+        console.log("to",to)
         WA.nav.goToRoom(`#from-${from}-${to}`)
         WA.room.hideLayer(`tower/${from}`)
         placeTileBrTowerFloor(from)

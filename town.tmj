@@ -1565,7 +1565,7 @@
                  "y":384
                 }, 
                 {
-                 "height":160,
+                 "height":133.333333333333,
                  "id":43,
                  "name":"backstageDoor",
                  "rotation":0,
@@ -1573,7 +1573,7 @@
                  "visible":true,
                  "width":64,
                  "x":928,
-                 "y":1536
+                 "y":1548.66666666667
                 }, 
                 {
                  "height":0,

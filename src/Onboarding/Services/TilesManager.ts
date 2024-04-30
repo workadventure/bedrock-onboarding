@@ -1,7 +1,7 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
 import { TileDescriptor } from "@workadventure/iframe-api-typings";
-import { floorToCollisionsCoordMap, floorToContentCoordMap } from "../Constants/Maps";
+import { floorToCollisionsCoordMap, floorToBuildingTileCoordMap } from "../Constants/Maps";
 import { getTilesByRectangleCorners } from "../Utils/Tiles";
 import { CheckpointDescriptor } from "../Types/Checkpoints"
 import type { BrTowerFloor } from "../Types/Maps";
@@ -221,12 +221,13 @@ export function placeRooftopHelicopter() {
 
 // Hide the NPCs or content of BR Tower floors by
 // placing a building tile above them when the floor is hidden
+// That's a trick I found because I am limited in terms of layers
 export function placeTileBrTowerFloor(floor: BrTowerFloor) {
     const tiles: TileDescriptor[] = [];
 
-    const contentCoord = floorToContentCoordMap[floor];
+    const contentCoord = floorToBuildingTileCoordMap[floor];
     if (contentCoord !== null) {
-        console.log("place content tile on coordinates", contentCoord)
+        console.log("place building tile on coordinates", contentCoord)
         tiles.push({
             x: contentCoord.x,
             y: contentCoord.y,
@@ -252,13 +253,14 @@ export function placeTileBrTowerFloor(floor: BrTowerFloor) {
 }
 
 // Show the NPCs or content of BR Tower floors by
-// removing a building tile above them when the floor is hidden
+// removing a building tile above them when the floor is visible
+// That's a trick I found because I am limited in terms of layers
 export function removeTileBrTowerFloor(floor: BrTowerFloor) {
     const tiles: TileDescriptor[] = [];
 
-    const contentCoord = floorToContentCoordMap[floor];
+    const contentCoord = floorToBuildingTileCoordMap[floor];
     if (contentCoord !== null) {
-        console.log("remove content tile on coordinates", contentCoord)
+        console.log("remove building tile on coordinates", contentCoord)
         tiles.push({
             x: contentCoord.x,
             y: contentCoord.y,
