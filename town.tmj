@@ -1769,8 +1769,8 @@
                  "type":"area",
                  "visible":true,
                  "width":96,
-                 "x":320,
-                 "y":1248
+                 "x":320.333333333333,
+                 "y":1232.66666666667
                 }, 
                 {
                  "height":560.333333333333,
@@ -2393,6 +2393,50 @@
                  "width":93.5003333333334,
                  "x":897.416666666667,
                  "y":3418
+                }, 
+                {
+                 "height":112.333333333333,
+                 "id":92,
+                 "name":"playerPosition_FRONT",
+                 "rotation":0,
+                 "type":"area",
+                 "visible":true,
+                 "width":349.333333333333,
+                 "x":448.333333333333,
+                 "y":2543.66666666667
+                }, 
+                {
+                 "height":782.666666666667,
+                 "id":94,
+                 "name":"playerPosition_AUDITORIUM",
+                 "rotation":0,
+                 "type":"area",
+                 "visible":true,
+                 "width":800,
+                 "x":224,
+                 "y":1696
+                }, 
+                {
+                 "height":192,
+                 "id":95,
+                 "name":"playerPosition_BACKSTAGE",
+                 "rotation":0,
+                 "type":"area",
+                 "visible":true,
+                 "width":800,
+                 "x":224,
+                 "y":1344
+                }, 
+                {
+                 "height":192,
+                 "id":96,
+                 "name":"playerPosition_BACK",
+                 "rotation":0,
+                 "type":"area",
+                 "visible":true,
+                 "width":288,
+                 "x":224,
+                 "y":1024
                 }],
          "opacity":0.7,
          "type":"objectgroup",
@@ -4677,7 +4721,7 @@
          "y":0
         }],
  "nextlayerid":83,
- "nextobjectid":91,
+ "nextobjectid":97,
  "orientation":"orthogonal",
  "properties":[
         {

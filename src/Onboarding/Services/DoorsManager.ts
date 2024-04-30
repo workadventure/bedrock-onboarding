@@ -101,35 +101,71 @@ function initTownDoors() {
 }
 
 function listenTownDoor(building: TownBuildingName) {
-    console.log("> listenTownDoor()")
+    console.log("listenTownDoor()")
+
+    type StadiumPlayerPosition = "BACK" | "BACKSTAGE" | "AUDITORIUM" | "FRONT"
+    let playerPosition: StadiumPlayerPosition
+
+    listenStadiumPlayerPosition("BACK")
+    listenStadiumPlayerPosition("BACKSTAGE")
+    listenStadiumPlayerPosition("AUDITORIUM")
+    listenStadiumPlayerPosition("FRONT")
+
+    function listenStadiumPlayerPosition(position: StadiumPlayerPosition) {
+        WA.room.area.onEnter(`playerPosition_${position}`).subscribe(() => {
+            console.log("onEnter",`${position}`)
+            playerPosition = position;
+        });
+    }
     
     // Function to handle actions when player enters the door area
     function handleEnter() {
         console.log(`toggle ${building}Door`)
         unlockTownBuildingDoor(building);
-        if (isRoofVisible === true) {
-            console.log(`was visible before`)
-            isRoofVisible = false
-            console.log(`hide layer`)
-            
-            if (building === "service") {
-                WA.room.hideLayer(`roofs/backstage1`)
-                WA.room.hideLayer(`roofs/stadium1`)
-            } else {
-                WA.room.hideLayer(`roofs/${building}1`)
-                WA.room.hideLayer(`roofs/${building}2`)
-            }
-        } else {
-            console.log(`was hidden before`)
-            isRoofVisible = true
-            console.log(`show layer`)
-            if (building === "service") {
-                WA.room.showLayer(`roofs/backstage1`)
-                WA.room.showLayer(`roofs/stadium1`)
-            } else {
-                WA.room.showLayer(`roofs/${building}1`)
-                WA.room.showLayer(`roofs/${building}2`)
-            }
+
+        // specific rules for the stadium because player can enter from both sides of each rooms
+        const ROOF_BACKSTAGE = "roofs/backstage1";
+        const ROOF_STADIUM = "roofs/stadium1";
+
+        switch (building) {
+            case "service":
+                if (playerPosition === "BACK") {
+                    WA.room.hideLayer(ROOF_BACKSTAGE);
+                    WA.room.hideLayer(ROOF_STADIUM);
+                } else if (playerPosition === "BACKSTAGE") {
+                    WA.room.showLayer(ROOF_BACKSTAGE);
+                    WA.room.showLayer(ROOF_STADIUM);
+                }
+                break;
+            case "backstage":
+                if (playerPosition === "BACKSTAGE") {
+                    WA.room.showLayer(ROOF_BACKSTAGE);
+                } else if (playerPosition === "AUDITORIUM") {
+                    WA.room.hideLayer(ROOF_BACKSTAGE);
+                }
+                break;
+            case "stadium":
+                if (playerPosition === "AUDITORIUM") {
+                    WA.room.showLayer(ROOF_STADIUM);
+                } else if (playerPosition === "FRONT") {
+                    WA.room.hideLayer(ROOF_STADIUM);
+                }
+                break;
+            default:
+                if (isRoofVisible === true) {
+                    console.log(`was visible before`)
+                    isRoofVisible = false
+                    console.log(`hide all roofs`)
+                    WA.room.hideLayer(`roofs/${building}1`)
+                    WA.room.hideLayer(`roofs/${building}2`)
+                } else {
+                    console.log(`was hidden before`)
+                    isRoofVisible = true
+                    console.log(`show all roofs`)
+                    WA.room.showLayer(`roofs/${building}1`)
+                    WA.room.showLayer(`roofs/${building}2`)
+                }
+                break;
         }
     }
     
@@ -141,10 +177,8 @@ function listenTownDoor(building: TownBuildingName) {
         console.log("onEnter",`${building}Door`)
         console.log("has access",townBuildings[building].access)
         if (townBuildings[building].access) {
-            console.log("access")
             handleEnter();
         } else {
-            console.log("no access")
             openErrorBanner();
         }
     });
@@ -159,6 +193,7 @@ function listenTownDoor(building: TownBuildingName) {
 
     // Lock the door if access is denied
     if (!townBuildings[building].access) {
+        console.log("lock door")
         lockTownBuildingDoor(building);
     }
 }
