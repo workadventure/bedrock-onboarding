@@ -580,8 +580,47 @@ export function unlockAirportGate() {
     WA.room.setTiles(combinedTiles);
 }
 
+function lockBrTowerFloorAccess(floor: BrTowerFloorName) {
+    console.log("lockBrTowerFloorAccess()",floor)
+    
+    const tiles: TileDescriptor[] = [];
+    const floorData = brTowerFloors[floor];
+    const floorToLayerNameMap: { [key in BrTowerFloorName]: string } = {
+        "floor4": "walls/walls2",
+        "floor3": "tower/4",
+        "floor2": "tower/3",
+        "floor1": "tower/2",
+        "floor0": "tower/1",
+        "exit": "tower/0"
+    };
+    const tilesCoordinates = getTilesByRectangleCorners(floorData.tilesCoordinates[0], floorData.tilesCoordinates[1])
+
+    // first we need to remove open door
+    tilesCoordinates.forEach(([xCoord, yCoord]) => {
+        tiles.push({
+            x: xCoord,
+            y: yCoord,
+            tile: null,
+            layer: floorToLayerNameMap[floor]
+        });
+    })
+
+    // then place the wall
+    tilesCoordinates.forEach(([xCoord, yCoord]) => {
+        tiles.push({
+            x: xCoord,
+            y: yCoord,
+            tile: "br-tower-floor-wall",
+            layer: floorToLayerNameMap[floor]
+        });
+    })
+
+    // Lock access for the unaccessible floors
+    WA.room.setTiles(tiles);
+}
+
 export function unlockBrTowerFloorAccess(floor: BrTowerFloorName) {
-    console.log("unlockBrTowerFloorAccess()")
+    console.log("unlockBrTowerFloorAccess()",floor)
     
     const tiles: TileDescriptor[] = [];
     const floorData = brTowerFloors[floor];
@@ -623,6 +662,8 @@ function initBrTowerFloorAccess() {
     Object.keys(brTowerFloors).forEach(floor => {
         if (brTowerFloors[floor as BrTowerFloorName].access === true) {
             unlockBrTowerFloorAccess(floor as BrTowerFloorName)
+        } else {
+            lockBrTowerFloorAccess(floor as BrTowerFloorName)
         }
     });
 }
