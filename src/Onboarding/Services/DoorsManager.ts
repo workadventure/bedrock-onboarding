@@ -105,7 +105,7 @@ function listenTownDoor(building: TownBuildingName) {
     
     // Function to handle actions when player enters the door area
     function handleEnter() {
-        console.log(`open ${building}Door`)
+        console.log(`toggle ${building}Door`)
         unlockTownBuildingDoor(building);
         if (isRoofVisible === true) {
             console.log(`was visible before`)
@@ -122,16 +122,20 @@ function listenTownDoor(building: TownBuildingName) {
         } else {
             console.log(`was hidden before`)
             isRoofVisible = true
-            console.log(`hide layer`)
+            console.log(`show layer`)
             if (building === "service") {
+                WA.room.showLayer(`roofs/backstage1`)
+                WA.room.showLayer(`roofs/stadium1`)
+            } else {
                 WA.room.showLayer(`roofs/${building}1`)
                 WA.room.showLayer(`roofs/${building}2`)
             }
         }
     }
-
-    let isRoofVisible = true;
     
+    // Default visibility of the roofs
+    let isRoofVisible = true;
+
     // Subscribe to onEnter and onLeave events for the door area
     WA.room.area.onEnter(`${building}Door`).subscribe(() => {
         console.log("onEnter",`${building}Door`)
@@ -377,8 +381,11 @@ function initWorldDoors() {
         });
     }
 
-    listenWorldDoor('cave')
-    listenWorldDoor('airport')
+
+    for (const key in worldBuildings) {
+        listenWorldDoor(key as WorldBuildingName);
+    }
+
     listenHelicopterDoor()
 
     tryToUnlockWorldBarriers()
@@ -399,7 +406,7 @@ function listenWorldDoor(building: WorldBuildingName) {
     console.log("> listenWorldDoor()")
 
     function handleEnter() {
-        console.log(`open ${building}Door`)
+        console.log(`toggle ${building}Door`)
         unlockWorldBuildingDoor(building);
         if (isRoofVisible === true) {
             console.log(`was visible before`)
@@ -409,13 +416,13 @@ function listenWorldDoor(building: WorldBuildingName) {
         } else {
             console.log(`was hidden before`)
             isRoofVisible = true
-            console.log(`hide layer`)
+            console.log(`show layer`)
             WA.room.showLayer(`roofs/${building}1`)
         }
     }
 
-    // The roof is not vivisble by default for the cave
-    // (player starts inside the cave)
+    // Default visibility of the roofs
+    // (player starts inside the cave so its roof has to be hidden)
     let isRoofVisible = building !== "cave"
 
     // Subscribe to onEnter and onLeave events for the door area
