@@ -94,11 +94,11 @@ WA.onInit().then(() => {
                 }
             });
             WA.ui.actionBar.addButton({
-                id: 'airport',
-                label: 'Airport',
+                id: 'tower',
+                label: 'Tower',
                 // eslint-disable-next-line @typescript-eslint/no-misused-promises
                 callback: async () => {
-                    await checkpointIdsStore.setAsyncState(Array.from({ length: 22 }, (_, index) => (index + 1).toString()))
+                    await checkpointIdsStore.setAsyncState(Array.from({ length: 24 }, (_, index) => (index + 1).toString()))
                 }
             });
             WA.ui.actionBar.addButton({
