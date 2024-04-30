@@ -134,15 +134,21 @@ function listenTownDoor(building: TownBuildingName) {
     
     // Subscribe to onEnter and onLeave events for the door area
     WA.room.area.onEnter(`${building}Door`).subscribe(() => {
+        console.log("onEnter",`${building}Door`)
+        console.log("has access",townBuildings[building].access)
         if (townBuildings[building].access) {
+            console.log("access")
             handleEnter();
         } else {
+            console.log("no access")
             openErrorBanner();
         }
     });
 
     WA.room.area.onLeave(`${building}Door`).subscribe(() => {
+        console.log("onLeave",`${building}Door`)
         if (!townBuildings[building].access) {
+            console.log("closeBanner")
             closeBanner();
         }
     });
@@ -414,15 +420,21 @@ function listenWorldDoor(building: WorldBuildingName) {
 
     // Subscribe to onEnter and onLeave events for the door area
     WA.room.area.onEnter(`${building}Door`).subscribe(() => {
+        console.log("onEnter",`${building}Door`)
+        console.log("has access",worldBuildings[building].access)
         if (worldBuildings[building].access) {
+            console.log("access")
             handleEnter();
         } else {
+            console.log("no access")
             openErrorBanner();
         }
     });
 
     WA.room.area.onLeave(`${building}Door`).subscribe(() => {
+        console.log("onLeave",`${building}Door`)
         if (!worldBuildings[building].access) {
+            console.log("closeBanner")
             closeBanner();
         }
     });
