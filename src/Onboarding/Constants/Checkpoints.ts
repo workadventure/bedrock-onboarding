@@ -506,12 +506,12 @@ export const checkpoints: CheckpointDescriptor[] = [
         title: "Talk with Jonas at its Pickup",
         description: "Jonas awaits you near its pickup, ready to provide additional guidance and support.",
         coordinates: {
-            x: 23,
-            y: 165
+            x: 21,
+            y: 163
         },
         type: "NPC",
         npcName: "Jonas",
-        npcSprite: "back",
+        npcSprite: "right",
         message: `Ah, there you are! Ready to head back to town? Before we go, let's make sure you've absorbed everything from the BR Tower. Do you feel confident with all the information about Bedrock now? So let's continue our trip!`,
         tags: everyoneButGuests,
         xp: 10,
