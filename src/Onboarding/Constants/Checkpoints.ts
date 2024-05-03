@@ -380,7 +380,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         npcName: "Jonas",
         npcSprite: "front",
         message: `Well, well, well! Look who's ready for a unique experience. It's you, and you've earned it. I've been looking forward to this moment. Come, join me. I've got something special planned.
-        Why an helicopter? It's not just any helicopter. It's Bedrock's very own flying machine, reserved exclusively for our incredible employees. I figured I wouldn't need it much myself—I can teleport, after all—but I thought it'd be a fun perk for you all.
+        Why an helicopter? It's not just any helicopter. It's Bedrock's very own flying machine, reserved exclusively for our incredible employees. I figured I wouldn't need it much myself—I can teleport, after all.
         So, let's hop in and take to the skies. Sit back, relax, and enjoy the view as we soar above the city. From up here, you'll get a whole new perspective on Bedrock and our place in the world.
         Next stop: the Bedrock Tower. Off we go!`,
         tags: everyoneButGuests,
@@ -400,14 +400,14 @@ export const checkpoints: CheckpointDescriptor[] = [
         npcSprite: "back",
         message: `Before we venture inside, take a moment to appreciate the view from up here. It's quite spectacular, isn't it? From this vantage point, you can see the sprawling landscape of our company and the vibrant city beyond.
         But enough introspection for now. The real adventure lies ahead, within the walls of the Bedrock Tower. Inside, you'll discover the inner workings of our company and meet some of the people who make it all possible.
-        So, when you're ready, let's step inside and begin our exploration. The CHRO floor is our first destination—a place where the heartbeat of our company, our people, comes to life.`,
+        So, when you're ready, let's step inside and begin our exploration. The HR floor is our first destination—a place where the heartbeat of our company, our people, comes to life.`,
         tags: everyoneButGuests,
         xp: 20,
     },
     {
         id: "25",
         map: "world",
-        title: "Explore CHRO Office",
+        title: "Explore HR Office",
         description: "Delve into the role of Caroline, the Chief Human Resources Officer (CHRO) and its contributions to Bedrock's success.",
         coordinates: {
             x: 31,
@@ -653,7 +653,7 @@ export const checkpoints: CheckpointDescriptor[] = [
             y: 100
         },
         type: "content",
-        url: "https://bedrockstreaming.atlassian.net/wiki/spaces/HID/pages/1478590621/Mes+Outils+RH",
+        url: "https://bedrockstreaming.atlassian.net/wiki/spaces/HID/overview",
         tags: ["fr"],
         xp: 0,
     },
