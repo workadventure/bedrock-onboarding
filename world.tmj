@@ -3220,7 +3220,7 @@
                         {
                          "name":"exitUrl",
                          "type":"string",
-                         "value":"\/@\/tcm\/workadventure\/br-town#from-world"
+                         "value":"\/@\/bedrock-1710774685\/onboardingbr\/town#from-world"
                         }],
                  "rotation":0,
                  "type":"area",

@@ -106,21 +106,5 @@ function moveCameraToRooftop(xCoord: number, yCoord: number, cameraDuration: num
     console.log("moveCameraToRooftop()")
 
     // Move camera frop airport to rooftop during 20 secondes
-    // FIXME: Use that line instead when the Scripting API will be updated in production
-    //WA.camera.set(area.x, area.y, 1000, 1000, false, true, 20000);
-    window.parent.postMessage(
-        {
-            type: "cameraSet",
-            data: {
-                x: xCoord,
-                y: yCoord,
-                width: 1000,
-                height: 1000,
-                lock: true,
-                smooth: true,
-                duration: cameraDuration
-            },
-        },
-        "*"
-    )
+    WA.camera.set(xCoord, yCoord, 1000, 1000, true, true, cameraDuration);
 }

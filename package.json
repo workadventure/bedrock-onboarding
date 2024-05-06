@@ -15,7 +15,7 @@
     "@types/node": "^18.15.11",
     "@typescript-eslint/eslint-plugin": "^5.45.0",
     "@typescript-eslint/parser": "^5.45.0",
-    "@workadventure/iframe-api-typings": "^1.18.10",
+    "@workadventure/iframe-api-typings": "^1.19.2",
     "dotenv": "^16.3.1",
     "eslint": "^8.28.0",
     "eslint-import-resolver-typescript": "^3.5.3",
@@ -26,6 +26,6 @@
   },
   "dependencies": {
     "@workadventure/quests": "^1.1.6",
-    "@workadventure/scripting-api-extra": "^1.7.7"
+    "@workadventure/scripting-api-extra": "^1.9.1"
   }
 }

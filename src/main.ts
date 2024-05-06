@@ -33,12 +33,11 @@ WA.onInit().then(() => {
         registerCloseDialogueBoxListener()
 
         if (playerTagsStore.hasMandatoryTags()) {
-            // FIXME: wait for the new controls API to be released
-            // WA.controls.disableInviteButton();
-            // WA.controls.disableMapEditor();
-            // WA.controls.disableScreenSharing();
-            // WA.controls.disableWheelZoom();
-            // WA.controls.disableScreenSharing();
+            WA.controls.disableInviteButton();
+            WA.controls.disableMapEditor();
+            WA.controls.disableScreenSharing();
+            WA.controls.disableWheelZoom();
+            WA.controls.disableScreenSharing();
 
             initDoors()
 
