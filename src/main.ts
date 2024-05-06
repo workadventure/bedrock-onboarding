@@ -34,10 +34,6 @@ WA.onInit().then(() => {
 
         if (playerTagsStore.hasMandatoryTags()) {
             WA.controls.disableInviteButton();
-            WA.controls.disableMapEditor();
-            WA.controls.disableScreenSharing();
-            WA.controls.disableWheelZoom();
-            WA.controls.disableScreenSharing();
 
             initDoors()
 
