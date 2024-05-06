@@ -34,6 +34,10 @@ WA.onInit().then(() => {
 
         if (playerTagsStore.hasMandatoryTags()) {
             WA.controls.disableInviteButton();
+            WA.controls.disableRightClick();
+            // @ts-ignore FIXME when typings will be updated
+            WA.controls.disableRoomList();
+            WA.controls.disableMapEditor();
 
             initDoors()
 
