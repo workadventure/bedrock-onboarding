@@ -645,7 +645,7 @@ function lockBrTowerFloorAccess(floor: BrTowerFloorName) {
         tiles.push({
             x: xCoord,
             y: yCoord,
-            tile: "br-tower-floor-wall",
+            tile: floor !== "floor4" ? "br-tower-floor-wall" : "br-tower-rooftop-closed",
             layer: floorToLayerNameMap[floor]
         });
     })
