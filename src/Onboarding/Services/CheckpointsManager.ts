@@ -19,9 +19,14 @@ export function placeCheckpoint(checkpoint: CheckpointDescriptor) {
 }
 
 function placeNextJonasCheckpoint() {
+    console.log("========================")
+    console.log("placeNextJonasCheckpoint()")
     const nextJonasCheckpointId = checkpointIdsStore.getNextJonasCheckpointId()
+    console.log("nextJonasCheckpointId",nextJonasCheckpointId)
     const checkpoint = checkpoints.find(c => c.id === nextJonasCheckpointId)
+    console.log("checkpoint",checkpoint)
     if (checkpoint) {
+        console.log("placeCheckpoint")
         placeCheckpoint(checkpoint)
     }
 }
@@ -120,21 +125,21 @@ async function triggerCheckpointAction(checkpointId: string) {
             break;
         }
 
-        // Requirement: Talk with Jonas in the cave
+        // Requirement: Talk to Jonas in the cave
         case "6": {
-            // Action: Place Jonas' phone
+            // Action: Place Jonas' phone + place next Jonas
             const checkpoint6 = checkpoints.find(c => c.id === "7")
             if (checkpoint6) {
                 placeCheckpoint(checkpoint6)
             }
+            placeNextJonasCheckpoint()
             break;
         }
 
         // Requirement: Watch Jonas' phone video
         case "7":
-            // Action: Unlock World cave door + place next Jonas
+            // Action: Unlock World cave door
             unlockWorldBuildingDoor("cave")
-            placeNextJonasCheckpoint()
             break;
 
         // Requirement: Check History content
@@ -161,7 +166,7 @@ async function triggerCheckpointAction(checkpointId: string) {
             unlockWorldBarrier("bridge")
             break;
 
-        // Requirement: Talk with Jonas about Customer Success
+        // Requirement: Talk to Jonas about Customer Success
         case "13":
             // Action: Unlock access to France + place next Jonas
             unlockWorldBarrier("france")
@@ -205,13 +210,13 @@ async function triggerCheckpointAction(checkpointId: string) {
             }
             break;
 
-        // Requirement: Talk with check-in guy
+        // Requirement: Talk to check-in guy
         case "22":
             // Action: Unlock airport boarding gate
             unlockAirportGate()
             break;
 
-        // Requirement: Talk with Jonas near the Helicopter
+        // Requirement: Talk to Jonas near the Helicopter
         case "23":
             // Action: Fly to the BR Tower rooftop + place next Jonas
             await travelFromAirportToRooftop()
@@ -219,7 +224,7 @@ async function triggerCheckpointAction(checkpointId: string) {
             placeNextJonasCheckpoint()
             break;
 
-        // Requirement: Talk with Jonas on the BR Tower rooftop
+        // Requirement: Talk to Jonas on the BR Tower rooftop
         case "24":
             // Action: Unlock access to BR Tower floor 4 + place next Jonas
             unlockBrTowerFloorAccess("floor4")
@@ -256,9 +261,9 @@ async function triggerCheckpointAction(checkpointId: string) {
             unlockBrTowerFloorAccess("exit")
             break;
 
-        // Requirement: Talk with Jonas at its Pickup
+        // Requirement: Talk to Jonas at its Pickup
         case "31":
-            // Action: Place next Jonas but wait a little bit for the current Jonas to disappear
+            // Action: Place next Jonas (but wait a little bit for the current Jonas to disappear)
             await pause(1000)
             placeNextJonasCheckpoint()
             break;
@@ -272,7 +277,7 @@ async function triggerCheckpointAction(checkpointId: string) {
         // Requirement: Talk to Jonas in the backstage or check backstage content
         case "33":
         case "34":
-            // Action: Unlock rest of the buildings if checked content
+            // Action: Unlock rest of the buildings + place next and last Jonas
             if (checkpointIdsStore.isOnboardingDone()) {
                 placeNextJonasCheckpoint()
                 unlockTownBuildingDoor("backstage")

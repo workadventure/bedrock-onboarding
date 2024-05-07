@@ -175,11 +175,14 @@ function filterCheckpointsNPCs(checkpoint: CheckpointDescriptor): boolean {
         // player did not pass this checkpoint
         // display only next Jonas, not others in the future
         if (checkpoint.type === "NPC" && checkpoint.npcName as NPC === "Jonas") {
+            console.log("*****************")
+            console.log("Jonas checkpoint", checkpoint.id)
             if (isNextJonasPlaced) {
                 console.log(`Ignoring checkpoint ${checkpointId} (next Jonas is already placed)`)
                 return false
             }
 
+            console.log("place this Jonas")
             isNextJonasPlaced = true
         }
     }

@@ -102,7 +102,7 @@ class CheckpointIdsStore implements StateManager<string[]> {
     }
 
     getNextJonasCheckpointId(): string {
-        console.log("this.getJonasCheckpointIds()",this.getJonasCheckpointIds())
+        console.log("ALL JONAS checkopints",this.getJonasCheckpointIds())
         // Convert string elements to numbers in order to do some Math
         const numericPlayerCheckpointIds: number[] = this.getState().map(Number);
         const numericJonasCheckpoints: number[] = this.getJonasCheckpointIds().map(Number);

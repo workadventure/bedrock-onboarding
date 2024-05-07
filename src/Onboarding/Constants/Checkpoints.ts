@@ -22,7 +22,7 @@ export const checkpoints: CheckpointDescriptor[] = [
     {
         id: "2",
         map: "town",
-        title: "Talk with Jonas",
+        title: "Talk to Jonas",
         description: "Meet Jonas, our CEO, near the central plaza. He'll greet you and explain the goals of our onboarding experience.",
         coordinates: {
             x: 50,
@@ -82,7 +82,7 @@ export const checkpoints: CheckpointDescriptor[] = [
     {
         id: "6",
         map: "world",
-        title: "Talk with Jonas Again",
+        title: "Talk to Jonas Again",
         description: "Speak with Jonas to receive further guidance as you prepare to leave the cave.",
         coordinates: {
             x: 16,
@@ -195,7 +195,7 @@ export const checkpoints: CheckpointDescriptor[] = [
     {
         id: "13",
         map: "world",
-        title: "Talk with Jonas about Customer Success",
+        title: "Talk to Jonas about Customer Success",
         description: "Jonas shares insights into Bedrock's commitment to customer success as you continue your journey.",
         coordinates: {
             x: 20,
@@ -503,7 +503,7 @@ export const checkpoints: CheckpointDescriptor[] = [
     {
         id: "31",
         map: "world",
-        title: "Talk with Jonas at its Pickup",
+        title: "Talk to Jonas at its Pickup",
         description: "Jonas awaits you near its pickup, ready to provide additional guidance and support.",
         coordinates: {
             x: 21,
@@ -535,7 +535,7 @@ export const checkpoints: CheckpointDescriptor[] = [
     {
         id: "33",
         map: "town",
-        title: "Talk with Jonas in the Stadium's backstage",
+        title: "Talk to Jonas in the Stadium's backstage",
         description: "Jonas provides further insights into Bedrock's offerings as he prepares for a conference in the stadium.",
         coordinates: {
             x: 16,

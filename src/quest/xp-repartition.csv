@@ -1,17 +1,17 @@
 Checkpoint,XP,Total XP
 Arrival in Town,10,10
-Talk with Jonas,10,20
+Talk to Jonas,10,20
 Enter the Cave,15,35
 Unlock the Cave Door (Badge 1 Padawan),15,50
 Hello World!,20,70
-Talk with Jonas Again,20,90
+Talk to Jonas Again,20,90
 Look! A smartphone!,20,110
 Exit the Cave,30,140
 Learn about Bedrock's History,40,180
 Explore Bedrock's Achievements,40,220
 Discover Bedrock's Values,40,260
 Understand Bedrock's Legal Structure (Badge 2 Explorer),40,300
-Talk with Jonas about Customer Success,50,350
+Talk to Jonas about Customer Success,50,350
 Explore France Customer: 6play (Part 1),50,400
 Discover France Customer: 6play (Part 2),50,450
 Explore Hungary Customer: RTL+ (Part 1),50,500
@@ -29,9 +29,9 @@ Explore HR KPIs,20,900
 View Organizational Chart,20,920
 Explore Office Presentation,20,940
 Exit the BR Tower (Badge 4 Expert),10,950
-Talk with Jonas at its Pickup,10,960
+Talk to Jonas at its Pickup,10,960
 Return to Town with Jonas,10,970
-Talk with Jonas in the Stadium's backstage,10,980
+Talk to Jonas in the Stadium's backstage,10,980
 Explore Backstage Content,10,990
 Leave Backstage Area (Badge 5 Champion),10,1000
 Farewell to Jonas,10,1010
