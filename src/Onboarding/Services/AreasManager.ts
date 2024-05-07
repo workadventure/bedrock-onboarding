@@ -61,6 +61,8 @@ export function placeArea(checkpoint: CheckpointDescriptor) {
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     WA.room.area.onEnter(checkpoint.id).subscribe(async () => {
         console.log("Entered checkpoint area", checkpoint.id)
+        WA.controls.disablePlayerProximityMeeting();
+        console.log("disablePlayerProximityMeeting()")
         if (checkpoint.type === "NPC" && checkpoint.message) {
             await openDialogueBox(checkpoint.id)
         } else if (checkpoint.type === "content" && checkpoint.url) {
@@ -73,6 +75,8 @@ export function placeArea(checkpoint: CheckpointDescriptor) {
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     WA.room.area.onLeave(checkpoint.id).subscribe(async () => {
         console.log("Leaved checkpoint area", checkpoint.id)
+        WA.controls.restorePlayerProximityMeeting();
+        console.log("restorePlayerProximityMeeting()")
         if (checkpoint.type === "NPC") {
             await closeDialogueBox()
             if (checkpoint.url) {
