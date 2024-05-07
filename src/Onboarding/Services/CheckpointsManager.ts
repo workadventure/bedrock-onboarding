@@ -6,7 +6,7 @@ import { pause } from "../Utils/Utils";
 import { checkpointIdsStore } from "../State/Properties/CheckpointIdsStore"
 import { checklistStore } from "../State/Properties/ChecklistStore"
 import { townMapUrl } from "../Constants/Maps"
-import { placeArea, processAreas } from "./AreasManager"
+import { placeArea, processAreas, removeArea } from "./AreasManager"
 import { getCaveDoorToOpen, unlockAirportGate, unlockBrTowerFloorAccess, unlockTownBuildingDoor, unlockTownCaveDoor, unlockWorldBarrier, unlockWorldBuildingDoor } from "./DoorsManager"
 import { placeTile, removeDirectionTile, removeNPCTile, teleportJonas } from "./TilesManager"
 import { closeBanner, openCheckpointBanner, openErrorBanner, openWebsite } from "./UIManager"
@@ -80,7 +80,7 @@ export function registerCloseDialogueBoxListener() {
         
             // If it's Jonas, remove its area and teleport him
             if (checkpoint.npcName === "Jonas") {
-                await WA.room.area.delete(checkpoint.id)
+                await removeArea(checkpoint.id)
         
                // Don't teleport Jonas and don't remove it if it's the one at its Pickup or the one at the stadium stage
                 if (checkpoint.id === "32" || checkpoint.id === "36") {
@@ -95,7 +95,7 @@ export function registerCloseDialogueBoxListener() {
                 }
             } else if (checkpoint.type === "direction") {
                 console.log("Remove direction area and tile")
-                await WA.room.area.delete(checkpoint.id)
+                await removeArea(checkpoint.id)
                 removeDirectionTile(checkpoint)
             }
         

@@ -75,8 +75,8 @@ export function placeArea(checkpoint: CheckpointDescriptor) {
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     WA.room.area.onLeave(checkpoint.id).subscribe(async () => {
         console.log("Leaved checkpoint area", checkpoint.id)
-        WA.controls.restorePlayerProximityMeeting();
         console.log("restorePlayerProximityMeeting()")
+        WA.controls.restorePlayerProximityMeeting();
         if (checkpoint.type === "NPC") {
             await closeDialogueBox()
             if (checkpoint.url) {
@@ -94,12 +94,18 @@ export function placeArea(checkpoint: CheckpointDescriptor) {
             if (checkpoint.message) {
                 await closeDialogueBox()
             } else {
-                await WA.room.area.delete(checkpoint.id)
+                await removeArea(checkpoint.id)
                 removeDirectionTile(checkpoint)
                 await passCheckpoint(checkpoint.id)
             }
         }
     });
+}
+export async function removeArea(checkpointId: string) {
+    console.log(`Removing checkpoint area ${checkpointId}`)
+    console.log("restorePlayerProximityMeeting()")
+    WA.controls.restorePlayerProximityMeeting();
+    await WA.room.area.delete(checkpointId)
 }
 
 function filterCheckpointsByMap(checkpoint: CheckpointDescriptor): boolean {

@@ -6,6 +6,7 @@ import { getTilesByRectangleCorners } from "../Utils/Tiles";
 import { CheckpointDescriptor } from "../Types/Checkpoints"
 import type { BrTowerFloor } from "../Types/Maps";
 import { checkpointIdsStore } from "../State/Properties/CheckpointIdsStore"
+import { removeArea } from "./AreasManager"
 
 export function placeTile(checkpoint: CheckpointDescriptor) {
     if (checkpoint.type === "NPC") {
@@ -84,7 +85,7 @@ export async function removeContentTile(checkpoint: CheckpointDescriptor) {
 
     if (checkpointIdsStore.isCheckpointJonasPhone(checkpoint.id)) {
         // remove smartphone
-        await WA.room.area.delete(checkpoint.id)
+        await removeArea(checkpoint.id)
         WA.room.setTiles([
             {
                 x: checkpoint.coordinates.x,
