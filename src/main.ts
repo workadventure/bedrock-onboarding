@@ -65,58 +65,6 @@ WA.onInit().then(() => {
 
             initDoors()
         }
-
-        // TODO: Remove this after (add button to change progress just for debug)
-        if (WA.player.name === "Valdo") {
-            WA.ui.actionBar.addButton({
-                id: 'start',
-                label: 'Start',
-                // eslint-disable-next-line @typescript-eslint/no-misused-promises
-                callback: async () => {
-                    await checkpointIdsStore.setAsyncState([])
-                }
-            });
-            WA.ui.actionBar.addButton({
-                id: 'world',
-                label: 'World',
-                // eslint-disable-next-line @typescript-eslint/no-misused-promises
-                callback: async () => {
-                    await checkpointIdsStore.setAsyncState(Array.from({ length: 4 }, (_, index) => (index + 1).toString()))
-                }
-            });
-            WA.ui.actionBar.addButton({
-                id: 'bridge',
-                label: 'Bridge',
-                // eslint-disable-next-line @typescript-eslint/no-misused-promises
-                callback: async () => {
-                    await checkpointIdsStore.setAsyncState(Array.from({ length: 13 }, (_, index) => (index + 1).toString()))
-                }
-            });
-            WA.ui.actionBar.addButton({
-                id: 'tower',
-                label: 'Tower',
-                // eslint-disable-next-line @typescript-eslint/no-misused-promises
-                callback: async () => {
-                    await checkpointIdsStore.setAsyncState(Array.from({ length: 24 }, (_, index) => (index + 1).toString()))
-                }
-            });
-            WA.ui.actionBar.addButton({
-                id: 'town',
-                label: 'Town',
-                // eslint-disable-next-line @typescript-eslint/no-misused-promises
-                callback: async () => {
-                    await checkpointIdsStore.setAsyncState(Array.from({ length: 32 }, (_, index) => (index + 1).toString()))
-                }
-            });
-            WA.ui.actionBar.addButton({
-                id: 'onboarding',
-                label: 'Onboarding',
-                // eslint-disable-next-line @typescript-eslint/no-misused-promises
-                callback: async () => {
-                    await checkpointIdsStore.setAsyncState(Array.from({ length: 34 }, (_, index) => (index + 1).toString()))
-                }
-            });
-        }
     }).catch(e => console.error(e));
 }).catch(e => console.error(e));
 
