@@ -330,7 +330,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         npcName: "Hans",
         npcSprite: "front",
         message: `Hi! I'm Hans, and I'm here to talk to you about Videoland. Get ready for an immersive experience as we explore the world of Dutch streaming together. Check out this video to learn more!`,
-        url: "https://www.youtube.com/embed/McR3oR6C1ZQ",
+        url: "https://www.youtube.com/embed/wpFHkRsVwSY",
         tags: everyoneButGuests,
         xp: 50,
     },
