@@ -695,7 +695,7 @@ export const checkpoints: CheckpointDescriptor[] = [
             y: 100
         },
         type: "content",
-        url: "https://workadventu.re/?cell=C30",
+        url: "https://bedrockstreaming.atlassian.net/wiki/spaces/HSP/overview",
         tags: ["pt"],
         xp: 0,
     },
@@ -779,7 +779,7 @@ export const checkpoints: CheckpointDescriptor[] = [
             y: 100
         },
         type: "content",
-        url: "https://workadventu.re/?cell=E30",
+        url: "https://bedrockstreaming.atlassian.net/wiki/spaces/CHRYS/overview",
         tags: ["ext"],
         xp: 0,
     },
