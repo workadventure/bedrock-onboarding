@@ -88,6 +88,9 @@ export function openCheckpointBanner(nextCheckpointId: string) {
             timeToClose: 120000
         });
 
+        // Open the feedback form
+        openFeedbackForm();
+
         return;
     }
     
@@ -144,6 +147,16 @@ export function displayChecklistButton() {
             }, () => WA.ui.modal.closeModal())
         }
     });
+}
+
+function openFeedbackForm() {
+    WA.ui.modal.openModal({
+        title: "Plan",
+        src: "https://forms.gle/MREVyCmEUf9Exfqt5",
+        allowApi: false,
+        allow: "microphone; camera",
+        position: "center",
+    }, () => WA.ui.modal.closeModal())
 }
 
 export async function displayHelicopterGIF() {
