@@ -587,7 +587,8 @@ export const checkpoints: CheckpointDescriptor[] = [
         type: "NPC",
         npcName: "Jonas",
         npcSprite: "front",
-        message: `Well, it seems our journey together is coming to an end. I hope this onboarding experience has been illuminating for you. Remember, every step you take here contributes to the tapestry of Bedrock's success. Now, I must attend to some final preparations for a keynote presentation. Thank you for your time, and best of luck on your endeavors ahead. Farewell!`,
+        message: `Well, it seems our journey together is coming to an end. I hope this onboarding experience has been illuminating for you. Remember, every step you take here contributes to the tapestry of Bedrock's success. Now, I must attend to some final preparations for a keynote presentation. Thank you for your time, and best of luck on your endeavors ahead.
+        I suggest you go visit Wikitek now, it's located just to the right of where we first met!`,
         tags: everyoneButGuests,
         xp: 10,
     },
