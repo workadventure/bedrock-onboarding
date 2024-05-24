@@ -245,7 +245,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         npcName: "Emilie",
         npcSprite: "front",
         message: `Hi there! I'm Emilie, and I'm thrilled to share more about our collaboration with 6play. We've got some exciting things in store for you, so let's dive right in and discover what makes 6play unique. Check out this video to learn more!`,
-        url: "https://www.youtube.com/embed/tZb-XhkAn4Q",
+        url: "https://www.youtube.com/embed/s7tdv41gGkg",
         tags: everyoneButGuests,
         xp: 50,
     },
