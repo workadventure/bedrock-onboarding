@@ -608,18 +608,6 @@ export const checkpoints: CheckpointDescriptor[] = [
     {
         id: "38",
         map: "town",
-        title: "Visit HR",
-        description: "Explore the HR building. That's where you can have interviews!",
-        coordinates: {
-            x: 81,
-            y: 67
-        },
-        type: "direction",
-        xp: 20,
-    },
-    {
-        id: "39",
-        map: "town",
         title: "Explore the Wikitek",
         description: "Discover valuable resources in the Wikitek, a modern glass library filled with information.",
         coordinates: {
@@ -631,7 +619,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         xp: 20,
     },
     {
-        id: "40",
+        id: "39",
         map: "town",
         title: "Your Contacts (FR)",
         description: "Access essential information about your contacts within the company.",
@@ -640,12 +628,12 @@ export const checkpoints: CheckpointDescriptor[] = [
             y: 100
         },
         type: "content",
-        url: "40_Contacts_FR.pdf",
+        url: "39_Contacts_FR.pdf",
         tags: ["fr"],
         xp: 0,
     },
     {
-        id: "41",
+        id: "40",
         map: "town",
         title: "Your Daily Tools (FR)",
         description: "Access a curated collection of productivity tools to streamline your workflow.",
@@ -659,7 +647,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         xp: 0,
     },
     {
-        id: "42",
+        id: "41",
         map: "town",
         title: "HR System (FR)",
         description: "Access detailed information about HR processes, policies, and procedures.",
@@ -668,12 +656,12 @@ export const checkpoints: CheckpointDescriptor[] = [
             y: 98
         },
         type: "content",
-        url: "42_HR_FR.pdf",
+        url: "41_HR_FR.pdf",
         tags: ["fr"],
         xp: 0,
     },
     {
-        id: "43",
+        id: "42",
         map: "town",
         title: "Your Contacts (PT)",
         description: "Access essential information about your contacts within the company.",
@@ -682,12 +670,12 @@ export const checkpoints: CheckpointDescriptor[] = [
             y: 100
         },
         type: "content",
-        url: "43_Contacts_PT.pdf",
+        url: "42_Contacts_PT.pdf",
         tags: ["pt"],
         xp: 0,
     },
     {
-        id: "44",
+        id: "43",
         map: "town",
         title: "Your Daily Tools (PT)",
         description: "Access a curated collection of productivity tools to streamline your workflow.",
@@ -701,7 +689,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         xp: 0,
     },
     {
-        id: "45",
+        id: "44",
         map: "town",
         title: "HR System (PT)",
         description: "Access detailed information about HR processes, policies, and procedures.",
@@ -710,12 +698,12 @@ export const checkpoints: CheckpointDescriptor[] = [
             y: 98
         },
         type: "content",
-        url: "45_HR_PT.pdf",
+        url: "44_HR_PT.pdf",
         tags: ["pt"],
         xp: 0,
     },
     {
-        id: "46",
+        id: "45",
         map: "town",
         title: "Your Contacts (ALT)",
         description: "Access essential information about your contacts within the company.",
@@ -724,12 +712,12 @@ export const checkpoints: CheckpointDescriptor[] = [
             y: 100
         },
         type: "content",
-        url: "46_HR_ALT.pdf",
+        url: "45_HR_ALT.pdf",
         tags: ["alt"],
         xp: 0,
     },
     {
-        id: "47",
+        id: "46",
         map: "town",
         title: "Your Daily Tools (ALT)",
         description: "Access a curated collection of productivity tools to streamline your workflow.",
@@ -743,7 +731,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         xp: 0,
     },
     {
-        id: "48",
+        id: "47",
         map: "town",
         title: "HR System (ALT)",
         description: "Access detailed information about HR processes, policies, and procedures.",
@@ -752,12 +740,12 @@ export const checkpoints: CheckpointDescriptor[] = [
             y: 98
         },
         type: "content",
-        url: "48_HR_ALT.pdf",
+        url: "47_HR_ALT.pdf",
         tags: ["alt"],
         xp: 0,
     },
     {
-        id: "49",
+        id: "48",
         map: "town",
         title: "Your Contacts (EXT)",
         description: "Access essential information about your contacts within the company.",
@@ -766,12 +754,12 @@ export const checkpoints: CheckpointDescriptor[] = [
             y: 100
         },
         type: "content",
-        url: "49_Contacts_EXT.pdf",
+        url: "48_Contacts_EXT.pdf",
         tags: ["ext"],
         xp: 0,
     },
     {
-        id: "50",
+        id: "49",
         map: "town",
         title: "Your Daily Tools (EXT)",
         description: "Access a curated collection of productivity tools to streamline your workflow.",
@@ -783,6 +771,18 @@ export const checkpoints: CheckpointDescriptor[] = [
         url: "https://bedrockstreaming.atlassian.net/wiki/spaces/CHRYS/overview",
         tags: ["ext"],
         xp: 0,
+    },
+    {
+        id: "50",
+        map: "town",
+        title: "Visit HR",
+        description: "Explore the HR building. That's where you can have interviews!",
+        coordinates: {
+            x: 81,
+            y: 67
+        },
+        type: "direction",
+        xp: 20,
     },
     {
         id: "51",
