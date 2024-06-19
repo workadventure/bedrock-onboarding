@@ -9,9 +9,10 @@ import { townMapUrl } from "../Constants/Maps"
 import { placeArea, processAreas, removeArea } from "./AreasManager"
 import { getCaveDoorToOpen, unlockAirportGate, unlockBrTowerFloorAccess, unlockTownBuildingDoor, unlockTownCaveDoor, unlockWorldBarrier, unlockWorldBuildingDoor } from "./DoorsManager"
 import { placeTile, removeDirectionTile, removeNPCTile, teleportJonas } from "./TilesManager"
-import { closeBanner, openCheckpointBanner, openErrorBanner, openWebsite } from "./UIManager"
+import { closeBanner, openCheckpointBanner, openErrorBanner, openWebsite, openFeedbackForm } from "./UIManager"
 
 const QUEST_KEY = "bedrock-journey";
+const LAST_XP_AMOUNT_REQUIRED = 20;
 
 export function placeCheckpoint(checkpoint: CheckpointDescriptor) {
     placeArea(checkpoint)
@@ -278,7 +279,7 @@ async function triggerCheckpointAction(checkpointId: string) {
         case "33":
         case "34":
             // Action: Unlock rest of the buildings + place next and last Jonas
-            if (checkpointIdsStore.isOnboardingDone()) {
+            if (checkpointIdsStore.isBackstageDone()) {
                 placeNextJonasCheckpoint()
                 unlockTownBuildingDoor("backstage")
                 unlockTownBuildingDoor("arcade")
@@ -286,8 +287,56 @@ async function triggerCheckpointAction(checkpointId: string) {
                 unlockTownBuildingDoor("wikitek")
             }
             break;
-            
+
+        // Requirement: Check some FR content
+        case "39":
+        case "40":
+        case "41":
+            // Action: Finish onboarding
+            if (checkpointIdsStore.isContentFRChecked()) {
+                // give XP for final badge and open feedback form
+                await finishOnboarding()
+            }
+            break;
+
+        // Requirement: Check some PT content
+        case "42":
+        case "43":
+        case "44":
+            // Action: Finish onboarding
+            if (checkpointIdsStore.isContentPTChecked()) {
+                // give XP for final badge and open feedback form
+                await finishOnboarding()
+            }
+            break;
+
+        // Requirement: Check some ALT content
+        case "45":
+        case "46":
+        case "47":
+            // Action: Finish onboarding
+            if (checkpointIdsStore.isContentALTChecked()) {
+                // give XP for final badge and open feedback form
+                await finishOnboarding()
+            }
+            break;
+
+        // Requirement: Check some EXT content
+        case "48":
+        case "49":
+            // Action: Finish onboarding
+            if (checkpointIdsStore.isContentEXTChecked()) {
+                // give XP for final badge and open feedback form
+                await finishOnboarding()
+            }
+            break;
+
         default:
             break;
     }
+}
+
+async function finishOnboarding() {
+    await grantQuestXP(LAST_XP_AMOUNT_REQUIRED)
+    openFeedbackForm()
 }

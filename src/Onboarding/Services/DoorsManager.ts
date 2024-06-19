@@ -56,15 +56,15 @@ function initTownDoors() {
             townBuildings[building as TownBuildingName].access = building === "hr" || building === "arcade";
         });
     } else if (playerTagsStore.isOtherThanGuest()) {
-        const isOnboardingDone = checkpointIdsStore.isOnboardingDone()
+        const isBackstageDone = checkpointIdsStore.isBackstageDone()
         townBuildings.stadium.access = true;
         townBuildings.cave.access = true;
         townBuildings.hr.access = true;
         townBuildings.service.access = checkpointIdsStore.isWorldMapDone();
-        townBuildings.arcade.access = isOnboardingDone;
-        townBuildings.streaming.access = isOnboardingDone;
-        townBuildings.wikitek.access = isOnboardingDone;
-        townBuildings.backstage.access = isOnboardingDone;
+        townBuildings.arcade.access = isBackstageDone;
+        townBuildings.streaming.access = isBackstageDone;
+        townBuildings.wikitek.access = isBackstageDone;
+        townBuildings.backstage.access = isBackstageDone;
 
         if (checkpointIdsStore.canEnterCaveWorld()) {
             townCaveProfileDoors.fr.access = playerTagsStore.hasFrProfile()

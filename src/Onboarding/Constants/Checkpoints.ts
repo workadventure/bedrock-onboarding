@@ -616,7 +616,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         },
         type: "direction",
         tags: everyoneButGuests,
-        xp: 20,
+        xp: 10,
     },
     {
         id: "39",
@@ -782,7 +782,7 @@ export const checkpoints: CheckpointDescriptor[] = [
             y: 67
         },
         type: "direction",
-        xp: 20,
+        xp: 0,
     },
     {
         id: "51",
@@ -795,7 +795,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         },
         type: "direction",
         tags: everyoneButGuests,
-        xp: 20,
+        xp: 0,
     },
     {
         id: "52",
@@ -807,7 +807,7 @@ export const checkpoints: CheckpointDescriptor[] = [
             y: 104
         },
         type: "direction",
-        xp: 10,
+        xp: 0,
     },
     {
         id: "53",
@@ -820,7 +820,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         },
         type: "content",
         url: "https://bedrockstreaming.com/news-events/news/",
-        xp: 10,
+        xp: 0,
     },
 ]
 

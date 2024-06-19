@@ -221,8 +221,24 @@ class CheckpointIdsStore implements StateManager<string[]> {
         return this.getState().includes("32");
     }
 
-    isOnboardingDone(): boolean {
+    isBackstageDone(): boolean {
         return ["33", "34"].every(id => this.getState().includes(id));
+    }
+
+    isContentFRChecked(): boolean {
+        return ["39", "40", "41"].every(id => this.getState().includes(id));
+    }
+
+    isContentPTChecked(): boolean {
+        return ["42", "43", "44"].every(id => this.getState().includes(id));
+    }
+
+    isContentALTChecked(): boolean {
+        return ["45", "46", "47"].every(id => this.getState().includes(id));
+    }
+
+    isContentEXTChecked(): boolean {
+        return ["48", "49"].every(id => this.getState().includes(id));
     }
 
     isLockedCheckpointAfterOnboarding(checkpointId: string): boolean {

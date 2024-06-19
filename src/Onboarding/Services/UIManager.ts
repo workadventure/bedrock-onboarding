@@ -3,7 +3,7 @@
 import { CoWebsite, UIWebsite } from "@workadventure/iframe-api-typings";
 import { checkpoints } from "../Constants/Checkpoints";
 import { isURL, mustOpenInNewTab } from "../Utils/UI";
-import { rootUrlStore } from "../State/Properties/RootUrlStore"
+import { rootUrlStore } from "../State/Properties/RootUrlStore";
 
 export const DOOR_LOCKED = "The door is locked. You are not qualified to enter here."
 
@@ -81,15 +81,12 @@ export function openCheckpointBanner(nextCheckpointId: string) {
         // If there is no more checkpoints then all checkpoints have been passed!
         WA.ui.banner.openBanner({
             id: "onboarding-banner",
-            text: "CONGRATULATIONS! YOU HAVE SUCCESSFULLY FINISHED THE ONBOARDING AND COMPLETED ALL CHECKPOINTS!",
+            text: "CONGRATULATIONS! YOU HAVE SUCCESSFULLY VISITED ALL THE CHECKPOINTS!",
             bgColor: "#3402F0",
             textColor: "#FFFFFF",
             closable: false,
             timeToClose: 120000
         });
-
-        // Open the feedback form
-        openFeedbackForm();
 
         return;
     }
@@ -149,9 +146,9 @@ export function displayChecklistButton() {
     });
 }
 
-function openFeedbackForm() {
+export function openFeedbackForm() {
     WA.ui.modal.openModal({
-        title: "Plan",
+        title: "Feedback",
         src: "https://forms.gle/MREVyCmEUf9Exfqt5",
         allowApi: false,
         allow: "microphone; camera",
