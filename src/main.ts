@@ -5,7 +5,7 @@ console.log('Main script started successfully');
 import { bootstrapExtra } from "@workadventure/scripting-api-extra";
 
 import { registerCloseDialogueBoxListener } from "./Onboarding/Services/CheckpointsManager"
-import { displayChecklistButton } from "./Onboarding/Services/UIManager";
+import { displayChecklistButton, displayHelpButton } from "./Onboarding/Services/UIManager";
 import { townMapUrl } from "./Onboarding/Constants/Maps";
 import { initDoors } from "./Onboarding/Services/DoorsManager";
 import { initTown } from "./Onboarding/Maps/Town";
@@ -43,6 +43,7 @@ WA.onInit().then(() => {
 
             // Do the onboarding only for players with at least one newbie tag
             if (playerTagsStore.isOtherThanGuest()) {
+                displayHelpButton()
                 displayChecklistButton()
 
                 await processAreas()

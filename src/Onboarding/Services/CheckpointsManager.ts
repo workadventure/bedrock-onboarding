@@ -284,7 +284,7 @@ async function triggerCheckpointAction(checkpointId: string) {
                 unlockTownBuildingDoor("backstage")
                 unlockTownBuildingDoor("arcade")
                 unlockTownBuildingDoor("streaming")
-                unlockTownBuildingDoor("wikitek")
+                unlockTownBuildingDoor("wikitech")
             }
             break;
 

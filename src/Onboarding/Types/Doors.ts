@@ -4,7 +4,7 @@
 
 import type { NewbieTag } from "./Tags";
 
-export type TownBuildingName = "hr" | "arcade" | "stadium" | "wikitek" | "streaming" | "cave" | "backstage" | "service";
+export type TownBuildingName = "hr" | "arcade" | "stadium" | "wikitech" | "streaming" | "cave" | "backstage" | "service";
 export type TownBuildingAccess = {
     [key in TownBuildingName]: { access: boolean, blockingTiles: [number, number][] };
 };

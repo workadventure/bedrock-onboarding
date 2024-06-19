@@ -588,7 +588,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         npcName: "Jonas",
         npcSprite: "front",
         message: `Well, it seems our journey together is coming to an end. I hope this onboarding experience has been illuminating for you. Remember, every step you take here contributes to the tapestry of Bedrock's success. Now, I must attend to some final preparations for a keynote presentation. Thank you for your time, and best of luck on your endeavors ahead.
-        I suggest you go visit Wikitek now, it's located just to the right of where we first met!`,
+        I suggest you go visit Wikitech now, it's located just to the right of where we first met!`,
         tags: everyoneButGuests,
         xp: 10,
     },
@@ -608,8 +608,8 @@ export const checkpoints: CheckpointDescriptor[] = [
     {
         id: "38",
         map: "town",
-        title: "Explore the Wikitek",
-        description: "Discover valuable resources in the Wikitek, a modern glass library filled with information.",
+        title: "Explore the Wikitech",
+        description: "Discover valuable resources in the Wikitech, a modern glass library filled with information.",
         coordinates: {
             x: 79,
             y: 103

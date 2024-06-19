@@ -93,20 +93,16 @@ export function openCheckpointBanner(nextCheckpointId: string) {
     
     // Search for the message to display depending on the player's checkpoint
     const checkpoint = checkpoints.find(c => c.id === nextCheckpointId)
-    //const delayBeforeDisplayingNextCheckpoint = 30 * 1000
 
     if (checkpoint) {
-        // FIXME: Find out why banners stack
-        //setTimeout(() => {
-            WA.ui.banner.openBanner({
-                id: "onboarding-banner",
-                text: `${checkpoint.title}: ${checkpoint.description}`,
-                bgColor: "#3402F0",
-                textColor: "#FFFFFF",
-                closable: false,
-                timeToClose: 120000
-            });
-        //}, delayBeforeDisplayingNextCheckpoint)
+        WA.ui.banner.openBanner({
+            id: "onboarding-banner",
+            text: `${checkpoint.title}: ${checkpoint.description}`,
+            bgColor: "#3402F0",
+            textColor: "#FFFFFF",
+            closable: false,
+            timeToClose: 120000
+        });
     }
 }
 
@@ -138,6 +134,26 @@ export function displayChecklistButton() {
             WA.ui.modal.openModal({
                 title: "Plan",
                 src: `${root}/checklist/index.html`,
+                allowApi: true,
+                allow: "microphone; camera",
+                position: "center",
+            }, () => WA.ui.modal.closeModal())
+        }
+    });
+}
+
+export function displayHelpButton() {
+    const root = rootUrlStore.getState();
+
+    WA.ui.actionBar.addButton({
+        id: 'help-btn',
+        type: 'action',
+        imageSrc: `${root}/help.svg`,
+        toolTip: "User guide",
+        callback: () => {
+            WA.ui.modal.openModal({
+                title: "User guide",
+                src: `${root}/User_Guide.pdf`,
                 allowApi: true,
                 allow: "microphone; camera",
                 position: "center",

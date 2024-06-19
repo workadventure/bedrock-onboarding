@@ -55,7 +55,7 @@ export async function travelFromAirportToRooftop() {
 
     console.log("disablePlayerControls")
     WA.controls.disablePlayerControls()
-    // FIXME: Remove the pauses when the API bug will be fixed
+    // We must wait a little bit because its too fast for the PAI
     await pause(100)
 
     // Zoom out above the helicopter tiles
