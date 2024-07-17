@@ -218,8 +218,8 @@ export const checkpoints: CheckpointDescriptor[] = [
     {
         id: "14",
         map: "world",
-        title: "Explore France Customer: 6play (Part 1)",
-        description: "In the city of Paris, interact with Pierre to learn about Bedrock's partnership with France's 6play streaming service.",
+        title: "Explore France Customer: M6+ (Part 1)",
+        description: "In the city of Paris, interact with Pierre to learn about Bedrock's partnership with France's M6+ streaming service.",
         coordinates: {
             x: 45,
             y: 59
@@ -227,7 +227,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         type: "NPC",
         npcName: "Pierre",
         npcSprite: "front",
-        message: `Hello! My name is Pierre. Welcome to Paris, and welcome to the world of Bedrock. Allow me to introduce you to our partnership with 6play, France's premier streaming service. Let's explore together, shall we? Check out this video to learn more!`,
+        message: `Hello! My name is Pierre. Welcome to Paris, and welcome to the world of Bedrock. Allow me to introduce you to our partnership with M6+, France's premier streaming service. Let's explore together, shall we? Check out this video to learn more!`,
         url: "https://www.youtube.com/embed/ZJvKCVJN8b4",
         tags: everyoneButGuests,
         xp: 50,
@@ -235,8 +235,8 @@ export const checkpoints: CheckpointDescriptor[] = [
     {
         id: "15",
         map: "world",
-        title: "Discover France Customer: 6play (Part 2)",
-        description: "Continue your exploration of Bedrock's partnership with France's 6play streaming service by engaging with Emilie.",
+        title: "Discover France Customer: M6+ (Part 2)",
+        description: "Continue your exploration of Bedrock's partnership with France's M6+ streaming service by engaging with Emilie.",
         coordinates: {
             x: 63,
             y: 59
@@ -244,7 +244,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         type: "NPC",
         npcName: "Emilie",
         npcSprite: "front",
-        message: `Hi there! I'm Emilie, and I'm thrilled to share more about our collaboration with 6play. We've got some exciting things in store for you, so let's dive right in and discover what makes 6play unique. Check out this video to learn more!`,
+        message: `Hi there! I'm Emilie, and I'm thrilled to share more about our collaboration with M6+. We've got some exciting things in store for you, so let's dive right in and discover what makes M6+ unique. Check out this video to learn more!`,
         url: "https://www.youtube.com/embed/s7tdv41gGkg",
         tags: everyoneButGuests,
         xp: 50,

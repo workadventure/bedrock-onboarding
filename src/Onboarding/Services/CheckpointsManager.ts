@@ -174,7 +174,7 @@ async function triggerCheckpointAction(checkpointId: string) {
             placeNextJonasCheckpoint()
             break;
 
-        // Requirement: Watch 6play video 1 or 2
+        // Requirement: Watch M6+ video 1 or 2
         case "14":
         case "15":
             // Action: Unlock access to Hungary if either 14 or 15 is done
