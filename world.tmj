@@ -37154,11 +37154,11 @@
         {
          "columns":3,
          "firstgid":99462,
-         "image":"tilesets\/Pipoya\/NPC_Julie.png",
+         "image":"tilesets\/Pipoya\/NPC_Chrystel.png",
          "imageheight":128,
          "imagewidth":96,
          "margin":0,
-         "name":"NPC_Julie",
+         "name":"NPC_Chrystel",
          "spacing":0,
          "tilecount":12,
          "tileheight":32,
@@ -37183,7 +37183,7 @@
                         {
                          "name":"name",
                          "type":"string",
-                         "value":"npc-julie-front"
+                         "value":"npc-chrystel-front"
                         }]
                 }, 
                 {
@@ -37215,7 +37215,7 @@
                         {
                          "name":"name",
                          "type":"string",
-                         "value":"npc-julie-left"
+                         "value":"npc-chrystel-left"
                         }]
                 }, 
                 {
@@ -37247,7 +37247,7 @@
                         {
                          "name":"name",
                          "type":"string",
-                         "value":"npc-julie-right"
+                         "value":"npc-chrystel-right"
                         }]
                 }, 
                 {
@@ -37279,7 +37279,7 @@
                         {
                          "name":"name",
                          "type":"string",
-                         "value":"npc-julie-back"
+                         "value":"npc-chrystel-back"
                         }]
                 }, 
                 {

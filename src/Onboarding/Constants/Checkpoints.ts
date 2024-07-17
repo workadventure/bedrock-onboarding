@@ -474,15 +474,15 @@ export const checkpoints: CheckpointDescriptor[] = [
         id: "29",
         map: "world",
         title: "Explore Office Presentation",
-        description: "Take a virtual tour of Bedrock's office spaces with Julie, showcasing the work environment and facilities available to employees.",
+        description: "Take a virtual tour of Bedrock's office spaces with Chrystel, showcasing the work environment and facilities available to employees.",
         coordinates: {
             x: 28,
             y: 150
         },
         type: "NPC",
-        npcName: "Julie",
+        npcName: "Chrystel",
         npcSprite: "front",
-        message: `Hey there! I'm Julie, and I'm excited to give you a virtual tour of Bedrock's office spaces. From cozy meeting rooms to vibrant break areas, we've got everything you need for a productive work environment. Let me show you around! Check out this document to learn more!`,
+        message: `Hey there! I'm Chrystel, and I'm excited to give you a virtual tour of Bedrock's office spaces. From cozy meeting rooms to vibrant break areas, we've got everything you need for a productive work environment. Let me show you around! Check out this document to learn more!`,
         url: "https://www.youtube.com/embed/Rqn-V-C0VwE",
         tags: everyoneButGuests,
         xp: 20,
