@@ -65,7 +65,6 @@ class CheckpointIdsStore implements StateManager<string[]> {
         await WA.player.state.saveVariable("checkpointIds", checkpointIds, {
             public: false,
             persist: true,
-            ttl: 48 * 3600,
             scope: "world",
         });
     }

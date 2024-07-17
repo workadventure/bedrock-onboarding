@@ -51,7 +51,6 @@ class ChecklistStore implements StateManager<Checklist[]> {
         await WA.player.state.saveVariable("checklist", checklist, {
             public: false,
             persist: true,
-            ttl: 48 * 3600,
             scope: "world",
         });
     }
