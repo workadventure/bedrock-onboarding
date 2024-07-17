@@ -466,7 +466,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         npcName: "Nicolas",
         npcSprite: "front",
         message: `Hello! I'm Nicolas, and I'll be your guide to Bedrock's organizational chart. Understanding our structure is key to navigating our company effectively. Let's map it out together. Check out this document to learn more!`,
-        url: "https://airtable.com/appKpJQwbYs2xn4IS/paghiLXWHi7tWPE4O",
+        url: "28_Organization.pdf",
         tags: everyoneButGuests,
         xp: 20,
     },
