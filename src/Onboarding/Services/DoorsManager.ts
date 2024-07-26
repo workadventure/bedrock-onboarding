@@ -348,7 +348,7 @@ export function getCaveDoorToOpen(): NewbieTag|null {
 
 // Define buildings and their minimal access restrictions.
 const worldBuildings: WorldBuildingAccess = {
-    cave: { access: false, blockingTiles: [[29, 182], [29, 182]] },
+    cave: { access: false, blockingTiles: [[28, 181], [29, 182]] },
     airport: { access: false, blockingTiles: [[51, 22],[53, 22]] },
 };
 
