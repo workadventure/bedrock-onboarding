@@ -445,8 +445,8 @@ export const checkpoints: CheckpointDescriptor[] = [
             y: 13
         },
         spawn: {
-            x: 40,
-            y: 7
+            x: 52,
+            y: 25
         },
         type: "NPC",
         npcName: "Vianey",
