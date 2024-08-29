@@ -23,7 +23,6 @@ function placeNextJonasCheckpoint() {
     console.log("========================")
     console.log("placeNextJonasCheckpoint()")
     const nextJonasCheckpointId = checkpointIdsStore.getNextJonasCheckpointId()
-    console.log("nextJonasCheckpointId",nextJonasCheckpointId)
     const checkpoint = checkpoints.find(c => c.id === nextJonasCheckpointId)
     console.log("checkpoint",checkpoint)
     if (checkpoint) {
@@ -66,7 +65,7 @@ export async function initPlayerPosition(): Promise<void> {
         const { x, y } = checkpoint.spawn; 
         const xTile = x * 32
         const yTile = y * 32
-        console.log(`Teleport player to checkpoint ${lastCheckpointId}"`)
+        console.log(`Teleport player to last checkpoint: ${lastCheckpointId}`)
        
         await WA.player.teleport(xTile, yTile);
     } else {

@@ -101,7 +101,6 @@ class CheckpointIdsStore implements StateManager<string[]> {
     }
 
     getNextJonasCheckpointId(): string {
-        console.log("ALL JONAS checkopints",this.getJonasCheckpointIds())
         // Convert string elements to numbers in order to do some Math
         const numericPlayerCheckpointIds: number[] = this.getState().map(Number);
         const numericJonasCheckpoints: number[] = this.getJonasCheckpointIds().map(Number);
@@ -112,7 +111,7 @@ class CheckpointIdsStore implements StateManager<string[]> {
         // Find the next Jonas checkpoint ID
         const nextJonasCheckpointId = numericJonasCheckpoints.find(id => id > maxPlayerCheckpointId);
 
-        console.log("next jonas",nextJonasCheckpointId !== undefined ? nextJonasCheckpointId.toString() : "-1")
+        console.log("Next jonas ID",nextJonasCheckpointId !== undefined ? nextJonasCheckpointId.toString() : "-1")
         // If there is a next Jonas checkpoint, return its ID as a string; otherwise, return "-1"
         return nextJonasCheckpointId !== undefined ? nextJonasCheckpointId.toString() : "-1";
     }
