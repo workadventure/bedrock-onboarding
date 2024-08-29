@@ -38,8 +38,8 @@ WA.onInit().then(() => {
             WA.controls.disableRoomList();
             WA.controls.disableMapEditor();
 
-            initDoors()
             initPlayerPosition()
+            initDoors()
 
             // Do the onboarding only for players with at least one newbie tag
             if (playerTagsStore.isOtherThanGuest()) {
