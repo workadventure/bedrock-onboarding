@@ -40,11 +40,6 @@ export async function passCheckpoint(checkpointId: string) {
     } else {
         console.log("(State: update) New checkpoint passed", checkpointId);
 
-        await WA.player.state.saveVariable("lastCheckpoint", checkpointId, {
-            public: false,
-            persist: true,
-            scope: "world",
-        });
         await checkpointIdsStore.addCheckpointId(checkpointId);
         await grantQuestXP(checkpointIdsStore.getCheckpointXP(checkpointId))
         await checklistStore.markCheckpointAsDone(checkpointId);
@@ -55,8 +50,8 @@ export async function passCheckpoint(checkpointId: string) {
 }
 
 export async function initPlayerPosition(): Promise<void> {
-    // The 'lastCheckpoint' player variable is set everytime the player passes a checkpoint
-    const lastCheckpointId = await WA.player.state.lastCheckpoint as string;
+    // Get last checkpoint ID from all checkpoints that the user passed
+    const lastCheckpointId = checkpointIdsStore.getState().pop()
     // Find the checkpoint data with the matching ID
     const checkpoint = checkpoints.find(cp => cp.id === lastCheckpointId);
 
@@ -69,7 +64,7 @@ export async function initPlayerPosition(): Promise<void> {
        
         await WA.player.teleport(xTile, yTile);
     } else {
-        console.error(`Teleport: Checkpoint with ID ${lastCheckpointId} not found.`);
+        console.error(`Teleport: Checkpoint not found.`);
     }
 }
 
