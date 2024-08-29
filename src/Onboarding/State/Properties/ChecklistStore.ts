@@ -45,7 +45,7 @@ class ChecklistStore implements StateManager<Checklist[]> {
     }
 
     async setAsyncState(checklist: Checklist[]): Promise<void> {
-        console.log("setAsyncState", checklist)
+        console.log("setAsyncState (checklist)", checklist)
         this.setState(checklist);
 
         await WA.player.state.saveVariable("checklist", checklist, {

@@ -101,19 +101,24 @@ class CheckpointIdsStore implements StateManager<string[]> {
     }
 
     getNextJonasCheckpointId(): string {
+        console.log("getNextJonasCheckpointId()")
         // Convert string elements to numbers in order to do some Math
-        const numericPlayerCheckpointIds: number[] = this.getState().map(Number);
-        const numericJonasCheckpoints: number[] = this.getJonasCheckpointIds().map(Number);
+        const numericPlayerCheckpointIds: number[] = this.getState().map(Number)
+        console.log("numericPlayerCheckpointIds",numericPlayerCheckpointIds)
+        const numericJonasCheckpoints: number[] = this.getJonasCheckpointIds().map(Number)
+        console.log("numericJonasCheckpoints",numericJonasCheckpoints)
 
         // Find the highest checkpoint ID the player has reached
-        const maxPlayerCheckpointId = Math.max(...numericPlayerCheckpointIds);
+        const maxPlayerCheckpointId = Math.max(...numericPlayerCheckpointIds)
+        console.log("maxPlayerCheckpointId",maxPlayerCheckpointId)
 
         // Find the next Jonas checkpoint ID
         const nextJonasCheckpointId = numericJonasCheckpoints.find(id => id > maxPlayerCheckpointId);
+        console.log("nextJonasCheckpointId",nextJonasCheckpointId)
 
-        console.log("Next jonas ID",nextJonasCheckpointId !== undefined ? nextJonasCheckpointId.toString() : "-1")
+        console.log("return => ",nextJonasCheckpointId !== undefined ? nextJonasCheckpointId.toString() : "-1")
         // If there is a next Jonas checkpoint, return its ID as a string; otherwise, return "-1"
-        return nextJonasCheckpointId !== undefined ? nextJonasCheckpointId.toString() : "-1";
+        return nextJonasCheckpointId !== undefined ? nextJonasCheckpointId.toString() : "-1"
     }
 
     isCheckpointPassed(checkpointId: string): boolean {
