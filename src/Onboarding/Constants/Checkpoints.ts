@@ -16,6 +16,10 @@ export const checkpoints: CheckpointDescriptor[] = [
             x: 50,
             y: 110
         },
+        spawn: {
+            x: 50,
+            y: 108
+        },
         tags: everyone,
         xp: 10,
     },
@@ -27,6 +31,10 @@ export const checkpoints: CheckpointDescriptor[] = [
         coordinates: {
             x: 50,
             y: 106
+        },
+        spawn: {
+            x: 50,
+            y: 104
         },
         type: "NPC",
         npcName: "Jonas",
@@ -49,6 +57,10 @@ export const checkpoints: CheckpointDescriptor[] = [
             x: 50,
             y: 15
         },
+        spawn: {
+            x: 49,
+            y: 14
+        },
         tags: everyoneButGuests,
         xp: 15,
     },
@@ -60,6 +72,10 @@ export const checkpoints: CheckpointDescriptor[] = [
         coordinates: {
             x: 49,
             y: 7
+        },
+        spawn: {
+            x: 49,
+            y: 14
         },
         type: "direction",
         message: `While checking this antique PC, you discover that Jonas registered your profile, granting you access to the other side. It seems your journey is about to take a significant step forward.`,
@@ -76,6 +92,10 @@ export const checkpoints: CheckpointDescriptor[] = [
             x: 42,
             y: 198
         },
+        spawn: {
+            x: 41,
+            y: 196
+        },
         tags: everyoneButGuests,
         xp: 20,
     },
@@ -86,6 +106,10 @@ export const checkpoints: CheckpointDescriptor[] = [
         description: "Speak with Jonas to receive further guidance as you prepare to leave the cave.",
         coordinates: {
             x: 16,
+            y: 179
+        },
+        spawn: {
+            x: 18,
             y: 179
         },
         type: "NPC",
@@ -105,6 +129,10 @@ export const checkpoints: CheckpointDescriptor[] = [
             x: 21,
             y: 178
         },
+        spawn: {
+            x: 23,
+            y: 179
+        },
         type: "content",
         url: "https://www.youtube.com/embed/_ilLJY_JdCw",
         tags: everyoneButGuests,
@@ -120,6 +148,10 @@ export const checkpoints: CheckpointDescriptor[] = [
             x: 29,
             y: 184
         },
+        spawn: {
+            x: 38,
+            y: 184
+        },
         tags: everyoneButGuests,
         xp: 30,
     },
@@ -130,6 +162,10 @@ export const checkpoints: CheckpointDescriptor[] = [
         description: "Interact with Aria to learn about the rich history of Bedrock, detailing its journey from inception to present.",
         coordinates: {
             x: 77,
+            y: 183
+        },
+        spawn: {
+            x: 80,
             y: 183
         },
         type: "NPC",
@@ -149,6 +185,10 @@ export const checkpoints: CheckpointDescriptor[] = [
             x: 78,
             y: 155
         },
+        spawn: {
+            x: 75,
+            y: 156
+        },
         type: "NPC",
         npcName: "Murielle",
         npcSprite: "front",
@@ -164,6 +204,10 @@ export const checkpoints: CheckpointDescriptor[] = [
         description: "Chat with Charlie to uncover the core values that drive Bedrock's operations and culture, shaping its identity and direction.",
         coordinates: {
             x: 62,
+            y: 136
+        },
+        spawn: {
+            x: 59,
             y: 136
         },
         type: "NPC",
@@ -183,6 +227,10 @@ export const checkpoints: CheckpointDescriptor[] = [
             x: 21,
             y: 97
         },
+        spawn: {
+            x: 20,
+            y: 95
+        },
         type: "NPC",
         npcName: "Diana",
         npcSprite: "front",
@@ -200,6 +248,10 @@ export const checkpoints: CheckpointDescriptor[] = [
         coordinates: {
             x: 20,
             y: 69
+        },
+        spawn: {
+            x: 20,
+            y: 65
         },
         type: "NPC",
         npcName: "Jonas",
@@ -224,6 +276,10 @@ export const checkpoints: CheckpointDescriptor[] = [
             x: 45,
             y: 59
         },
+        spawn: {
+            x: 48,
+            y: 61
+        },
         type: "NPC",
         npcName: "Pierre",
         npcSprite: "front",
@@ -240,6 +296,10 @@ export const checkpoints: CheckpointDescriptor[] = [
         coordinates: {
             x: 63,
             y: 59
+        },
+        spawn: {
+            x: 66,
+            y: 61
         },
         type: "NPC",
         npcName: "Emilie",
@@ -258,6 +318,10 @@ export const checkpoints: CheckpointDescriptor[] = [
             x: 102,
             y: 48
         },
+        spawn: {
+            x: 99,
+            y: 49
+        },
         type: "NPC",
         npcName: "Eva",
         npcSprite: "front",
@@ -274,6 +338,10 @@ export const checkpoints: CheckpointDescriptor[] = [
         coordinates: {
             x: 89,
             y: 36
+        },
+        spawn: {
+            x: 92,
+            y: 37
         },
         type: "NPC",
         npcName: "Gabor",
@@ -292,6 +360,10 @@ export const checkpoints: CheckpointDescriptor[] = [
             x: 93,
             y: 9
         },
+        spawn: {
+            x: 90,
+            y: 10
+        },
         type: "NPC",
         npcName: "Luc",
         npcSprite: "front",
@@ -308,6 +380,10 @@ export const checkpoints: CheckpointDescriptor[] = [
         coordinates: {
             x: 81,
             y: 9
+        },
+        spawn: {
+            x: 78,
+            y: 11
         },
         type: "NPC",
         npcName: "Emma",
@@ -326,6 +402,10 @@ export const checkpoints: CheckpointDescriptor[] = [
             x: 43,
             y: 41
         },
+        spawn: {
+            x: 41,
+            y: 42
+        },
         type: "NPC",
         npcName: "Hans",
         npcSprite: "front",
@@ -342,6 +422,10 @@ export const checkpoints: CheckpointDescriptor[] = [
         coordinates: {
             x: 26,
             y: 41
+        },
+        spawn: {
+            x: 24,
+            y: 43
         },
         type: "NPC",
         npcName: "Ingrid",
@@ -360,6 +444,10 @@ export const checkpoints: CheckpointDescriptor[] = [
             x: 55,
             y: 13
         },
+        spawn: {
+            x: 40,
+            y: 7
+        },
         type: "NPC",
         npcName: "Vianey",
         npcSprite: "left",
@@ -375,6 +463,10 @@ export const checkpoints: CheckpointDescriptor[] = [
         coordinates: {
             x: 36,
             y: 15
+        },
+        spawn: {
+            x: 30,
+            y: 117
         },
         type: "NPC",
         npcName: "Jonas",
@@ -395,6 +487,10 @@ export const checkpoints: CheckpointDescriptor[] = [
             x: 23,
             y: 114
         },
+        spawn: {
+            x: 23,
+            y: 115
+        },
         type: "NPC",
         npcName: "Jonas",
         npcSprite: "back",
@@ -412,6 +508,10 @@ export const checkpoints: CheckpointDescriptor[] = [
         coordinates: {
             x: 31,
             y: 124
+        },
+        spawn: {
+            x: 23,
+            y: 115
         },
         type: "NPC",
         npcName: "Caroline",
@@ -434,6 +534,10 @@ export const checkpoints: CheckpointDescriptor[] = [
             x: 29,
             y: 129
         },
+        spawn: {
+            x: 23,
+            y: 115
+        },
         type: "content",
         url: "26_Departments.pdf",
         tags: everyoneButGuests,
@@ -448,6 +552,10 @@ export const checkpoints: CheckpointDescriptor[] = [
             x: 29,
             y: 137
         },
+        spawn: {
+            x: 23,
+            y: 115
+        },
         type: "content",
         url: "https://www.youtube.com/embed/B-OxhHvgInk",
         tags: everyoneButGuests,
@@ -461,6 +569,10 @@ export const checkpoints: CheckpointDescriptor[] = [
         coordinates: {
             x: 17,
             y: 143
+        },
+        spawn: {
+            x: 23,
+            y: 115
         },
         type: "NPC",
         npcName: "Nicolas",
@@ -478,6 +590,10 @@ export const checkpoints: CheckpointDescriptor[] = [
         coordinates: {
             x: 28,
             y: 150
+        },
+        spawn: {
+            x: 22,
+            y: 158
         },
         type: "NPC",
         npcName: "Chrystel",
@@ -497,6 +613,10 @@ export const checkpoints: CheckpointDescriptor[] = [
             x: 24,
             y: 159
         },
+        spawn: {
+            x: 23,
+            y: 160
+        },
         tags: everyoneButGuests,
         xp: 10,
     },
@@ -508,6 +628,10 @@ export const checkpoints: CheckpointDescriptor[] = [
         coordinates: {
             x: 21,
             y: 163
+        },
+        spawn: {
+            x: 22,
+            y: 164
         },
         type: "NPC",
         npcName: "Jonas",
@@ -525,6 +649,10 @@ export const checkpoints: CheckpointDescriptor[] = [
             x: 23,
             y: 167
         },
+        spawn: {
+            x: 23,
+            y: 169
+        },
         type: "NPC",
         npcName: "Jonas",
         npcSprite: "left",
@@ -540,6 +668,10 @@ export const checkpoints: CheckpointDescriptor[] = [
         coordinates: {
             x: 16,
             y: 45
+        },
+        spawn: {
+            x: 11,
+            y: 34
         },
         type: "NPC",
         npcName: "Jonas",
@@ -557,6 +689,10 @@ export const checkpoints: CheckpointDescriptor[] = [
             x: 26,
             y: 43
         },
+        spawn: {
+            x: 11,
+            y: 34
+        },
         type: "content",
         url: "https://www.youtube.com/embed/_8jMD0yyD8A",
         tags: everyoneButGuests,
@@ -571,6 +707,10 @@ export const checkpoints: CheckpointDescriptor[] = [
             x: 29,
             y: 52
         },
+        spawn: {
+            x: 11,
+            y: 34
+        },
         type: "direction",
         tags: everyoneButGuests,
         xp: 10,
@@ -583,6 +723,10 @@ export const checkpoints: CheckpointDescriptor[] = [
         coordinates: {
             x: 19,
             y: 54
+        },
+        spawn: {
+            x: 19,
+            y: 84
         },
         type: "NPC",
         npcName: "Jonas",
@@ -601,6 +745,10 @@ export const checkpoints: CheckpointDescriptor[] = [
             x: 19,
             y: 60
         },
+        spawn: {
+            x: 19,
+            y: 84
+        },
         type: "direction",
         tags: everyoneButGuests,
         xp: 10,
@@ -614,6 +762,10 @@ export const checkpoints: CheckpointDescriptor[] = [
             x: 79,
             y: 103
         },
+        spawn: {
+            x: 79,
+            y: 113
+        },
         type: "direction",
         tags: everyoneButGuests,
         xp: 10,
@@ -626,6 +778,10 @@ export const checkpoints: CheckpointDescriptor[] = [
         coordinates: {
             x: 82,
             y: 100
+        },
+        spawn: {
+            x: 79,
+            y: 113
         },
         type: "content",
         url: "39_Contacts_FR.pdf",
@@ -641,6 +797,10 @@ export const checkpoints: CheckpointDescriptor[] = [
             x: 88,
             y: 100
         },
+        spawn: {
+            x: 79,
+            y: 113
+        },
         type: "content",
         url: "https://bedrockstreaming.atlassian.net/wiki/spaces/HID/overview",
         tags: ["fr"],
@@ -654,6 +814,10 @@ export const checkpoints: CheckpointDescriptor[] = [
         coordinates: {
             x: 71,
             y: 98
+        },
+        spawn: {
+            x: 79,
+            y: 113
         },
         type: "content",
         url: "41_HR_FR.pdf",
@@ -669,6 +833,10 @@ export const checkpoints: CheckpointDescriptor[] = [
             x: 82,
             y: 100
         },
+        spawn: {
+            x: 79,
+            y: 113
+        },
         type: "content",
         url: "42_Contacts_PT.pdf",
         tags: ["pt"],
@@ -682,6 +850,10 @@ export const checkpoints: CheckpointDescriptor[] = [
         coordinates: {
             x: 88,
             y: 100
+        },
+        spawn: {
+            x: 79,
+            y: 113
         },
         type: "content",
         url: "https://bedrockstreaming.atlassian.net/wiki/spaces/HSP/overview",
@@ -697,6 +869,10 @@ export const checkpoints: CheckpointDescriptor[] = [
             x: 71,
             y: 98
         },
+        spawn: {
+            x: 79,
+            y: 113
+        },
         type: "content",
         url: "44_HR_PT.pdf",
         tags: ["pt"],
@@ -710,6 +886,10 @@ export const checkpoints: CheckpointDescriptor[] = [
         coordinates: {
             x: 82,
             y: 100
+        },
+        spawn: {
+            x: 79,
+            y: 113
         },
         type: "content",
         url: "45_HR_ALT.pdf",
@@ -725,6 +905,10 @@ export const checkpoints: CheckpointDescriptor[] = [
             x: 88,
             y: 100
         },
+        spawn: {
+            x: 79,
+            y: 113
+        },
         type: "content",
         url: "https://view.genial.ly/65113d540b1729001198b6d5",
         tags: ["alt"],
@@ -738,6 +922,10 @@ export const checkpoints: CheckpointDescriptor[] = [
         coordinates: {
             x: 71,
             y: 98
+        },
+        spawn: {
+            x: 79,
+            y: 113
         },
         type: "content",
         url: "47_HR_ALT.pdf",
@@ -753,6 +941,10 @@ export const checkpoints: CheckpointDescriptor[] = [
             x: 82,
             y: 100
         },
+        spawn: {
+            x: 79,
+            y: 113
+        },
         type: "content",
         url: "48_Contacts_EXT.pdf",
         tags: ["ext"],
@@ -766,6 +958,10 @@ export const checkpoints: CheckpointDescriptor[] = [
         coordinates: {
             x: 88,
             y: 100
+        },
+        spawn: {
+            x: 79,
+            y: 113
         },
         type: "content",
         url: "https://bedrockstreaming.atlassian.net/wiki/spaces/CHRYS/overview",
@@ -781,6 +977,10 @@ export const checkpoints: CheckpointDescriptor[] = [
             x: 81,
             y: 67
         },
+        spawn: {
+            x: 81,
+            y: 77
+        },
         type: "direction",
         xp: 0,
     },
@@ -792,6 +992,10 @@ export const checkpoints: CheckpointDescriptor[] = [
         coordinates: {
             x: 73,
             y: 35
+        },
+        spawn: {
+            x: 72,
+            y: 43
         },
         type: "direction",
         tags: everyoneButGuests,
@@ -806,6 +1010,10 @@ export const checkpoints: CheckpointDescriptor[] = [
             x: 17,
             y: 104
         },
+        spawn: {
+            x: 18,
+            y: 119
+        },
         type: "direction",
         xp: 0,
     },
@@ -817,6 +1025,10 @@ export const checkpoints: CheckpointDescriptor[] = [
         coordinates: {
             x: 35,
             y: 93
+        },
+        spawn: {
+            x: 36,
+            y: 95
         },
         type: "content",
         url: "https://bedrockstreaming.com/news-events/news/",

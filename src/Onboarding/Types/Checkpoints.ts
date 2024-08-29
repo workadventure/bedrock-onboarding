@@ -12,6 +12,10 @@ export interface CheckpointDescriptor {
         x: number;
         y: number;
     }
+    spawn: {
+        x: number;
+        y: number;
+    }
     type: "NPC" | "content" | "direction";
     xp: number;
     message?: string;
