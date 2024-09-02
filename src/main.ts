@@ -20,6 +20,11 @@ WA.onInit().then(() => {
     console.log('*******************');
     console.log('Scripting API ready');
 
+    WA.controls.disableInviteButton();
+    WA.controls.disableRightClick();
+    WA.controls.disableRoomList();
+    WA.controls.disableMapEditor();
+
     currentMapStore.initState();
     playerTagsStore.initState();
     rootUrlStore.initState();
@@ -33,11 +38,6 @@ WA.onInit().then(() => {
         registerCloseDialogueBoxListener()
 
         if (playerTagsStore.hasMandatoryTags()) {
-            WA.controls.disableInviteButton();
-            WA.controls.disableRightClick();
-            WA.controls.disableRoomList();
-            WA.controls.disableMapEditor();
-
             initPlayerPosition()
             initDoors()
 
