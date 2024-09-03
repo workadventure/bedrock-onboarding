@@ -56,7 +56,7 @@ export async function initPlayerPosition(): Promise<void> {
         return;
     }
 
-    const checkpointIdsOfMap = checkpointIdsStore.getCheckpointIdsOfMap()
+    const checkpointIdsOfMap = checkpointIdsStore.getPassedCheckpointIdsOfMap()
 
     // skip TP if the player didn't pass any checkpoints on this map
     if (checkpointIdsOfMap.length === 0) {
@@ -65,7 +65,7 @@ export async function initPlayerPosition(): Promise<void> {
     }
 
     // Get last checkpoint ID from all checkpoints that the user passed on the current map
-    const lastCheckpointId = checkpointIdsStore.getCheckpointIdsOfMap().pop()
+    const lastCheckpointId = checkpointIdsOfMap.pop()
 
     // Find the checkpoint data with the matching ID
     const checkpoint = checkpoints.find(cp => cp.id === lastCheckpointId);

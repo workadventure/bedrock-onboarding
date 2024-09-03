@@ -80,13 +80,15 @@ class CheckpointIdsStore implements StateManager<string[]> {
         await this.setAsyncState(checkpointIds);
     }
 
-    getCheckpointIdsOfMap(): string[] {
-        const checkpointsByMap = checkpoints.map(cp => [cp.id, cp.map]);
+    getPassedCheckpointIdsOfMap(): string[] {
         const currentMap = currentMapStore.getState();
-        return checkpointsByMap
-            .filter(([_id, map]) => map === currentMap)
-            .map(([id]) => id);
 
+        const currentCheckpointIds = this.getState();
+
+        // Filter user checkpoints to those on the current map
+        return checkpoints
+        .filter(cp => cp.map === currentMap && currentCheckpointIds.includes(cp.id))
+        .map(cp => cp.id);
     }
 
     getNextCheckpointId(checklist: Checklist[]): string {
