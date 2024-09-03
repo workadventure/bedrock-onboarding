@@ -18,6 +18,8 @@ export type HRMeetingDoorAccess = {
     [key in HrMeetingDoorName]: { access: boolean, tilesNamePattern: string, tilesCoordinates: [number, number][] };
 };
 
+export type TownExitName = "world-from-alt" | "world-from-fr" | "world-from-ext" | "world-from-pt";
+
 /*
 ********************************************* WORLD *********************************************
 */

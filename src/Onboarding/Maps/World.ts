@@ -1,19 +1,20 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-import { brTowerFloors, townMapUrl } from "../Constants/Maps";
 import { checkpointIdsStore } from "../State/Properties/CheckpointIdsStore";
 import { playerTagsStore } from "../State/Properties/PlayerTagsStore";
 import { pause } from "../Utils/Utils";
 import { displayHelicopterGIF, removeHelicopterGIF } from "../Services/UIManager";
 import type { BrTowerFloor } from "../Types/Maps";
 import { placeRooftopHelicopter, placeTileBrTowerFloor, removeHelicopterTiles, removeTileBrTowerFloor } from "../Services/TilesManager";
+import { goToRoom } from "../Services/DoorsManager";
+import { brTowerFloors } from "../Constants/Maps";
 
-export function initWorld() {
+export async function initWorld() {
     console.log('World script started successfully');
 
     if (!checkpointIdsStore.canEnterCaveWorld() && !playerTagsStore.isEmployee) {
         console.log("Player can't access this room yet.")
-        WA.nav.goToRoom(townMapUrl);
+        await goToRoom("town");
         return;
     }
 

@@ -2,14 +2,15 @@
 
 import { ActionMessage, TileDescriptor } from "@workadventure/iframe-api-typings";
 
-import type { AirportGateAccess, BrTowerFloorAccess, BrTowerFloorName, HRMeetingDoorAccess, HrMeetingDoorName, TownBuildingAccess, TownBuildingName, TownCaveDoorAccess, WorldBarrierAccess, WorldBarrierName, WorldBuildingAccess, WorldBuildingName } from "../Types/Doors";
+import type { AirportGateAccess, BrTowerFloorAccess, BrTowerFloorName, HRMeetingDoorAccess, HrMeetingDoorName, TownBuildingAccess, TownBuildingName, TownExitName, TownCaveDoorAccess, WorldBarrierAccess, WorldBarrierName, WorldBuildingAccess, WorldBuildingName } from "../Types/Doors";
 import type { NewbieTag } from "../Types/Tags";
+import type { Map } from "../Types/Maps";
 import { getTilesByRectangleCorners } from "../Utils/Tiles";
 import { travelFromAirportToRooftop } from "../Maps/World"
 import { currentMapStore } from "../State/Properties/CurrentMapStore";
 import { playerTagsStore } from "../State/Properties/PlayerTagsStore";
 import { checkpointIdsStore } from "../State/Properties/CheckpointIdsStore";
-import { townMapUrl } from "../Constants/Maps";
+import { mapUrl } from "../Constants/Maps";
 import { closeBanner, openErrorBanner } from "./UIManager";
 
 export function initDoors() {
@@ -19,6 +20,26 @@ export function initDoors() {
         initWorldDoors()
     }
 }
+
+export async function goToRoom(map: Map, entry?: string) {
+    let roomUrl = mapUrl[map]
+    
+    if (entry) {
+        roomUrl += `#${entry}`
+        await playerCameFromDoor(true)
+    }
+
+    WA.nav.goToRoom(roomUrl)
+}
+
+export async function playerCameFromDoor(value: boolean) {
+    await WA.player.state.saveVariable("playerCameFromDoor", value, {
+        public: false,
+        persist: true,
+        scope: "world",
+    });
+}
+
 /*
 ********************************************* TOWN *********************************************
 */
@@ -47,6 +68,13 @@ const hrMeetingDoors: HRMeetingDoorAccess = {
     "hrMeetingDoor3": { access: false, tilesNamePattern: "hr-meeting-door", tilesCoordinates: [[88, 62], [89, 63]] },
     "hrMeetingDoor4": { access: false, tilesNamePattern: "hr-meeting-door", tilesCoordinates: [[93, 62], [94, 63]] },
 }
+
+const townExits: TownExitName[] = [
+    "world-from-alt",
+    "world-from-ext",
+    "world-from-fr",
+    "world-from-pt"
+]
 
 function initTownDoors() {
     // Apply access restrictions based on player tags and checkpoint
@@ -95,9 +123,22 @@ function initTownDoors() {
 
     initTownCaveDoors()
 
+    for (const key of townExits) {
+        listenTownExits(key);
+    }
+
     console.log("townBuildings",townBuildings)
     console.log("townCaveProfileDoors",townCaveProfileDoors)
     console.log("hrMeetingDoors",hrMeetingDoors)
+}
+
+function listenTownExits(exit: TownExitName) {
+    console.log("listenTownExits()")
+
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+    WA.room.area.onEnter(`to-${exit}`).subscribe(async () => {
+        await goToRoom("world", "from-town")
+    });
 }
 
 function listenTownDoor(building: TownBuildingName) {
@@ -431,10 +472,21 @@ function initWorldDoors() {
 
     initBrTowerFloorAccess()
 
+    listenWorldExits("town")
+
     console.log("worldBuildings",worldBuildings)
     console.log("worldBarriers",worldBarriers)
     console.log("airportGate",airportGate)
     console.log("brTowerFloors",brTowerFloors)
+}
+
+function listenWorldExits(exit: string) {
+    console.log("listenWorldExits()")
+
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+    WA.room.area.onEnter(`to-${exit}`).subscribe(async () => {
+        await goToRoom("town", "from-world")
+    });
 }
 
 function listenWorldDoor(building: WorldBuildingName) {
@@ -513,8 +565,9 @@ function listenHelicopterDoor() {
         WA.room.area.onEnter("pickupDoor").subscribe(() => {
             actionMessage = WA.ui.displayActionMessage({
                 message: "Press SPACE to drive back to the BR Stadium!",
-                callback: () => {
-                    WA.nav.goToRoom(`${townMapUrl}#from-tower`)
+                // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                callback: async () => {
+                    await goToRoom("town", "from-tower")
                 }
             })
         })

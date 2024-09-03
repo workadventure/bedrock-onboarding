@@ -5,9 +5,8 @@ import { CheckpointDescriptor } from "../Types/Checkpoints"
 import { pause } from "../Utils/Utils";
 import { checkpointIdsStore } from "../State/Properties/CheckpointIdsStore"
 import { checklistStore } from "../State/Properties/ChecklistStore"
-import { townMapUrl } from "../Constants/Maps"
 import { placeArea, processAreas, removeArea } from "./AreasManager"
-import { getCaveDoorToOpen, unlockAirportGate, unlockBrTowerFloorAccess, unlockTownBuildingDoor, unlockTownCaveDoor, unlockWorldBarrier, unlockWorldBuildingDoor } from "./DoorsManager"
+import { playerCameFromDoor, getCaveDoorToOpen, unlockAirportGate, unlockBrTowerFloorAccess, unlockTownBuildingDoor, unlockTownCaveDoor, unlockWorldBarrier, unlockWorldBuildingDoor, goToRoom } from "./DoorsManager"
 import { placeTile, removeDirectionTile, removeNPCTile, teleportJonas } from "./TilesManager"
 import { closeBanner, openCheckpointBanner, openErrorBanner, openWebsite, openFeedbackForm } from "./UIManager"
 
@@ -40,6 +39,7 @@ export async function passCheckpoint(checkpointId: string) {
     } else {
         console.log("(State: update) New checkpoint passed", checkpointId);
 
+        await playerCameFromDoor(false)
         await checkpointIdsStore.addCheckpointId(checkpointId);
         await grantQuestXP(checkpointIdsStore.getCheckpointXP(checkpointId))
         await checklistStore.markCheckpointAsDone(checkpointId);
@@ -50,8 +50,23 @@ export async function passCheckpoint(checkpointId: string) {
 }
 
 export async function initPlayerPosition(): Promise<void> {
-    // Get last checkpoint ID from all checkpoints that the user passed
-    const lastCheckpointId = checkpointIdsStore.getState().pop()
+    // skip TP (teleportation) if the player naturally came from an exit of the other map
+    if (WA.player.state.playerCameFromDoor === true) {
+        console.log(`Teleport: player naturally came from an exit of the other map`);
+        return;
+    }
+
+    const checkpointIdsOfMap = checkpointIdsStore.getCheckpointIdsOfMap()
+
+    // skip TP if the player didn't pass any checkpoints on this map
+    if (checkpointIdsOfMap.length === 0) {
+        console.log(`Teleport: player didn't pass any checkpoints on this map.`);
+        return;
+    }
+
+    // Get last checkpoint ID from all checkpoints that the user passed on the current map
+    const lastCheckpointId = checkpointIdsStore.getCheckpointIdsOfMap().pop()
+
     // Find the checkpoint data with the matching ID
     const checkpoint = checkpoints.find(cp => cp.id === lastCheckpointId);
 
@@ -60,11 +75,12 @@ export async function initPlayerPosition(): Promise<void> {
         const { x, y } = checkpoint.spawn; 
         const xTile = x * 32
         const yTile = y * 32
-        console.log(`Teleport player to last checkpoint: ${lastCheckpointId}`)
+        console.log(`Teleport player to last checkpoint: ${checkpoint.id}`)
        
         await WA.player.teleport(xTile, yTile);
     } else {
-        console.error(`Teleport: Checkpoint not found.`);
+        // skip TP if we can't find the last checkpoint data for some reason
+        console.warn(`Teleport: Checkpoint not found.`);
     }
 }
 
@@ -290,7 +306,7 @@ async function triggerCheckpointAction(checkpointId: string) {
         // Requirement: Enter Jonas' Pickup
         case "32":
             // Action: Go to room Town before backstage
-            WA.nav.goToRoom(`${townMapUrl}#from-tower`)
+            await goToRoom("town", "from-tower")
             break;
 
         // Requirement: Talk to Jonas in the backstage or check backstage content

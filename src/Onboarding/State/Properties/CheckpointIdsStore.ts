@@ -4,6 +4,7 @@ import { StateManager } from "../../Types/State";
 import { store } from "../Store";
 import { checkpoints } from "../../Constants/Checkpoints";
 import { Checklist } from "../../Types/Checkpoints";
+import { currentMapStore } from "../../State/Properties/CurrentMapStore";
 
 class CheckpointIdsStore implements StateManager<string[]> {
     private static instance: CheckpointIdsStore;
@@ -77,6 +78,15 @@ class CheckpointIdsStore implements StateManager<string[]> {
         const checkpointIds = this.getState();
         checkpointIds.push(checkpointId);
         await this.setAsyncState(checkpointIds);
+    }
+
+    getCheckpointIdsOfMap(): string[] {
+        const checkpointsByMap = checkpoints.map(cp => [cp.id, cp.map]);
+        const currentMap = currentMapStore.getState();
+        return checkpointsByMap
+            .filter(([_id, map]) => map === currentMap)
+            .map(([id]) => id);
+
     }
 
     getNextCheckpointId(checklist: Checklist[]): string {

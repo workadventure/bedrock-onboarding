@@ -6,8 +6,7 @@ import { bootstrapExtra } from "@workadventure/scripting-api-extra";
 
 import { registerCloseDialogueBoxListener, initPlayerPosition } from "./Onboarding/Services/CheckpointsManager"
 import { displayChecklistButton, displayHelpButton } from "./Onboarding/Services/UIManager";
-import { townMapUrl } from "./Onboarding/Constants/Maps";
-import { initDoors } from "./Onboarding/Services/DoorsManager";
+import { goToRoom, initDoors } from "./Onboarding/Services/DoorsManager";
 import { initTown } from "./Onboarding/Maps/Town";
 import { initWorld } from "./Onboarding/Maps/World";
 import { processAreas } from "./Onboarding/Services/AreasManager";
@@ -38,7 +37,7 @@ WA.onInit().then(() => {
         registerCloseDialogueBoxListener()
 
         if (playerTagsStore.hasMandatoryTags()) {
-            initPlayerPosition()
+            await initPlayerPosition()
             initDoors()
 
             // Do the onboarding only for players with at least one newbie tag
@@ -52,7 +51,7 @@ WA.onInit().then(() => {
                 if (currentMapStore.isTown()) {
                     initTown()
                 } else if (currentMapStore.isWorld()) {
-                    initWorld()
+                    await initWorld()
                 }
             }
        
@@ -61,7 +60,7 @@ WA.onInit().then(() => {
             // redirect unknown user to Town if he arrives in World
             if (currentMapStore.isWorld()) {
                 console.log("Player can't access this room.")
-                WA.nav.goToRoom(townMapUrl)
+                await goToRoom("town")
             }
 
             initDoors()

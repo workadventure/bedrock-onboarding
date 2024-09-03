@@ -1,16 +1,19 @@
-import type { BrTowerFloor } from "../Types/Maps";
+import type { BrTowerFloor, Map } from "../Types/Maps";
 
 /**
- * The production Town map URL as it is set in the admin
+ * The production world URL as it is set in the back-office
  * @constant
  */
-export const townMapUrl = "/@/bedrock-1710774685/onboardingbr/town"
+const worldUrl = "/@/bedrock-1710774685/onboardingbr"
 
 /**
- * The production E-Learning map URL as it is set in the admin
+ * The production map URL
  * @constant
  */
-export const worldMapUrl = "/@/bedrock-1710774685/onboardingbr/e-learning"
+export const mapUrl: { [key in Map]: string } = {
+    "town": `${worldUrl}/town`,
+    "world": `${worldUrl}/e-learning`
+}
 
 /**
  * All floors of the BR Tower

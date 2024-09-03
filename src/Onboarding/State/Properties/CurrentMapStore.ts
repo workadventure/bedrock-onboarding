@@ -1,8 +1,8 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
+import type { Map } from "../../Types/Maps";
 import { StateManager } from "../../Types/State";
 import { store } from "../Store";
-import type { Map } from "../../Types/Maps";
 
 class CurrentMapStore implements StateManager<Map> {
     private static instance: CurrentMapStore;
