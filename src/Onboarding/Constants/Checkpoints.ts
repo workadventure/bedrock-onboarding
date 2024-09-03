@@ -671,7 +671,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         },
         spawn: {
             x: 11,
-            y: 34
+            y: 32
         },
         type: "NPC",
         npcName: "Jonas",
@@ -691,7 +691,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         },
         spawn: {
             x: 11,
-            y: 34
+            y: 32
         },
         type: "content",
         url: "https://www.youtube.com/embed/_8jMD0yyD8A",
@@ -709,7 +709,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         },
         spawn: {
             x: 11,
-            y: 34
+            y: 32
         },
         type: "direction",
         tags: everyoneButGuests,
