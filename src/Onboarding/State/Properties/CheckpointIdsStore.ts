@@ -122,7 +122,8 @@ class CheckpointIdsStore implements StateManager<string[]> {
         console.log("numericJonasCheckpoints",numericJonasCheckpoints)
 
         // Find last Jonas checkpoint ID
-        const maxJonasCheckpointId = Math.max(...numericPlayerCheckpointIds)
+        const maxJonasCheckpointId = Math.max(...numericJonasCheckpoints)
+        console.log("maxJonasCheckpointId",maxJonasCheckpointId)
 
         // Limit the player checkpoint IDs to the last Jonas checkpoint ID
         const numericPlayerCheckpointIdsBeforeLastJonas = numericPlayerCheckpointIds.filter(num => num < maxJonasCheckpointId);
