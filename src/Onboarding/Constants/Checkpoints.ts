@@ -18,7 +18,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         },
         spawn: {
             x: 50,
-            y: 108
+            y: 110
         },
         tags: everyone,
         xp: 10,
