@@ -78,7 +78,7 @@ export const checkpoints: CheckpointDescriptor[] = [
             y: 14
         },
         type: "direction",
-        message: `While checking this antique PC, you discover that Jonas registered your profile, granting you access to the other side. It seems your journey is about to take a significant step forward.`,
+        message: `While checking this antique computer, you discover that Jonas registered your profile, granting you access to the other side. It seems your journey is about to take a significant step forward.`,
         tags: everyoneButGuests,
         xp: 15,
     },

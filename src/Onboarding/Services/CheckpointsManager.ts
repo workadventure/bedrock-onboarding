@@ -64,6 +64,7 @@ export async function initPlayerPosition(): Promise<void> {
         return;
     }
 
+    console.log("checkpointIdsOfMap",checkpointIdsOfMap)
     // Get last checkpoint ID from all checkpoints that the user passed on the current map
     const lastCheckpointId = checkpointIdsOfMap.pop()
 
