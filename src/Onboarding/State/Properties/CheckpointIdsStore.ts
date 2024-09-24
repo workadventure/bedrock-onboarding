@@ -269,6 +269,14 @@ class CheckpointIdsStore implements StateManager<string[]> {
         const checkpointIdNumber = parseInt(checkpointId, 10);
         return 33 <= checkpointIdNumber && checkpointIdNumber <= 39;
     }
+
+    getCheckpointsBeforeOnboardingEnd(): string[] {
+        // When deciding to teleport the player to the last checkpoint
+        // we can't take into account the optional checkpoints (after Jonas in stadium's stage: "36")
+        const checkpointIds = this.getState();
+        const filteredCheckpoints = checkpointIds.filter(id => Number(id) <= 36)
+        return filteredCheckpoints;
+    }
 }
 
 // Export the singleton instance

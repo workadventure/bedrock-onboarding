@@ -4,10 +4,12 @@ import { CoWebsite, UIWebsite } from "@workadventure/iframe-api-typings";
 import { checkpoints } from "../Constants/Checkpoints";
 import { isURL, mustOpenInNewTab } from "../Utils/UI";
 import { rootUrlStore } from "../State/Properties/RootUrlStore";
+import { Map } from "../Types/Maps";
 
 export const DOOR_LOCKED = "The door is locked. You are not qualified to enter here."
 
 let dialogueBox: UIWebsite|null
+let resumePopup: UIWebsite|null
 let helicopterGIF: UIWebsite|null
 let coWebsite: CoWebsite|null
 
@@ -160,6 +162,41 @@ export function displayHelpButton() {
             }, () => WA.ui.modal.closeModal())
         }
     });
+}
+
+export async function openResumePopup(map: Map) {
+    console.log("openResumePopup")
+
+    WA.controls.disablePlayerControls()
+    
+    const root = rootUrlStore.getState();
+    resumePopup = await WA.ui.website.open({
+        url:  root + `/resume-popup/index.html?map=${map}`,
+        visible: true,
+        allowApi: true,
+        allowPolicy: "",   // The list of feature policies allowed
+        position: {
+            vertical: "middle",
+            horizontal: "middle",
+        },
+        size: {            // Size on the UI (available units: px|em|%|cm|in|pc|pt|mm|ex|vw|vh|rem and others values auto|inherit)
+            height: "200px",
+            width: "400px",
+        },
+        margin: {              // Website margin (available units: px|em|%|cm|in|pc|pt|mm|ex|vw|vh|rem and others values auto|inherit)
+        },
+    })
+}
+
+export async function closeResumePopup() {
+    const localResumePopup = resumePopup;
+    if (localResumePopup) {
+        await localResumePopup.close();
+        // Avoid race condition by using a reference instead of resumePopup directly
+        if (resumePopup === localResumePopup) {
+            resumePopup = null;
+        }
+    }
 }
 
 export function openFeedbackForm() {

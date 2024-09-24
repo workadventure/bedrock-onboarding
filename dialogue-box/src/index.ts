@@ -28,7 +28,7 @@ async function process() {
 
 const appElement = document.getElementById('app');
 
-// Why this weird syntax ?
+// Why this weird syntax?
 // Flexibility: Works well whether the script is in the `<head>` or `<body>`.
 // Efficiency: Avoids setting up unnecessary event listeners if the DOM is already loaded.
 // Robustness: Handles both scenarios (loading or loaded) to prevent race conditions.

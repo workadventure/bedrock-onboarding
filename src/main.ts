@@ -4,7 +4,7 @@ console.log('Main script started successfully');
 
 import { bootstrapExtra } from "@workadventure/scripting-api-extra";
 
-import { registerCloseDialogueBoxListener, initPlayerPosition } from "./Onboarding/Services/CheckpointsManager"
+import { registerCloseDialogueBoxListener, initPlayerProgress } from "./Onboarding/Services/CheckpointsManager"
 import { displayChecklistButton, displayHelpButton } from "./Onboarding/Services/UIManager";
 import { goToRoom, initDoors } from "./Onboarding/Services/DoorsManager";
 import { initTown } from "./Onboarding/Maps/Town";
@@ -37,7 +37,7 @@ WA.onInit().then(() => {
         registerCloseDialogueBoxListener()
 
         if (playerTagsStore.hasMandatoryTags()) {
-            await initPlayerPosition()
+            await initPlayerProgress()
             initDoors()
 
             // Do the onboarding only for players with at least one newbie tag

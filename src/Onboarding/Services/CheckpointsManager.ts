@@ -4,11 +4,12 @@ import { travelFromAirportToRooftop } from "../Maps/World"
 import { CheckpointDescriptor } from "../Types/Checkpoints"
 import { pause } from "../Utils/Utils";
 import { checkpointIdsStore } from "../State/Properties/CheckpointIdsStore"
+import { currentMapStore } from "../State/Properties/CurrentMapStore";
 import { checklistStore } from "../State/Properties/ChecklistStore"
 import { placeArea, processAreas, removeArea } from "./AreasManager"
 import { playerCameFromDoor, getCaveDoorToOpen, unlockAirportGate, unlockBrTowerFloorAccess, unlockTownBuildingDoor, unlockTownCaveDoor, unlockWorldBarrier, unlockWorldBuildingDoor, goToRoom } from "./DoorsManager"
 import { placeTile, removeDirectionTile, removeNPCTile, teleportJonas } from "./TilesManager"
-import { closeBanner, openCheckpointBanner, openErrorBanner, openWebsite, openFeedbackForm } from "./UIManager"
+import { closeBanner, openCheckpointBanner, openErrorBanner, openWebsite, openFeedbackForm, openResumePopup } from "./UIManager"
 
 const QUEST_KEY = "bedrock-journey";
 const LAST_XP_AMOUNT_REQUIRED = 20;
@@ -49,7 +50,35 @@ export async function passCheckpoint(checkpointId: string) {
     }
 }
 
-export async function initPlayerPosition(): Promise<void> {
+export async function initPlayerProgress(): Promise<void> {
+    console.log("initPlayerProgress()")
+
+    // get last checkoint passed
+    const checkpointsBeforeOnboardingEnd = checkpointIdsStore.getCheckpointsBeforeOnboardingEnd()
+    console.log("checkpointsBeforeOnboardingEnd",checkpointsBeforeOnboardingEnd)
+    const lastCheckpointId = checkpointsBeforeOnboardingEnd.at(-1)
+    console.log("lastCheckpointId",lastCheckpointId)
+
+    // Find the checkpoint data with the matching ID
+    const lastCheckpoint = checkpoints.find(cp => cp.id === lastCheckpointId)
+    console.log("lastCheckpoint",lastCheckpoint)
+
+    // If the checkpoint is found, compare its map
+    if (lastCheckpoint) {
+        const currentMap = currentMapStore.getState()
+        if (currentMap === lastCheckpoint.map) {
+            console.log("Last checkpoint is in same map")
+            await initPlayerPosition()
+        } else {
+            // Display 'Resume' popup
+            await openResumePopup(lastCheckpoint.map)
+        }
+    } else {
+        console.warn(`Checkpoint not found.`);
+    }
+}
+
+async function initPlayerPosition(): Promise<void> {
     // skip TP (teleportation) if the player naturally came from an exit of the other map
     if (WA.player.state.playerCameFromDoor === true) {
         console.log(`Skip teleport: player naturally came from an exit of the other map`);
@@ -66,7 +95,7 @@ export async function initPlayerPosition(): Promise<void> {
 
     console.log("checkpointIdsOfMap",checkpointIdsOfMap)
     // Get last checkpoint ID from all checkpoints that the user passed on the current map
-    const lastCheckpointId = checkpointIdsOfMap.pop()
+    const lastCheckpointId = checkpointIdsOfMap.at(-1)
 
     // Find the checkpoint data with the matching ID
     const checkpoint = checkpoints.find(cp => cp.id === lastCheckpointId);

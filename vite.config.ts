@@ -29,6 +29,7 @@ export default defineConfig({
                 index: "./index.html",
                 dialogueBox: "./dialogue-box/index.html",
                 checklist: "./checklist/index.html",
+                resumePopup: "./resume-popup/index.html",
                 ...getMapsScripts(maps),
             },
         },
