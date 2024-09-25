@@ -53,6 +53,12 @@ export async function passCheckpoint(checkpointId: string) {
 export async function initPlayerProgress(): Promise<void> {
     console.log("initPlayerProgress()")
 
+    // skip TP (teleportation) if the player naturally came from an exit of the other map
+    if (WA.player.state.playerCameFromDoor === true) {
+        console.log(`Skip teleport: player naturally came from an exit of the other map`);
+        return;
+    }
+
     // get last checkoint passed
     const checkpointsBeforeOnboardingEnd = checkpointIdsStore.getCheckpointsBeforeOnboardingEnd()
     console.log("checkpointsBeforeOnboardingEnd",checkpointsBeforeOnboardingEnd)
@@ -79,12 +85,6 @@ export async function initPlayerProgress(): Promise<void> {
 }
 
 async function initPlayerPosition(): Promise<void> {
-    // skip TP (teleportation) if the player naturally came from an exit of the other map
-    if (WA.player.state.playerCameFromDoor === true) {
-        console.log(`Skip teleport: player naturally came from an exit of the other map`);
-        return;
-    }
-
     const checkpointIdsOfMap = checkpointIdsStore.getPassedCheckpointIdsOfMap()
 
     // skip TP if the player didn't pass any checkpoints on this map
