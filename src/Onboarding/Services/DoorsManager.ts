@@ -13,18 +13,23 @@ import { checkpointIdsStore } from "../State/Properties/CheckpointIdsStore";
 import { mapUrl } from "../Constants/Maps";
 import { closeBanner, openErrorBanner } from "./UIManager";
 
-export function initDoors() {
-    if (currentMapStore.isTown()) {
+export function initDoors()
+{
+    if (currentMapStore.isTown())
+    {
         initTownDoors()
-    } else if (currentMapStore.isWorld()) {
+    } else if (currentMapStore.isWorld())
+    {
         initWorldDoors()
     }
 }
 
-export async function goToRoom(map: Map, entry?: string) {
+export async function goToRoom(map: Map, entry?: string)
+{
     let roomUrl = mapUrl[map]
-    
-    if (entry) {
+
+    if (entry)
+    {
         roomUrl += `#${entry}`
         await playerCameFromDoor(true)
     }
@@ -32,7 +37,8 @@ export async function goToRoom(map: Map, entry?: string) {
     WA.nav.goToRoom(roomUrl)
 }
 
-export async function playerCameFromDoor(value: boolean) {
+export async function playerCameFromDoor(value: boolean)
+{
     await WA.player.state.saveVariable("playerCameFromDoor", value, {
         public: false,
         persist: true,
@@ -56,10 +62,11 @@ const townBuildings: TownBuildingAccess = {
 };
 
 const townCaveProfileDoors: TownCaveDoorAccess = {
-    alt: { access: false, leftWall: [[41, 4], [41, 5]], rightWall: [[44, 4], [44, 5]], pillar: [[42, 5], [43, 6]] },
-    fr: { access: false, leftWall: [[45, 2], [45, 3]], rightWall: [[48, 2], [48, 3]], pillar: [[46, 3], [47, 4]] },
-    ext:  { access: false, leftWall: [[50, 2], [50, 3]], rightWall: [[53, 2], [53, 3]], pillar: [[51, 3], [52, 4]] },
-    pt:  { access: false, leftWall: [[54, 4], [54, 5]], rightWall: [[57, 4], [57, 5]], pillar: [[55, 5], [56, 6]] },
+    alt: { access: false, leftWall: [[39, 3], [39, 4]], rightWall: [[42, 3], [42, 4]], pillar: [[40, 4], [41, 5]] },
+    fr: { access: false, leftWall: [[43, 1], [43, 2]], rightWall: [[46, 1], [46, 2]], pillar: [[44, 2], [45, 3]] },
+    de: { access: false, leftWall: [[48, 1], [48, 2]], rightWall: [[51, 1], [51, 2]], pillar: [[49, 2], [50, 3]] },
+    pt: { access: false, leftWall: [[53, 1], [53, 2]], rightWall: [[56, 1], [56, 2]], pillar: [[54, 2], [55, 3]] },
+    ext: { access: false, leftWall: [[57, 3], [57, 4]], rightWall: [[60, 3], [60, 4]], pillar: [[58, 4], [59, 5]] },
 }
 
 const hrMeetingDoors: HRMeetingDoorAccess = {
@@ -71,19 +78,24 @@ const hrMeetingDoors: HRMeetingDoorAccess = {
 
 const townExits: TownExitName[] = [
     "world-from-alt",
-    "world-from-ext",
     "world-from-fr",
-    "world-from-pt"
+    "world-from-de",
+    "world-from-pt",
+    "world-from-ext",
 ]
 
-function initTownDoors() {
+function initTownDoors()
+{
     // Apply access restrictions based on player tags and checkpoint
-    if (playerTagsStore.isGuest()) {
+    if (playerTagsStore.isGuest())
+    {
         // Guests can only access hr and arcade.
-        Object.keys(townBuildings).forEach(building => {
+        Object.keys(townBuildings).forEach(building =>
+        {
             townBuildings[building as TownBuildingName].access = building === "hr" || building === "arcade";
         });
-    } else if (playerTagsStore.isOtherThanGuest()) {
+    } else if (playerTagsStore.isOtherThanGuest())
+    {
         const isBackstageDone = checkpointIdsStore.isBackstageDone()
         townBuildings.stadium.access = true;
         townBuildings.cave.access = true;
@@ -94,17 +106,21 @@ function initTownDoors() {
         townBuildings.wikitech.access = isBackstageDone;
         townBuildings.backstage.access = isBackstageDone;
 
-        if (checkpointIdsStore.canEnterCaveWorld()) {
-            townCaveProfileDoors.fr.access = playerTagsStore.hasFrProfile()
-            townCaveProfileDoors.pt.access = playerTagsStore.hasPtProfile()
+        if (checkpointIdsStore.canEnterCaveWorld())
+        {
             townCaveProfileDoors.alt.access = playerTagsStore.hasAltProfile()
-            townCaveProfileDoors.ext.access = playerTagsStore.hasExtProfile()  
+            townCaveProfileDoors.fr.access = playerTagsStore.hasFrProfile()
+            townCaveProfileDoors.de.access = playerTagsStore.hasDeProfile()
+            townCaveProfileDoors.pt.access = playerTagsStore.hasPtProfile()
+            townCaveProfileDoors.ext.access = playerTagsStore.hasExtProfile()
         }
 
         // unlock all doors for employees
-        if (playerTagsStore.isEmployee()) {
+        if (playerTagsStore.isEmployee())
+        {
             console.log("Open all town buildings")
-            Object.keys(townBuildings).forEach(building => {
+            Object.keys(townBuildings).forEach(building =>
+            {
                 townBuildings[building as TownBuildingName].access = true;
             });
             // Also open the FR profile door (otherwise just employees could not pass the cave)
@@ -112,36 +128,42 @@ function initTownDoors() {
         }
     }
 
-    for (const key in townBuildings) {
+    for (const key in townBuildings)
+    {
         listenTownDoor(key as TownBuildingName);
     }
 
-    for (const key in hrMeetingDoors) {
+    for (const key in hrMeetingDoors)
+    {
         initHrDoors(key as HrMeetingDoorName);
         listenHrDoors(key as HrMeetingDoorName);
     }
 
     initTownCaveDoors()
 
-    for (const key of townExits) {
+    for (const key of townExits)
+    {
         listenTownExits(key);
     }
 
-    console.log("townBuildings",townBuildings)
-    console.log("townCaveProfileDoors",townCaveProfileDoors)
-    console.log("hrMeetingDoors",hrMeetingDoors)
+    console.log("townBuildings", townBuildings)
+    console.log("townCaveProfileDoors", townCaveProfileDoors)
+    console.log("hrMeetingDoors", hrMeetingDoors)
 }
 
-function listenTownExits(exit: TownExitName) {
+function listenTownExits(exit: TownExitName)
+{
     console.log("listenTownExits()")
 
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    WA.room.area.onEnter(`to-${exit}`).subscribe(async () => {
+    WA.room.area.onEnter(`to-${exit}`).subscribe(async () =>
+    {
         await goToRoom("world", "from-town")
     });
 }
 
-function listenTownDoor(building: TownBuildingName) {
+function listenTownDoor(building: TownBuildingName)
+{
     console.log("listenTownDoor()")
 
     type StadiumPlayerPosition = "BACK" | "BACKSTAGE" | "AUDITORIUM" | "FRONT"
@@ -152,15 +174,18 @@ function listenTownDoor(building: TownBuildingName) {
     listenStadiumPlayerPosition("AUDITORIUM")
     listenStadiumPlayerPosition("FRONT")
 
-    function listenStadiumPlayerPosition(position: StadiumPlayerPosition) {
-        WA.room.area.onEnter(`playerPosition_${position}`).subscribe(() => {
-            console.log("onEnter",`${position}`)
+    function listenStadiumPlayerPosition(position: StadiumPlayerPosition)
+    {
+        WA.room.area.onEnter(`playerPosition_${position}`).subscribe(() =>
+        {
+            console.log("onEnter", `${position}`)
             playerPosition = position;
         });
     }
-    
+
     // Function to handle actions when player enters the door area
-    function handleEnter() {
+    function handleEnter()
+    {
         console.log(`toggle ${building}Door`)
         unlockTownBuildingDoor(building);
 
@@ -168,38 +193,47 @@ function listenTownDoor(building: TownBuildingName) {
         const ROOF_BACKSTAGE = "roofs/backstage1";
         const ROOF_STADIUM = "roofs/stadium1";
 
-        switch (building) {
+        switch (building)
+        {
             case "service":
-                if (playerPosition === "BACK") {
+                if (playerPosition === "BACK")
+                {
                     WA.room.hideLayer(ROOF_BACKSTAGE);
                     WA.room.hideLayer(ROOF_STADIUM);
-                } else if (playerPosition === "BACKSTAGE") {
+                } else if (playerPosition === "BACKSTAGE")
+                {
                     WA.room.showLayer(ROOF_BACKSTAGE);
                     WA.room.showLayer(ROOF_STADIUM);
                 }
                 break;
             case "backstage":
-                if (playerPosition === "BACKSTAGE") {
+                if (playerPosition === "BACKSTAGE")
+                {
                     WA.room.showLayer(ROOF_BACKSTAGE);
-                } else if (playerPosition === "AUDITORIUM") {
+                } else if (playerPosition === "AUDITORIUM")
+                {
                     WA.room.hideLayer(ROOF_BACKSTAGE);
                 }
                 break;
             case "stadium":
-                if (playerPosition === "AUDITORIUM") {
+                if (playerPosition === "AUDITORIUM")
+                {
                     WA.room.showLayer(ROOF_STADIUM);
-                } else if (playerPosition === "FRONT") {
+                } else if (playerPosition === "FRONT")
+                {
                     WA.room.hideLayer(ROOF_STADIUM);
                 }
                 break;
             default:
-                if (isRoofVisible === true) {
+                if (isRoofVisible === true)
+                {
                     console.log(`was visible before`)
                     isRoofVisible = false
                     console.log(`hide all roofs`)
                     WA.room.hideLayer(`roofs/${building}1`)
                     WA.room.hideLayer(`roofs/${building}2`)
-                } else {
+                } else
+                {
                     console.log(`was hidden before`)
                     isRoofVisible = true
                     console.log(`show all roofs`)
@@ -209,37 +243,44 @@ function listenTownDoor(building: TownBuildingName) {
                 break;
         }
     }
-    
+
     // Default visibility of the roofs
     let isRoofVisible = true;
 
     // Subscribe to onEnter and onLeave events for the door area
-    WA.room.area.onEnter(`${building}Door`).subscribe(() => {
-        console.log("onEnter",`${building}Door`)
-        console.log("has access",townBuildings[building].access)
-        if (townBuildings[building].access) {
+    WA.room.area.onEnter(`${building}Door`).subscribe(() =>
+    {
+        console.log("onEnter", `${building}Door`)
+        console.log("has access", townBuildings[building].access)
+        if (townBuildings[building].access)
+        {
             handleEnter();
-        } else {
+        } else
+        {
             openErrorBanner();
         }
     });
 
-    WA.room.area.onLeave(`${building}Door`).subscribe(() => {
-        console.log("onLeave",`${building}Door`)
-        if (!townBuildings[building].access) {
+    WA.room.area.onLeave(`${building}Door`).subscribe(() =>
+    {
+        console.log("onLeave", `${building}Door`)
+        if (!townBuildings[building].access)
+        {
             console.log("closeBanner")
             closeBanner();
         }
     });
 
     // Lock the door if access is denied
-    if (!townBuildings[building].access) {
+    if (!townBuildings[building].access)
+    {
         console.log("lock door")
         lockTownBuildingDoor(building);
     }
 }
 
-function initHrDoors(meetingDoor: HrMeetingDoorName) {
+function initHrDoors(meetingDoor: HrMeetingDoorName)
+{
     const currentValue = WA.state.loadVariable(`${meetingDoor}Variable`) as boolean
     hrMeetingDoors[meetingDoor].access = currentValue
 
@@ -247,18 +288,22 @@ function initHrDoors(meetingDoor: HrMeetingDoorName) {
     toggleHrMeetingDoor(meetingDoor)
 }
 
-function listenHrDoors(meetingDoor: HrMeetingDoorName) {
-    let actionMessage: ActionMessage|null
+function listenHrDoors(meetingDoor: HrMeetingDoorName)
+{
+    let actionMessage: ActionMessage | null
 
     // only HRs or admins can open/close the doors
-    if (playerTagsStore.isHr()) {
-        WA.room.area.onEnter(meetingDoor).subscribe(() => {
+    if (playerTagsStore.isHr())
+    {
+        WA.room.area.onEnter(meetingDoor).subscribe(() =>
+        {
             // display an action message to open or close
             // that will depend on the current door state
             actionMessage = WA.ui.displayActionMessage({
                 message: `Press SPACE to ${hrMeetingDoors[meetingDoor].access ? 'close' : 'open'} the door`,
                 // eslint-disable-next-line @typescript-eslint/no-misused-promises
-                callback: async () => {
+                callback: async () =>
+                {
                     await WA.state.saveVariable(`${meetingDoor}Variable`, !hrMeetingDoors[meetingDoor].access);
                 }
             })
@@ -266,8 +311,10 @@ function listenHrDoors(meetingDoor: HrMeetingDoorName) {
 
         // remove the action message after leaving the area
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
-        WA.room.area.onLeave(meetingDoor).subscribe(async () => {
-            await actionMessage?.remove().then(() => {
+        WA.room.area.onLeave(meetingDoor).subscribe(async () =>
+        {
+            await actionMessage?.remove().then(() =>
+            {
                 actionMessage = null
             })
         })
@@ -275,13 +322,15 @@ function listenHrDoors(meetingDoor: HrMeetingDoorName) {
 
     // Each HR door has a dedicated variable, when HR wants to toggle the state of door
     // we intercept the value here and we toggle it
-    WA.state.onVariableChange(`${meetingDoor}Variable`).subscribe((value) => {
+    WA.state.onVariableChange(`${meetingDoor}Variable`).subscribe((value) =>
+    {
         hrMeetingDoors[meetingDoor].access = value as boolean
         toggleHrMeetingDoor(meetingDoor)
     });
 }
 
-function toggleHrMeetingDoor(meetingDoor: HrMeetingDoorName) {
+function toggleHrMeetingDoor(meetingDoor: HrMeetingDoorName)
+{
     const meetingDoorData = hrMeetingDoors[meetingDoor];
     const tilesCoordinates = getTilesByRectangleCorners(meetingDoorData.tilesCoordinates[0], meetingDoorData.tilesCoordinates[1])
 
@@ -291,14 +340,15 @@ function toggleHrMeetingDoor(meetingDoor: HrMeetingDoorName) {
     const tiles = tilesCoordinates.map(([xCoord, yCoord], index) => ({
         x: xCoord,
         y: yCoord,
-        tile: `${tileName}-${index+1}`,
+        tile: `${tileName}-${index + 1}`,
         layer: "furniture/furniture2"
     }));
 
     WA.room.setTiles(tiles);
 }
 
-function lockTownBuildingDoor(building: TownBuildingName) {
+function lockTownBuildingDoor(building: TownBuildingName)
+{
     const buildingData = townBuildings[building];
     const tilesCoordinates = getTilesByRectangleCorners(buildingData.blockingTiles[0], buildingData.blockingTiles[1])
     const tiles = tilesCoordinates.map(([xCoord, yCoord]) => ({
@@ -311,7 +361,8 @@ function lockTownBuildingDoor(building: TownBuildingName) {
     WA.room.setTiles(tiles);
 }
 
-export function unlockTownBuildingDoor(building: TownBuildingName) {
+export function unlockTownBuildingDoor(building: TownBuildingName)
+{
     townBuildings[building].access = true;
     const buildingData = townBuildings[building];
     const tilesCoordinates = getTilesByRectangleCorners(buildingData.blockingTiles[0], buildingData.blockingTiles[1])
@@ -325,15 +376,19 @@ export function unlockTownBuildingDoor(building: TownBuildingName) {
     WA.room.setTiles(tiles);
 }
 
-function initTownCaveDoors() {
-    Object.keys(townCaveProfileDoors).forEach(door => {
-        if (townCaveProfileDoors[door as NewbieTag].access === true) {
+function initTownCaveDoors()
+{
+    Object.keys(townCaveProfileDoors).forEach(door =>
+    {
+        if (townCaveProfileDoors[door as NewbieTag].access === true)
+        {
             unlockTownCaveDoor(door as NewbieTag)
         }
     });
 }
 
-export function unlockTownCaveDoor(door: NewbieTag) {
+export function unlockTownCaveDoor(door: NewbieTag)
+{
     townCaveProfileDoors[door].access = true;
     const doorData = townCaveProfileDoors[door];
 
@@ -345,7 +400,7 @@ export function unlockTownCaveDoor(door: NewbieTag) {
     const pillarTiles = pillarTilesCoordinates.map(([xCoord, yCoord], index) => ({
         x: xCoord,
         y: yCoord,
-        tile: `no-pillar-${index+1}`,
+        tile: `no-pillar-${index + 1}`,
         layer: "walls/walls1"
     }));
     const leftWallTiles = leftWallTilesCoordinates.map(([xCoord, yCoord], index) => ({
@@ -360,24 +415,32 @@ export function unlockTownCaveDoor(door: NewbieTag) {
         tile: `cave-door-wall-open-${index + 1}`,
         layer: "walls/walls1"
     }));
-    
+
     // Combine pillar, left wall, and right wall tiles into one array in order to open the door
     const combinedTiles = [...pillarTiles, ...leftWallTiles, ...rightWallTiles];
     WA.room.setTiles(combinedTiles);
 }
 
-export function getCaveDoorToOpen(): NewbieTag|null {
+export function getCaveDoorToOpen(): NewbieTag | null
+{
     // get the cave door to open depending on the player tags
     let door: NewbieTag | null = null
-    
-    if (playerTagsStore.hasFrProfile()) {
+
+    if (playerTagsStore.hasFrProfile())
+    {
         door = "fr"
-    } else if (playerTagsStore.hasAltProfile()) {
-        door = "alt"
-    } else if (playerTagsStore.hasExtProfile()) {
-        door = "ext"
-    } else if (playerTagsStore.hasPtProfile()) {
+    } else if (playerTagsStore.hasDeProfile())
+    {
+        door = "de"
+    } else if (playerTagsStore.hasPtProfile())
+    {
         door = "pt"
+    } else if (playerTagsStore.hasAltProfile())
+    {
+        door = "alt"
+    } else if (playerTagsStore.hasExtProfile())
+    {
+        door = "ext"
     }
 
     return door
@@ -390,7 +453,7 @@ export function getCaveDoorToOpen(): NewbieTag|null {
 // Define buildings and their minimal access restrictions.
 const worldBuildings: WorldBuildingAccess = {
     cave: { access: false, blockingTiles: [[28, 181], [29, 182]] },
-    airport: { access: false, blockingTiles: [[51, 22],[53, 22]] },
+    airport: { access: false, blockingTiles: [[51, 22], [53, 22]] },
 };
 
 // Define buildings and their minimal access restrictions.
@@ -401,11 +464,11 @@ const worldBarriers: WorldBarrierAccess = {
     bridge: { access: false, blockingTiles: [[18, 83], [21, 83]] },
     france: { access: false, blockingTiles: [[19, 66], [21, 68]] },
     hungary: { access: false, blockingTiles: [[91, 59], [92, 59]] },
-    belgium: { access: false, blockingTiles: [[104, 27], [105, 27]] },
+    germany: { access: false, blockingTiles: [[104, 27], [105, 27]] },
     netherlands: { access: false, blockingTiles: [[71, 21], [74, 21]] },
 };
 
-const airportGate: AirportGateAccess = 
+const airportGate: AirportGateAccess =
     { access: false, turnstile: [[52, 11], [52, 12]], lightsY: [[52, 6], [52, 10]], lightsX: [[48, 5], [52, 5]] }
 
 const brTowerFloors: BrTowerFloorAccess = {
@@ -417,7 +480,8 @@ const brTowerFloors: BrTowerFloorAccess = {
     exit: { access: false, tilesNamePattern: "floor0-to-exit", tilesCoordinates: [[22, 154], [25, 154]] },
 };
 
-function initWorldDoors() {
+function initWorldDoors()
+{
     // Apply access restrictions based on player checkpoint
     worldBuildings.cave.access = checkpointIdsStore.canLeaveCaveWorld();
     worldBuildings.airport.access = checkpointIdsStore.canEnterAirport();
@@ -428,7 +492,7 @@ function initWorldDoors() {
     worldBarriers.bridge.access = checkpointIdsStore.canAccessBridge();
     worldBarriers.france.access = checkpointIdsStore.canAccessFrance();
     worldBarriers.hungary.access = checkpointIdsStore.canAccessHungary();
-    worldBarriers.belgium.access = checkpointIdsStore.canAccessBelgium();
+    worldBarriers.germany.access = checkpointIdsStore.canAccessGermany();
     worldBarriers.netherlands.access = checkpointIdsStore.canAccessNetherlands();
 
     airportGate.access = checkpointIdsStore.canEnterAirportGates();
@@ -441,24 +505,29 @@ function initWorldDoors() {
     brTowerFloors.exit.access = checkpointIdsStore.canLeaveBRTower()
 
     // unlock all doors if employee
-    if (playerTagsStore.isEmployee()) {
+    if (playerTagsStore.isEmployee())
+    {
         console.log("Open all world buildings")
-        Object.keys(worldBuildings).forEach(building => {
+        Object.keys(worldBuildings).forEach(building =>
+        {
             worldBuildings[building as WorldBuildingName].access = true;
         });
-        Object.keys(worldBarriers).forEach(barrier => {
+        Object.keys(worldBarriers).forEach(barrier =>
+        {
             worldBarriers[barrier as WorldBarrierName].access = true;
         });
 
         airportGate.access = true;
 
-        Object.keys(brTowerFloors).forEach(floor => {
+        Object.keys(brTowerFloors).forEach(floor =>
+        {
             brTowerFloors[floor as BrTowerFloorName].access = true;
         });
     }
 
 
-    for (const key in worldBuildings) {
+    for (const key in worldBuildings)
+    {
         listenWorldDoor(key as WorldBuildingName);
     }
 
@@ -466,7 +535,8 @@ function initWorldDoors() {
 
     tryToUnlockWorldBarriers()
 
-    if (airportGate.access) {
+    if (airportGate.access)
+    {
         unlockAirportGate()
     }
 
@@ -474,33 +544,39 @@ function initWorldDoors() {
 
     listenWorldExits("town")
 
-    console.log("worldBuildings",worldBuildings)
-    console.log("worldBarriers",worldBarriers)
-    console.log("airportGate",airportGate)
-    console.log("brTowerFloors",brTowerFloors)
+    console.log("worldBuildings", worldBuildings)
+    console.log("worldBarriers", worldBarriers)
+    console.log("airportGate", airportGate)
+    console.log("brTowerFloors", brTowerFloors)
 }
 
-function listenWorldExits(exit: string) {
+function listenWorldExits(exit: string)
+{
     console.log("listenWorldExits()")
 
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    WA.room.area.onEnter(`to-${exit}`).subscribe(async () => {
+    WA.room.area.onEnter(`to-${exit}`).subscribe(async () =>
+    {
         await goToRoom("town", "from-world")
     });
 }
 
-function listenWorldDoor(building: WorldBuildingName) {
+function listenWorldDoor(building: WorldBuildingName)
+{
     console.log("> listenWorldDoor()")
 
-    function handleEnter() {
+    function handleEnter()
+    {
         console.log(`toggle ${building}Door`)
         unlockWorldBuildingDoor(building);
-        if (isRoofVisible === true) {
+        if (isRoofVisible === true)
+        {
             console.log(`was visible before`)
             isRoofVisible = false
             console.log(`hide layer`)
             WA.room.hideLayer(`roofs/${building}1`)
-        } else {
+        } else
+        {
             console.log(`was hidden before`)
             isRoofVisible = true
             console.log(`show layer`)
@@ -513,76 +589,93 @@ function listenWorldDoor(building: WorldBuildingName) {
     let isRoofVisible = building !== "cave"
 
     // Subscribe to onEnter and onLeave events for the door area
-    WA.room.area.onEnter(`${building}Door`).subscribe(() => {
-        console.log("onEnter",`${building}Door`)
-        console.log("has access",worldBuildings[building].access)
-        if (worldBuildings[building].access) {
+    WA.room.area.onEnter(`${building}Door`).subscribe(() =>
+    {
+        console.log("onEnter", `${building}Door`)
+        console.log("has access", worldBuildings[building].access)
+        if (worldBuildings[building].access)
+        {
             console.log("access")
             handleEnter();
-        } else {
+        } else
+        {
             console.log("no access")
             openErrorBanner();
         }
     });
 
-    WA.room.area.onLeave(`${building}Door`).subscribe(() => {
-        console.log("onLeave",`${building}Door`)
-        if (!worldBuildings[building].access) {
+    WA.room.area.onLeave(`${building}Door`).subscribe(() =>
+    {
+        console.log("onLeave", `${building}Door`)
+        if (!worldBuildings[building].access)
+        {
             console.log("closeBanner")
             closeBanner();
         }
     });
 
     // Lock the door if access is denied
-    if (!worldBuildings[building].access) {
+    if (!worldBuildings[building].access)
+    {
         lockWorldBuildingDoor(building);
     }
 }
 
-function listenHelicopterDoor() {
+function listenHelicopterDoor()
+{
     // Give access to the helicopter and the pickup only for employees
     // (even if they didn't talk with Jonas previously, they still need to go to the BR Tower)
-    if (playerTagsStore.isEmployee()) {
-        let actionMessage: ActionMessage|null
+    if (playerTagsStore.isEmployee())
+    {
+        let actionMessage: ActionMessage | null
 
-        WA.room.area.onEnter("helicopterDoor").subscribe(() => {
+        WA.room.area.onEnter("helicopterDoor").subscribe(() =>
+        {
             actionMessage = WA.ui.displayActionMessage({
                 message: "Press SPACE to fly to the BR Tower rooftop!",
                 // eslint-disable-next-line @typescript-eslint/no-misused-promises
-                callback: async () => {
+                callback: async () =>
+                {
                     await travelFromAirportToRooftop()
                 }
             })
         })
-    
+
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
-        WA.room.area.onLeave("helicopterDoor").subscribe(async () => {
-            await actionMessage?.remove().then(() => {
+        WA.room.area.onLeave("helicopterDoor").subscribe(async () =>
+        {
+            await actionMessage?.remove().then(() =>
+            {
                 actionMessage = null
             })
         })
 
-        WA.room.area.onEnter("pickupDoor").subscribe(() => {
+        WA.room.area.onEnter("pickupDoor").subscribe(() =>
+        {
             actionMessage = WA.ui.displayActionMessage({
                 message: "Press SPACE to drive back to the BR Stadium!",
                 // eslint-disable-next-line @typescript-eslint/no-misused-promises
-                callback: async () => {
+                callback: async () =>
+                {
                     await goToRoom("town", "from-tower")
                 }
             })
         })
-    
+
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
-        WA.room.area.onLeave("pickupDoor").subscribe(async () => {
-            await actionMessage?.remove().then(() => {
+        WA.room.area.onLeave("pickupDoor").subscribe(async () =>
+        {
+            await actionMessage?.remove().then(() =>
+            {
                 actionMessage = null
             })
         })
     }
 }
 
-function lockWorldBuildingDoor(building: WorldBuildingName) {
-    console.log("lockWorldBuildingDoor",building)
+function lockWorldBuildingDoor(building: WorldBuildingName)
+{
+    console.log("lockWorldBuildingDoor", building)
     const buildingData = worldBuildings[building];
     const tilesCoordinates = getTilesByRectangleCorners(buildingData.blockingTiles[0], buildingData.blockingTiles[1])
     const tiles = tilesCoordinates.map(([xCoord, yCoord]) => ({
@@ -595,8 +688,9 @@ function lockWorldBuildingDoor(building: WorldBuildingName) {
     WA.room.setTiles(tiles);
 }
 
-export function unlockWorldBuildingDoor(building: WorldBuildingName) {
-    console.log("unlockWorldBuildingDoor",building)
+export function unlockWorldBuildingDoor(building: WorldBuildingName)
+{
+    console.log("unlockWorldBuildingDoor", building)
     worldBuildings[building].access = true;
     const buildingData = worldBuildings[building];
     const tilesCoordinates = getTilesByRectangleCorners(buildingData.blockingTiles[0], buildingData.blockingTiles[1])
@@ -610,19 +704,23 @@ export function unlockWorldBuildingDoor(building: WorldBuildingName) {
     WA.room.setTiles(tiles);
 }
 
-function tryToUnlockWorldBarriers() {
+function tryToUnlockWorldBarriers()
+{
     console.log("tryToUnlockWorldBarriers()")
     const tiles: TileDescriptor[] = [];
 
     // Iterate over each barrier in the worldBarriers object
-    Object.entries(worldBarriers).forEach(([_barrierName, barrierData]) => {
-        console.log("barrierName",_barrierName)
+    Object.entries(worldBarriers).forEach(([_barrierName, barrierData]) =>
+    {
+        console.log("barrierName", _barrierName)
         // Check if the barrier is accessible
-        if (barrierData.access) {
+        if (barrierData.access)
+        {
             console.log("has access")
             // Iterate over the blocking tiles of the barrier and add them to the tiles array
             const tilesCoordinates = getTilesByRectangleCorners(barrierData.blockingTiles[0], barrierData.blockingTiles[1])
-            tilesCoordinates.forEach(([xCoord, yCoord]) => {
+            tilesCoordinates.forEach(([xCoord, yCoord]) =>
+            {
                 tiles.push({
                     x: xCoord,
                     y: yCoord,
@@ -637,12 +735,13 @@ function tryToUnlockWorldBarriers() {
     WA.room.setTiles(tiles);
 }
 
-export function unlockWorldBarrier(barrier: WorldBarrierName) {
+export function unlockWorldBarrier(barrier: WorldBarrierName)
+{
     worldBarriers[barrier].access = true;
     const barrierData = worldBarriers[barrier];
-    console.log("barrierData",barrierData)
+    console.log("barrierData", barrierData)
     const tilesCoordinates = getTilesByRectangleCorners(barrierData.blockingTiles[0], barrierData.blockingTiles[1])
-    console.log("tilesCoordinates",tilesCoordinates)
+    console.log("tilesCoordinates", tilesCoordinates)
     const tiles = tilesCoordinates.map(([xCoord, yCoord]) => ({
         x: xCoord,
         y: yCoord,
@@ -653,7 +752,8 @@ export function unlockWorldBarrier(barrier: WorldBarrierName) {
     WA.room.setTiles(tiles);
 }
 
-export function unlockAirportGate() {
+export function unlockAirportGate()
+{
     console.log("unlockAirportGate()")
     airportGate.access = true;
     const turnstileTilesCoordinates = getTilesByRectangleCorners(airportGate.turnstile[0], airportGate.turnstile[1])
@@ -661,16 +761,17 @@ export function unlockAirportGate() {
     const turnstileTiles = turnstileTilesCoordinates.map(([xCoord, yCoord], index) => ({
         x: xCoord,
         y: yCoord,
-        tile: `airport-turnstile-open-${index+1}`,
+        tile: `airport-turnstile-open-${index + 1}`,
         layer: "furniture/furniture3"
     }));
     const combinedTiles = turnstileTiles
     WA.room.setTiles(combinedTiles);
 }
 
-function lockBrTowerFloorAccess(floor: BrTowerFloorName) {
-    console.log("lockBrTowerFloorAccess()",floor)
-    
+function lockBrTowerFloorAccess(floor: BrTowerFloorName)
+{
+    console.log("lockBrTowerFloorAccess()", floor)
+
     const tiles: TileDescriptor[] = [];
     const floorData = brTowerFloors[floor];
     const floorToLayerNameMap: { [key in BrTowerFloorName]: string } = {
@@ -684,7 +785,8 @@ function lockBrTowerFloorAccess(floor: BrTowerFloorName) {
     const tilesCoordinates = getTilesByRectangleCorners(floorData.tilesCoordinates[0], floorData.tilesCoordinates[1])
 
     // first we need to remove open door
-    tilesCoordinates.forEach(([xCoord, yCoord]) => {
+    tilesCoordinates.forEach(([xCoord, yCoord]) =>
+    {
         tiles.push({
             x: xCoord,
             y: yCoord,
@@ -694,7 +796,8 @@ function lockBrTowerFloorAccess(floor: BrTowerFloorName) {
     })
 
     // then place the wall
-    tilesCoordinates.forEach(([xCoord, yCoord]) => {
+    tilesCoordinates.forEach(([xCoord, yCoord]) =>
+    {
         tiles.push({
             x: xCoord,
             y: yCoord,
@@ -707,9 +810,10 @@ function lockBrTowerFloorAccess(floor: BrTowerFloorName) {
     WA.room.setTiles(tiles);
 }
 
-export function unlockBrTowerFloorAccess(floor: BrTowerFloorName) {
-    console.log("unlockBrTowerFloorAccess()",floor)
-    
+export function unlockBrTowerFloorAccess(floor: BrTowerFloorName)
+{
+    console.log("unlockBrTowerFloorAccess()", floor)
+
     const tiles: TileDescriptor[] = [];
     const floorData = brTowerFloors[floor];
     const floorToLayerNameMap: { [key in BrTowerFloorName]: string } = {
@@ -723,7 +827,8 @@ export function unlockBrTowerFloorAccess(floor: BrTowerFloorName) {
     const tilesCoordinates = getTilesByRectangleCorners(floorData.tilesCoordinates[0], floorData.tilesCoordinates[1])
 
     // first we need to remove the wall
-    tilesCoordinates.forEach(([xCoord, yCoord]) => {
+    tilesCoordinates.forEach(([xCoord, yCoord]) =>
+    {
         tiles.push({
             x: xCoord,
             y: yCoord,
@@ -733,11 +838,12 @@ export function unlockBrTowerFloorAccess(floor: BrTowerFloorName) {
     })
 
     // then place the open door
-    tilesCoordinates.forEach(([xCoord, yCoord], index) => {
+    tilesCoordinates.forEach(([xCoord, yCoord], index) =>
+    {
         tiles.push({
             x: xCoord,
             y: yCoord,
-            tile: `${floorData.tilesNamePattern}-open-${index+1}`,
+            tile: `${floorData.tilesNamePattern}-open-${index + 1}`,
             layer: floorToLayerNameMap[floor]
         });
     })
@@ -746,11 +852,15 @@ export function unlockBrTowerFloorAccess(floor: BrTowerFloorName) {
     WA.room.setTiles(tiles);
 }
 
-function initBrTowerFloorAccess() {
-    Object.keys(brTowerFloors).forEach(floor => {
-        if (brTowerFloors[floor as BrTowerFloorName].access === true) {
+function initBrTowerFloorAccess()
+{
+    Object.keys(brTowerFloors).forEach(floor =>
+    {
+        if (brTowerFloors[floor as BrTowerFloorName].access === true)
+        {
             unlockBrTowerFloorAccess(floor as BrTowerFloorName)
-        } else {
+        } else
+        {
             lockBrTowerFloorAccess(floor as BrTowerFloorName)
         }
     });

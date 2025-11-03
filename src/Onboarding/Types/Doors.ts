@@ -18,7 +18,7 @@ export type HRMeetingDoorAccess = {
     [key in HrMeetingDoorName]: { access: boolean, tilesNamePattern: string, tilesCoordinates: [number, number][] };
 };
 
-export type TownExitName = "world-from-alt" | "world-from-fr" | "world-from-ext" | "world-from-pt";
+export type TownExitName = "world-from-alt" | "world-from-fr" | "world-from-de" | "world-from-ext" | "world-from-pt";
 
 /*
 ********************************************* WORLD *********************************************
@@ -29,7 +29,7 @@ export type WorldBuildingAccess = {
     [key in WorldBuildingName]: { access: boolean, blockingTiles: [number, number][] };
 };
 
-export type WorldBarrierName = "achievements" | "values" | "legal" | "bridge" | "france" | "hungary" | "belgium" | "netherlands";
+export type WorldBarrierName = "achievements" | "values" | "legal" | "bridge" | "france" | "hungary" | "germany" | "netherlands";
 export type WorldBarrierAccess = {
     [key in WorldBarrierName]: { access: boolean, blockingTiles: [number, number][] };
 };

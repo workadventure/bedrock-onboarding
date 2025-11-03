@@ -14,30 +14,36 @@ import { closeBanner, openCheckpointBanner, openErrorBanner, openWebsite, openFe
 const QUEST_KEY = "bedrock-journey";
 const LAST_XP_AMOUNT_REQUIRED = 20;
 
-export function placeCheckpoint(checkpoint: CheckpointDescriptor) {
+export function placeCheckpoint(checkpoint: CheckpointDescriptor)
+{
     placeArea(checkpoint)
     placeTile(checkpoint)
 }
 
-function placeNextJonasCheckpoint() {
+function placeNextJonasCheckpoint()
+{
     console.log("========================")
     console.log("placeNextJonasCheckpoint()")
     const nextJonasCheckpointId = checkpointIdsStore.getNextJonasCheckpointId()
     const checkpoint = checkpoints.find(c => c.id === nextJonasCheckpointId)
-    console.log("checkpoint",checkpoint)
-    if (checkpoint) {
+    console.log("checkpoint", checkpoint)
+    if (checkpoint)
+    {
         console.log("placeCheckpoint")
         placeCheckpoint(checkpoint)
     }
 }
 
-export async function passCheckpoint(checkpointId: string) {
+export async function passCheckpoint(checkpointId: string)
+{
     closeBanner()
 
     // Affect checkpoint only if it has not been passed already
-    if (checkpointIdsStore.isCheckpointPassed(checkpointId)) {
+    if (checkpointIdsStore.isCheckpointPassed(checkpointId))
+    {
         console.log("(State: unchanged) Old checkpoint passed", checkpointId)
-    } else {
+    } else
+    {
         console.log("(State: update) New checkpoint passed", checkpointId);
 
         await playerCameFromDoor(false)
@@ -50,50 +56,58 @@ export async function passCheckpoint(checkpointId: string) {
     }
 }
 
-export async function initPlayerProgress(): Promise<void> {
+export async function initPlayerProgress(): Promise<void>
+{
     console.log("initPlayerProgress()")
 
     // skip TP (teleportation) if the player naturally came from an exit of the other map
-    if (WA.player.state.playerCameFromDoor === true) {
+    if (WA.player.state.playerCameFromDoor === true)
+    {
         console.log(`Skip teleport: player naturally came from an exit of the other map`);
         return;
     }
 
     // get last checkoint passed
     const checkpointsBeforeOnboardingEnd = checkpointIdsStore.getCheckpointsBeforeOnboardingEnd()
-    console.log("checkpointsBeforeOnboardingEnd",checkpointsBeforeOnboardingEnd)
+    console.log("checkpointsBeforeOnboardingEnd", checkpointsBeforeOnboardingEnd)
     const lastCheckpointId = checkpointsBeforeOnboardingEnd.at(-1)
-    console.log("lastCheckpointId",lastCheckpointId)
+    console.log("lastCheckpointId", lastCheckpointId)
 
     // Find the checkpoint data with the matching ID
     const lastCheckpoint = checkpoints.find(cp => cp.id === lastCheckpointId)
-    console.log("lastCheckpoint",lastCheckpoint)
+    console.log("lastCheckpoint", lastCheckpoint)
 
     // If the checkpoint is found, compare its map
-    if (lastCheckpoint) {
+    if (lastCheckpoint)
+    {
         const currentMap = currentMapStore.getState()
-        if (currentMap === lastCheckpoint.map) {
+        if (currentMap === lastCheckpoint.map)
+        {
             console.log("Last checkpoint is in same map")
             await initPlayerPosition()
-        } else {
+        } else
+        {
             // Display 'Resume' popup
             await openResumePopup(lastCheckpoint.map)
         }
-    } else {
+    } else
+    {
         console.warn(`Checkpoint not found.`);
     }
 }
 
-async function initPlayerPosition(): Promise<void> {
+async function initPlayerPosition(): Promise<void>
+{
     const checkpointIdsOfMap = checkpointIdsStore.getPassedCheckpointIdsOfMap()
 
     // skip TP if the player didn't pass any checkpoints on this map
-    if (checkpointIdsOfMap.length === 0) {
+    if (checkpointIdsOfMap.length === 0)
+    {
         console.log(`Skip teleport: player didn't pass any checkpoints on this map.`);
         return;
     }
 
-    console.log("checkpointIdsOfMap",checkpointIdsOfMap)
+    console.log("checkpointIdsOfMap", checkpointIdsOfMap)
     // Get last checkpoint ID from all checkpoints that the user passed on the current map
     const lastCheckpointId = checkpointIdsOfMap.at(-1)
 
@@ -101,77 +115,94 @@ async function initPlayerPosition(): Promise<void> {
     const checkpoint = checkpoints.find(cp => cp.id === lastCheckpointId);
 
     // If the checkpoint is found, teleport the player near to its coordinates
-    if (checkpoint) {
-        const { x, y } = checkpoint.spawn; 
+    if (checkpoint)
+    {
+        const { x, y } = checkpoint.spawn;
         const xTile = x * 32
         const yTile = y * 32
         console.log(`Teleport player to last checkpoint: ${checkpoint.id}`)
-       
+
         await WA.player.teleport(xTile, yTile);
-    } else {
+    } else
+    {
         // skip TP if we can't find the last checkpoint data for some reason
         console.warn(`Skip teleport: Checkpoint not found.`);
     }
 }
 
-async function grantQuestXP(xp: number) {
-    console.log("grantQuestXP",xp)
-    try {
+async function grantQuestXP(xp: number)
+{
+    console.log("grantQuestXP", xp)
+    try
+    {
         await levelUp(QUEST_KEY, xp)
-    } catch (e) {
+    } catch (e)
+    {
         console.warn("Error while granting XP", e)
     }
 }
 
 // When the dialogue box is closed, this event is fired
-export function registerCloseDialogueBoxListener() {
-    interface CloseDialogueBoxVariable {
+export function registerCloseDialogueBoxListener()
+{
+    interface CloseDialogueBoxVariable
+    {
         forceChange: number;
-        checkpoint: CheckpointDescriptor|null;
+        checkpoint: CheckpointDescriptor | null;
     }
 
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    WA.player.state.onVariableChange('closeDialogueBoxEvent').subscribe(async (value) => {
+    WA.player.state.onVariableChange('closeDialogueBoxEvent').subscribe(async (value) =>
+    {
         const checkpointData = value as CloseDialogueBoxVariable;
         const checkpoint = checkpointData.checkpoint;
 
-        if (checkpoint) {
+        if (checkpoint)
+        {
             console.log('Variable "closeDialogueBoxEvent" changed. New value: ', checkpoint);
             // If the NPC has a content to show after the dialogue box is closed, open the content
-            if (checkpoint.url) {
-                console.log("Open URL",checkpoint.url)
+            if (checkpoint.url)
+            {
+                console.log("Open URL", checkpoint.url)
                 await openWebsite(checkpoint.url)
             }
-        
+
             // If it's Jonas, remove its area and teleport him
-            if (checkpoint.npcName === "Jonas") {
+            if (checkpoint.npcName === "Jonas")
+            {
                 await removeArea(checkpoint.id)
-        
-               // Don't teleport Jonas and don't remove it if it's the one at its Pickup or the one at the stadium stage
-                if (checkpoint.id === "32" || checkpoint.id === "36") {
+
+                // Don't teleport Jonas and don't remove it if it's the one at its Pickup or the one at the stadium stage
+                if (checkpoint.id === "32" || checkpoint.id === "36")
+                {
                     console.log("Don't move Jonas")
-                } else if (checkpoint.id === "23") {
+                } else if (checkpoint.id === "23")
+                {
                     // Don't teleport Jonas but remove it if it's the one at the airport
                     console.log("Remove Jonas")
                     removeNPCTile(checkpoint)
-                } else {
+                } else
+                {
                     console.log("Teleport Jonas")
                     teleportJonas(checkpoint.coordinates.x, checkpoint.coordinates.y)
                 }
-            } else if (checkpoint.type === "direction") {
+            } else if (checkpoint.type === "direction")
+            {
                 console.log("Remove direction area and tile")
                 await removeArea(checkpoint.id)
                 removeDirectionTile(checkpoint)
             }
-        
-            console.log("checkpoint.id",checkpoint.id)
+
+            console.log("checkpoint.id", checkpoint.id)
             await passCheckpoint(checkpoint.id)
         }
     });
 }
 
-async function triggerCheckpointAction(checkpointId: string) {
-    switch (checkpointId) {
+async function triggerCheckpointAction(checkpointId: string)
+{
+    switch (checkpointId)
+    {
         // Requirement: Meet Jonas for the first time
         case "2":
             // Action: Place rest of checkpoints
@@ -182,9 +213,11 @@ async function triggerCheckpointAction(checkpointId: string) {
         case "4": {
             // Action: Unlock Town cave door
             const door = getCaveDoorToOpen();
-            if (door) {
+            if (door)
+            {
                 unlockTownCaveDoor(door);
-            } else {
+            } else
+            {
                 openErrorBanner();
             }
             break;
@@ -194,7 +227,8 @@ async function triggerCheckpointAction(checkpointId: string) {
         case "6": {
             // Action: Place Jonas' phone + place next Jonas
             const checkpoint6 = checkpoints.find(c => c.id === "7")
-            if (checkpoint6) {
+            if (checkpoint6)
+            {
                 placeCheckpoint(checkpoint6)
             }
             placeNextJonasCheckpoint()
@@ -242,35 +276,39 @@ async function triggerCheckpointAction(checkpointId: string) {
         case "14":
         case "15":
             // Action: Unlock access to Hungary if either 14 or 15 is done
-            if (checkpointIdsStore.canAccessHungary()) {
+            if (checkpointIdsStore.canAccessHungary())
+            {
                 unlockWorldBarrier("hungary")
             }
             break;
-    
-        // Requirement: Watch RTL+ video 1 or 2
+
+        // Requirement: Watch RTL+ Hungary video 1 or 2
         case "16":
         case "17":
-            // Action: Unlock access to Belgium if either 16 or 17 is done
-            if (checkpointIdsStore.canAccessBelgium()) {
-                unlockWorldBarrier("belgium")
+            // Action: Unlock access to Germany if either 16 or 17 is done
+            if (checkpointIdsStore.canAccessGermany())
+            {
+                unlockWorldBarrier("germany")
             }
             break;
-    
-        // Requirement: Watch RTL Play video 1 or 2
+
+        // Requirement: Watch RTL+ Germany video 1 or 2
         case "18":
         case "19":
             // Action: Unlock access to Netherlands if either 18 or 19 is done
-            if (checkpointIdsStore.canAccessNetherlands()) {
+            if (checkpointIdsStore.canAccessNetherlands())
+            {
                 unlockWorldBarrier("netherlands")
             }
 
             break;
-    
+
         // Requirement: Watch Videoland video 1 or 2
         case "20":
         case "21":
             // Action: Unlock access to airport if either 20 or 21 is done
-            if (checkpointIdsStore.canEnterAirport()) {
+            if (checkpointIdsStore.canEnterAirport())
+            {
                 unlockWorldBuildingDoor("airport")
             }
             break;
@@ -343,7 +381,8 @@ async function triggerCheckpointAction(checkpointId: string) {
         case "33":
         case "34":
             // Action: Unlock rest of the buildings + place next and last Jonas
-            if (checkpointIdsStore.isBackstageDone()) {
+            if (checkpointIdsStore.isBackstageDone())
+            {
                 placeNextJonasCheckpoint()
                 unlockTownBuildingDoor("backstage")
                 unlockTownBuildingDoor("arcade")
@@ -357,7 +396,8 @@ async function triggerCheckpointAction(checkpointId: string) {
         case "40":
         case "41":
             // Action: Finish onboarding
-            if (checkpointIdsStore.isContentFRChecked()) {
+            if (checkpointIdsStore.isContentFRChecked())
+            {
                 // give XP for final badge and open feedback form
                 await finishOnboarding()
             }
@@ -368,7 +408,8 @@ async function triggerCheckpointAction(checkpointId: string) {
         case "43":
         case "44":
             // Action: Finish onboarding
-            if (checkpointIdsStore.isContentPTChecked()) {
+            if (checkpointIdsStore.isContentPTChecked())
+            {
                 // give XP for final badge and open feedback form
                 await finishOnboarding()
             }
@@ -379,7 +420,8 @@ async function triggerCheckpointAction(checkpointId: string) {
         case "46":
         case "47":
             // Action: Finish onboarding
-            if (checkpointIdsStore.isContentALTChecked()) {
+            if (checkpointIdsStore.isContentALTChecked())
+            {
                 // give XP for final badge and open feedback form
                 await finishOnboarding()
             }
@@ -389,7 +431,20 @@ async function triggerCheckpointAction(checkpointId: string) {
         case "48":
         case "49":
             // Action: Finish onboarding
-            if (checkpointIdsStore.isContentEXTChecked()) {
+            if (checkpointIdsStore.isContentEXTChecked())
+            {
+                // give XP for final badge and open feedback form
+                await finishOnboarding()
+            }
+            break;
+
+        // Requirement: Check some DE content
+        case "50":
+        case "51":
+        case "52":
+            // Action: Finish onboarding
+            if (checkpointIdsStore.isContentDEChecked())
+            {
                 // give XP for final badge and open feedback form
                 await finishOnboarding()
             }
@@ -400,7 +455,8 @@ async function triggerCheckpointAction(checkpointId: string) {
     }
 }
 
-async function finishOnboarding() {
+async function finishOnboarding()
+{
     await grantQuestXP(LAST_XP_AMOUNT_REQUIRED)
     openFeedbackForm()
 }

@@ -134,7 +134,7 @@ export const checkpoints: CheckpointDescriptor[] = [
             y: 179
         },
         type: "content",
-        url: "https://www.youtube.com/embed/_ilLJY_JdCw",
+        url: "https://www.youtube.com/embed/GFzIrba8n-c",
         tags: everyoneButGuests,
         xp: 20,
     },
@@ -262,7 +262,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         We deliver on demand video, linear channels and live sports.
         Our vision is to be on par with (or better than) the global players so that our partners can engage and entertain their users in the same professional way.
         You see, our customers are not just clients; they're partners, and they play a significant role in defining who we are. Our collaborations not only reflect our reach but also our commitment to delivering exceptional service and innovation.
-        Pride in our work and our partners is a core part of our identity. It's something that you'll find deeply ingrained in every project, every team, and every success story at Bedrock. This is why, just beyond this bridge, you'll embark on a unique journey through four countries: France, Hungary, Belgium, and the Netherlands.
+        Pride in our work and our partners is a core part of our identity. It's something that you'll find deeply ingrained in every project, every team, and every success story at Bedrock. This is why, just beyond this bridge, you'll embark on a unique journey through four countries: France, Hungary, Germany, and the Netherlands.
         Each of these represents a cornerstone of our customer base, showcasing the diverse and impactful work we've achieved together. Off you go, and enjoy the journey through our global footprint!`,
         tags: everyoneButGuests,
         xp: 50,
@@ -313,7 +313,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         id: "16",
         map: "world",
         title: "Explore Hungary Customer: RTL+ (Part 1)",
-        description: "Chat with Eva to uncover Bedrock's collaboration with Hungary's RTL+ streaming service.",
+        description: "Chat with Eva to uncover Bedrock's collaboration with RTL+ Hungary streaming service.",
         coordinates: {
             x: 102,
             y: 48
@@ -325,7 +325,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         type: "NPC",
         npcName: "Eva",
         npcSprite: "front",
-        message: `Hi! I'm Eva, and I'm here to talk to you about our partnership with RTL+. Get ready for an adventure as we explore the world of Hungarian streaming together. Check out this video to learn more!`,
+        message: `Hi! I'm Eva, and I'm here to talk to you about our partnership with RTL+ Hungary. Get ready for an adventure as we explore the world of Hungarian streaming together. Check out this video to learn more!`,
         url: "https://www.youtube.com/embed/eVbLx5ghvF4",
         tags: everyoneButGuests,
         xp: 50,
@@ -334,7 +334,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         id: "17",
         map: "world",
         title: "Uncover Hungary Customer: RTL+ (Part 2)",
-        description: "Speak with Gabor to delve deeper into Bedrock's partnership with Hungary's RTL+ streaming service.",
+        description: "Speak with Gabor to delve deeper into Bedrock's partnership with RTL+ Hungary streaming service.",
         coordinates: {
             x: 89,
             y: 36
@@ -354,42 +354,42 @@ export const checkpoints: CheckpointDescriptor[] = [
     {
         id: "18",
         map: "world",
-        title: "Learn about Belgium Customer: RTL Play (Part 1)",
-        description: "In the city of Brussels, interact with Luc to explore Bedrock's collaboration with Belgium's RTL Play streaming service.",
+        title: "Learn about Germany Customer: RTL+ (Part 1)",
+        description: "In the city of Cologne, interact with Luc to explore Bedrock's collaboration with RTL+ Germany streaming service.",
         coordinates: {
-            x: 93,
-            y: 9
+            x: 102,
+            y: 12
         },
         spawn: {
-            x: 90,
-            y: 10
+            x: 100,
+            y: 16
         },
         type: "NPC",
         npcName: "Luc",
         npcSprite: "front",
-        message: `Hello there! I'm Luc, and I'm here to showcase Bedrock's collaboration with RTL Play. From Belgium to the world, let's explore the wonders of streaming together. Check out this video to learn more!`,
-        url: "https://www.youtube.com/embed/qlFus49BGvg",
+        message: `Hello there! I'm Luc, and I'm here to showcase Bedrock's collaboration with RTL+ Germany. From Germany to the world, let's explore the wonders of streaming together. Check out this video to learn more!`,
+        url: "https://www.youtube.com/embed/ycRE7ni7_Rs",
         tags: everyoneButGuests,
         xp: 50,
     },
     {
         id: "19",
         map: "world",
-        title: "Discover Belgium Customer: RTL Play (Part 2)",
-        description: "Continue your exploration of Bedrock's partnership with Belgium's RTL Play streaming service by engaging with Emma.",
+        title: "Discover Germany Customer: RTL+ (Part 2)",
+        description: "Continue your exploration of Bedrock's partnership with RTL+ Germany streaming service by engaging with Emma.",
         coordinates: {
-            x: 81,
-            y: 9
+            x: 73,
+            y: 12
         },
         spawn: {
-            x: 78,
-            y: 11
+            x: 73,
+            y: 16
         },
         type: "NPC",
         npcName: "Emma",
         npcSprite: "front",
-        message: `Hey! I'm Emma, and I'm thrilled to share more about RTL Play with you. Belgium's streaming landscape is diverse and vibrant, and we're at the heart of it. Let's dive in and discover what makes RTL Play special. Check out this video to learn more!`,
-        url: "https://www.youtube.com/embed/E3MfccMX6R4",
+        message: `Hey! I'm Emma, and I'm thrilled to share more about RTL+ Germany with you. Germany's streaming landscape is diverse and vibrant, and we're at the heart of it. Let's dive in and discover what makes RTL+ special. Check out this video to learn more!`,
+        url: "https://www.youtube.com/embed/sRNAist12Zk",
         tags: everyoneButGuests,
         xp: 50,
     },
@@ -694,7 +694,7 @@ export const checkpoints: CheckpointDescriptor[] = [
             y: 32
         },
         type: "content",
-        url: "https://www.youtube.com/embed/_8jMD0yyD8A",
+        url: "https://www.youtube.com/embed/F2GRSgt0fPc",
         tags: everyoneButGuests,
         xp: 10,
     },
@@ -892,7 +892,7 @@ export const checkpoints: CheckpointDescriptor[] = [
             y: 113
         },
         type: "content",
-        url: "45_HR_ALT.pdf",
+        url: "45_Contacts_ALT.pdf",
         tags: ["alt"],
         xp: 0,
     },
@@ -971,6 +971,60 @@ export const checkpoints: CheckpointDescriptor[] = [
     {
         id: "50",
         map: "town",
+        title: "Your Contacts (DE)",
+        description: "Access essential information about your contacts within the company.",
+        coordinates: {
+            x: 82,
+            y: 100
+        },
+        spawn: {
+            x: 79,
+            y: 113
+        },
+        type: "content",
+        url: "50_Contacts_DE.pdf",
+        tags: ["de"],
+        xp: 0,
+    },
+    {
+        id: "51",
+        map: "town",
+        title: "Your Daily Tools (DE)",
+        description: "Access a curated collection of productivity tools to streamline your workflow.",
+        coordinates: {
+            x: 88,
+            y: 100
+        },
+        spawn: {
+            x: 79,
+            y: 113
+        },
+        type: "content",
+        url: "https://bedrockstreaming.com/",
+        tags: ["de"],
+        xp: 0,
+    },
+    {
+        id: "52",
+        map: "town",
+        title: "HR System (DE)",
+        description: "Access detailed information about HR processes, policies, and procedures.",
+        coordinates: {
+            x: 71,
+            y: 98
+        },
+        spawn: {
+            x: 79,
+            y: 113
+        },
+        type: "content",
+        url: "52_HR_DE.pdf",
+        tags: ["de"],
+        xp: 0,
+    },
+    {
+        id: "53",
+        map: "town",
         title: "Visit HR",
         description: "Explore the HR building. That's where you can have interviews!",
         coordinates: {
@@ -985,7 +1039,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         xp: 0,
     },
     {
-        id: "51",
+        id: "54",
         map: "town",
         title: "Check out the Streaming Wall",
         description: "Visit the Streaming Wall building and watch videos showcasing Bedrock's customers and their experiences.",
@@ -1002,7 +1056,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         xp: 0,
     },
     {
-        id: "52",
+        id: "55",
         map: "town",
         title: "Enjoy Arcade Games",
         description: "Visit the Arcade building and enjoy classic games like Pong and Super Mario!",
@@ -1018,7 +1072,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         xp: 0,
     },
     {
-        id: "53",
+        id: "56",
         map: "town",
         title: "Bedrock News Billboard",
         description: "Complete your journey by discoving the latest news and updates about Bedrock!",

@@ -5,33 +5,41 @@ import { store } from "../Store";
 import type { Tag } from "../../Types/Tags";
 import { employees, everyone, everyoneButGuests, newbies } from "../../Constants/Tags";
 
-class PlayerTagsStore implements StateManager<Tag[]> {
+class PlayerTagsStore implements StateManager<Tag[]>
+{
     private static instance: PlayerTagsStore;
-    
+
     // Private constructor to prevent external instantiation
-    private constructor() {
+    private constructor()
+    {
         // This constructor is intentionally left empty
     }
 
-    static getInstance(): PlayerTagsStore {
-        if (!PlayerTagsStore.instance) {
+    static getInstance(): PlayerTagsStore
+    {
+        if (!PlayerTagsStore.instance)
+        {
             PlayerTagsStore.instance = new PlayerTagsStore();
         }
         return PlayerTagsStore.instance;
     }
 
-    getState(): Tag[] {
+    getState(): Tag[]
+    {
         return store.getState().playerTags;
     }
 
-    setState(tags: Tag[]): void {
+    setState(tags: Tag[]): void
+    {
         const currentState = store.getState();
         const newState = { ...currentState, playerTags: tags };
         store.setState(newState);
     }
 
-    subscribe(observer: (tags: Tag[]) => void): void {
-        store.subscribe((state) => {
+    subscribe(observer: (tags: Tag[]) => void): void
+    {
+        store.subscribe((state) =>
+        {
             observer(state.playerTags);
         });
     }
@@ -40,71 +48,90 @@ class PlayerTagsStore implements StateManager<Tag[]> {
     ********************************************* init *********************************************
     */
 
-    initState(): void {
-        console.log("Player tags",WA.player.tags);
+    initState(): void
+    {
+        console.log("Player tags", WA.player.tags);
         this.setState(WA.player.tags as Tag[]);
     }
 
     /*
     ********************************************* Helpers functions *********************************************
     */
-   
-    hasMandatoryTags(): boolean {
+
+    hasMandatoryTags(): boolean
+    {
         const playerTags = this.getState();
         return playerTags.some(tag => everyone.includes(tag));
     }
 
-    hasMandatoryTagsIn(checkpointTags: Tag[]): boolean {
+    hasMandatoryTagsIn(checkpointTags: Tag[]): boolean
+    {
         const playerTags = this.getState();
         return playerTags.some(tag => checkpointTags.includes(tag));
     }
 
-    isAdmin(): boolean {
+    isAdmin(): boolean
+    {
         const playerTags = this.getState();
         return playerTags.some(tag => tag === "admin");
     }
 
-    isEmployee(): boolean {
+    isEmployee(): boolean
+    {
         const playerTags = this.getState();
         return playerTags.some(tag => employees.includes(tag));
     }
 
-    isHr(): boolean {
+    isHr(): boolean
+    {
         const playerTags = this.getState();
         return playerTags.some(tag => ["admin", "hr"].includes(tag))
     }
 
-    isNewbie(): boolean {
+    isNewbie(): boolean
+    {
         const playerTags = this.getState();
         return playerTags.some(tag => newbies.includes(tag));
     }
 
-    hasFrProfile(): boolean {
+    hasFrProfile(): boolean
+    {
         const playerTags = this.getState();
         return playerTags.some(tag => tag === "fr");
     }
 
-    hasPtProfile(): boolean {
+    hasDeProfile(): boolean
+    {
+        const playerTags = this.getState();
+        return playerTags.some(tag => tag === "de");
+    }
+
+    hasPtProfile(): boolean
+    {
         const playerTags = this.getState();
         return playerTags.some(tag => tag === "pt");
     }
 
-    hasAltProfile(): boolean {
+    hasAltProfile(): boolean
+    {
         const playerTags = this.getState();
         return playerTags.some(tag => tag === "alt");
     }
 
-    hasExtProfile(): boolean {
+    hasExtProfile(): boolean
+    {
         const playerTags = this.getState();
         return playerTags.some(tag => tag === "ext");
     }
 
-    isGuest(): boolean {
+    isGuest(): boolean
+    {
         const playerTags = this.getState();
         return playerTags.some(tag => tag === "guest");
     }
 
-    isOtherThanGuest(): boolean {
+    isOtherThanGuest(): boolean
+    {
         const playerTags = this.getState();
         return playerTags.some(tag => everyoneButGuests.includes(tag));
     }

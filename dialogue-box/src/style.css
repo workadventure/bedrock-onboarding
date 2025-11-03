@@ -7,6 +7,7 @@ body {
   color: #fff;
   font-family: "Roboto", sans-serif;
   font-size: 0.8em;
+  background-color: rgba(27, 27, 41, 0.95);
 }
 
 .dialogue-box {
@@ -16,7 +17,7 @@ body {
   height: 70px;
   background-color: rgba(27, 27, 41, 0.95);
   padding: 10px;
-  border-radius: .5rem;
+  border-radius: 0.5rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
@@ -29,7 +30,7 @@ body {
   width: 40px;
   height: 40px;
   overflow: hidden;
-  border-radius: .5rem;
+  border-radius: 0.5rem;
   border: 1px solid #777;
   background-color: white;
   display: flex;
@@ -70,7 +71,7 @@ body {
 .pagination-container span {
   padding-right: 10px;
   font-size: 0.8em;
-  color: #DDD;
+  color: #ddd;
 }
 
 .pagination-container button {
@@ -82,9 +83,9 @@ body {
 }
 
 .pagination-container button.next {
-  border: 1px solid #DDD;
+  border: 1px solid #ddd;
   background-color: transparent;
-  color: #DDD;
+  color: #ddd;
 }
 
 .pagination-container button.next:hover {
