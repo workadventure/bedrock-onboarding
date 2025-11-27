@@ -8,16 +8,17 @@ import { Map } from "../Types/Maps";
 
 export const DOOR_LOCKED = "The door is locked. You are not qualified to enter here."
 
-let dialogueBox: UIWebsite|null
-let resumePopup: UIWebsite|null
-let helicopterGIF: UIWebsite|null
-let coWebsite: CoWebsite|null
+let dialogueBox: UIWebsite | null
+let resumePopup: UIWebsite | null
+let helicopterGIF: UIWebsite | null
+let coWebsite: CoWebsite | null
 
-export async function openDialogueBox(checkpointId: string) {
+export async function openDialogueBox(checkpointId: string)
+{
     console.log("openDialogueBox")
     const root = rootUrlStore.getState();
     dialogueBox = await WA.ui.website.open({
-        url:  root + `/dialogue-box/index.html?id=${checkpointId}`,
+        url: root + `/dialogue-box/index.html?id=${checkpointId}`,
         visible: true,
         allowApi: true,
         allowPolicy: "",   // The list of feature policies allowed
@@ -35,23 +36,29 @@ export async function openDialogueBox(checkpointId: string) {
     })
 }
 
-export async function closeDialogueBox() {
+export async function closeDialogueBox()
+{
     const localDialogueBox = dialogueBox;
-    if (localDialogueBox) {
+    if (localDialogueBox)
+    {
         await localDialogueBox.close();
         // Avoid race condition by using a reference instead of dialogueBox directly
-        if (dialogueBox === localDialogueBox) {
+        if (dialogueBox === localDialogueBox)
+        {
             dialogueBox = null;
         }
     }
 }
 
-export async function openWebsite(url: string) {
+export async function openWebsite(url: string)
+{
     const root = rootUrlStore.getState();
     const finalUrl = isURL(url) ? url : `${root}/content/${url}`
-    if (isURL(url) && mustOpenInNewTab(url)) {
+    if (isURL(url) && mustOpenInNewTab(url))
+    {
         WA.nav.openTab(finalUrl)
-    } else {
+    } else
+    {
         coWebsite = await WA.nav.openCoWebSite(
             finalUrl,
             false,
@@ -64,22 +71,27 @@ export async function openWebsite(url: string) {
     }
 }
 
-export async function closeWebsite() {
+export async function closeWebsite()
+{
     const localCoWebsite = coWebsite;
-    if (localCoWebsite) {
-        console.log("coWebsite",coWebsite)
+    if (localCoWebsite)
+    {
+        console.log("coWebsite", coWebsite)
         await localCoWebsite.close();
         // Avoid race condition by using a reference instead of coWebsite directly
-        if (coWebsite === localCoWebsite) {
+        if (coWebsite === localCoWebsite)
+        {
             coWebsite = null;
         }
     }
 }
 
-export function openCheckpointBanner(nextCheckpointId: string) {
+export function openCheckpointBanner(nextCheckpointId: string)
+{
     console.log("Display banner of checkpoint", nextCheckpointId)
 
-    if (nextCheckpointId === "-1") {
+    if (nextCheckpointId === "-1")
+    {
         // If there is no more checkpoints then all checkpoints have been passed!
         WA.ui.banner.openBanner({
             id: "onboarding-banner",
@@ -92,11 +104,12 @@ export function openCheckpointBanner(nextCheckpointId: string) {
 
         return;
     }
-    
+
     // Search for the message to display depending on the player's checkpoint
     const checkpoint = checkpoints.find(c => c.id === nextCheckpointId)
 
-    if (checkpoint) {
+    if (checkpoint)
+    {
         WA.ui.banner.openBanner({
             id: "onboarding-banner",
             text: `${checkpoint.title}: ${checkpoint.description}`,
@@ -108,8 +121,9 @@ export function openCheckpointBanner(nextCheckpointId: string) {
     }
 }
 
-export function openErrorBanner(message: string = DOOR_LOCKED) {
-    console.log("Open error banner with message",message)
+export function openErrorBanner(message: string = DOOR_LOCKED)
+{
+    console.log("Open error banner with message", message)
     WA.ui.banner.openBanner({
         id: "onboarding-banner",
         text: message,
@@ -120,11 +134,13 @@ export function openErrorBanner(message: string = DOOR_LOCKED) {
     });
 }
 
-export function closeBanner() {
+export function closeBanner()
+{
     WA.ui.banner.closeBanner()
 }
 
-export function displayChecklistButton() {
+export function displayChecklistButton()
+{
     const root = rootUrlStore.getState();
 
     WA.ui.actionBar.addButton({
@@ -132,7 +148,8 @@ export function displayChecklistButton() {
         type: 'action',
         imageSrc: `${root}/checklist-icon.svg`,
         toolTip: "Onboarding Checklist",
-        callback: () => {
+        callback: () =>
+        {
             WA.ui.modal.openModal({
                 title: "Plan",
                 src: `${root}/checklist/index.html`,
@@ -144,7 +161,8 @@ export function displayChecklistButton() {
     });
 }
 
-export function displayHelpButton() {
+export function displayHelpButton()
+{
     const root = rootUrlStore.getState();
 
     WA.ui.actionBar.addButton({
@@ -152,7 +170,8 @@ export function displayHelpButton() {
         type: 'action',
         imageSrc: `${root}/help.svg`,
         toolTip: "User guide",
-        callback: () => {
+        callback: () =>
+        {
             WA.ui.modal.openModal({
                 title: "User guide",
                 src: `${root}/User_Guide.pdf`,
@@ -164,14 +183,11 @@ export function displayHelpButton() {
     });
 }
 
-export async function openResumePopup(map: Map) {
-    console.log("openResumePopup")
-
-    WA.controls.disablePlayerControls()
-    
+export async function openResumePopup(map: Map)
+{
     const root = rootUrlStore.getState();
     resumePopup = await WA.ui.website.open({
-        url:  root + `/resume-popup/index.html?map=${map}`,
+        url: root + `/resume-popup/index.html?map=${map}`,
         visible: true,
         allowApi: true,
         allowPolicy: "",   // The list of feature policies allowed
@@ -188,18 +204,22 @@ export async function openResumePopup(map: Map) {
     })
 }
 
-export async function closeResumePopup() {
+export async function closeResumePopup()
+{
     const localResumePopup = resumePopup;
-    if (localResumePopup) {
+    if (localResumePopup)
+    {
         await localResumePopup.close();
         // Avoid race condition by using a reference instead of resumePopup directly
-        if (resumePopup === localResumePopup) {
+        if (resumePopup === localResumePopup)
+        {
             resumePopup = null;
         }
     }
 }
 
-export function openFeedbackForm() {
+export function openFeedbackForm()
+{
     WA.ui.modal.openModal({
         title: "Feedback",
         src: "https://forms.gle/MREVyCmEUf9Exfqt5",
@@ -209,9 +229,10 @@ export function openFeedbackForm() {
     }, () => WA.ui.modal.closeModal())
 }
 
-export async function displayHelicopterGIF() {
+export async function displayHelicopterGIF()
+{
     const root = rootUrlStore.getState();
-    
+
     helicopterGIF = await WA.ui.website.open({
         url: `${root}/helicopter.gif`,
         visible: true,
@@ -228,8 +249,10 @@ export async function displayHelicopterGIF() {
     })
 }
 
-export async function removeHelicopterGIF() {
-    if (helicopterGIF) {
+export async function removeHelicopterGIF()
+{
+    if (helicopterGIF)
+    {
         await helicopterGIF.close()
     }
 }
