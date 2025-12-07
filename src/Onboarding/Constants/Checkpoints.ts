@@ -557,7 +557,7 @@ export const checkpoints: CheckpointDescriptor[] = [
             y: 115
         },
         type: "content",
-        url: "https://www.youtube.com/embed/g1fDHAJy23s",
+        url: "https://www.youtube.com/embed/OvaL2bjeqZM",
         tags: everyoneButGuests,
         xp: 20,
     },
@@ -1000,7 +1000,7 @@ export const checkpoints: CheckpointDescriptor[] = [
             y: 113
         },
         type: "content",
-        url: "https://bedrockstreaming.com/",
+        url: "https://bedrockstreaming.atlassian.net/wiki/spaces/GHS/overview?homepageId=5447484285",
         tags: ["de"],
         xp: 0,
     },
