@@ -336,8 +336,9 @@ async function triggerCheckpointAction(checkpointId: string)
 
         // Requirement: Check floor 4
         case "25":
-            // Action: Unlock floor 3
+            // Action: Unlock floor 3, and floor 2 while checkpoint 26 is disabled
             unlockBrTowerFloorAccess("floor3")
+            unlockBrTowerFloorAccess("floor2")
             break;
 
         // Requirement: Check floor 3
