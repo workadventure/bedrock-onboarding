@@ -525,24 +525,26 @@ export const checkpoints: CheckpointDescriptor[] = [
         tags: everyoneButGuests,
         xp: 20,
     },
-    {
-        id: "26",
-        map: "world",
-        title: "Discover Departments Presentation",
-        description: "Engage with the presentation on this floor to learn about the various departments within Bedrock and their functions.",
-        coordinates: {
-            x: 29,
-            y: 129
-        },
-        spawn: {
-            x: 23,
-            y: 115
-        },
-        type: "content",
-        url: "26_Departments.pdf",
-        tags: everyoneButGuests,
-        xp: 20,
-    },
+    // "Organisation 2025" removed at Bedrock's request until they have an updated org chart.
+    // To restore: uncomment, and revert the floor 2 unlock in CheckpointsManager (case "25") and CheckpointIdsStore.canEnterBRTowerFloor2().
+    // {
+    //     id: "26",
+    //     map: "world",
+    //     title: "Discover Departments Presentation",
+    //     description: "Engage with the presentation on this floor to learn about the various departments within Bedrock and their functions.",
+    //     coordinates: {
+    //         x: 29,
+    //         y: 129
+    //     },
+    //     spawn: {
+    //         x: 23,
+    //         y: 115
+    //     },
+    //     type: "content",
+    //     url: "26_Departments.pdf",
+    //     tags: everyoneButGuests,
+    //     xp: 20,
+    // },
     {
         id: "27",
         map: "world",

@@ -264,7 +264,8 @@ class CheckpointIdsStore implements StateManager<string[]>
 
     canEnterBRTowerFloor2(): boolean
     {
-        return this.getState().includes("26");
+        // Checkpoint 26 is disabled, floor 2 opens with floor 3
+        return this.getState().includes("25");
     }
 
     canEnterBRTowerFloor1(): boolean
