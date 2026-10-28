@@ -504,7 +504,7 @@ export const checkpoints: CheckpointDescriptor[] = [
         id: "25",
         map: "world",
         title: "Explore HR Office",
-        description: "Delve into the role of Caroline, the Chief Human Resources Officer (CHRO) and its contributions to Bedrock's success.",
+        description: "Delve into the role of Bénédicte, the Chief Human Resources Officer (CHRO) and its contributions to Bedrock's success.",
         coordinates: {
             x: 31,
             y: 124
@@ -514,7 +514,7 @@ export const checkpoints: CheckpointDescriptor[] = [
             y: 115
         },
         type: "NPC",
-        npcName: "Caroline",
+        npcName: "Bénédicte",
         npcSprite: "left",
         message: `Welcome to Bedrock!
         As Chief Human Resources Officer my role is to support the development of our employees by implementing human resources policies in line with the company’s strategic orientations.
