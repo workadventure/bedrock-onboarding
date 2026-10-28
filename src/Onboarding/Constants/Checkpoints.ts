@@ -557,7 +557,7 @@ export const checkpoints: CheckpointDescriptor[] = [
             y: 115
         },
         type: "content",
-        url: "https://www.youtube.com/embed/OvaL2bjeqZM",
+        url: "27_HR_KPIs.pdf",
         tags: everyoneButGuests,
         xp: 20,
     },
