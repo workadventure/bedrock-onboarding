@@ -6,5 +6,5 @@ export function isURL(value: string): boolean {
 }
 
 export function mustOpenInNewTab(url: string): boolean {
-    return url.includes("atlassian");
+    return url.includes("atlassian") || url.includes("airtable");
 }
