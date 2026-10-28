@@ -33007,7 +33007,7 @@
                         {
                          "name":"name",
                          "type":"string",
-                         "value":"npc-caroline-front"
+                         "value":"npc-bénédicte-front"
                         }]
                 }, 
                 {
@@ -33039,7 +33039,7 @@
                         {
                          "name":"name",
                          "type":"string",
-                         "value":"npc-caroline-left"
+                         "value":"npc-bénédicte-left"
                         }]
                 }, 
                 {
@@ -33071,7 +33071,7 @@
                         {
                          "name":"name",
                          "type":"string",
-                         "value":"npc-caroline-right"
+                         "value":"npc-bénédicte-right"
                         }]
                 }, 
                 {
@@ -33103,7 +33103,7 @@
                         {
                          "name":"name",
                          "type":"string",
-                         "value":"npc-caroline-back"
+                         "value":"npc-bénédicte-back"
                         }]
                 }, 
                 {
